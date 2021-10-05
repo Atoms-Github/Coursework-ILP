@@ -9,5 +9,8 @@
         <module name="ilp" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ilp" target="14" />
+    </bytecodeTargetLevel>
   </component>
 </project>
