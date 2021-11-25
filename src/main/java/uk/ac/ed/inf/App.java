@@ -1,8 +1,8 @@
 package uk.ac.ed.inf;
 
 
-import io.DatabaseHandle;
-import io.WebsiteHandle;
+import hostedhandles.DatabaseHandle;
+import hostedhandles.WebsiteHandle;
 import routing.Order;
 
 import java.sql.SQLException;
@@ -19,7 +19,7 @@ public class App
         WebsiteHandle website = new WebsiteHandle("localhost", "9898");
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
         for (Order order : database.getOrders()){
-            System.out.println(order.deliveryDate + " " + order.deliveryTarget);
+            System.out.println(order.deliveryDate + " " + order.deliveryTarget + order.customerID);
         }
     }
 }
