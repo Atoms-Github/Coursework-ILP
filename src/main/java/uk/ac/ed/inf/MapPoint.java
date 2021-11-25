@@ -1,27 +1,33 @@
 package uk.ac.ed.inf;
 
-/**
- * A point in the world, represented as longitude, latitude.
- */
-public class LongLat {
-    public double longitude;
-    public double latitude;
+
+public class MapPoint {
+    /**
+     * X represents the point's longitude.
+     */
+    public double x;
+
+    /**
+     * Y represents the point's Latitude.
+     */
+    public double y;
 
     /**
      * The bottom left corner of the drone's movement bounds (Top of the Meadows).
      */
-    public static final LongLat BOUNDS_BOTTOM_LEFT = new LongLat(-3.192473, 55.942617);
+    public static final MapPoint BOUNDS_BOTTOM_LEFT = new MapPoint(-3.192473, 55.942617);
     /**
      * The top right corner of the drone's movement bounds (KFC).
      */
-    public static final LongLat BOUNDS_TOP_RIGHT = new LongLat(-3.184319, 55.946233);
+    public static final MapPoint BOUNDS_TOP_RIGHT = new MapPoint(-3.184319, 55.946233);
+    public static final MapPoint APPLETON_TOWER = new MapPoint(-3.186874, 55.944494);
 
     /**
      * Creates a new point on the world from longitude and latitude.
      */
-    public LongLat(double longitude, double latitude){
-        this.longitude = longitude;
-        this.latitude = latitude;
+    public MapPoint(double x, double y){
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -30,10 +36,10 @@ public class LongLat {
      */
     public boolean isConfined(){
         // On the boundary is considered to not be confined.
-        return this.longitude > BOUNDS_BOTTOM_LEFT.longitude
-                && this.longitude < BOUNDS_TOP_RIGHT.longitude
-                && this.latitude > BOUNDS_BOTTOM_LEFT.latitude
-                && this.latitude < BOUNDS_TOP_RIGHT.latitude;
+        return this.x > BOUNDS_BOTTOM_LEFT.x
+                && this.x < BOUNDS_TOP_RIGHT.x
+                && this.y > BOUNDS_BOTTOM_LEFT.y
+                && this.y < BOUNDS_TOP_RIGHT.y;
 
     }
 
@@ -43,10 +49,10 @@ public class LongLat {
      * @param other The point to check distance to.
      * @return Distance to the other point, in longitude/latidude degrees.
      */
-    public double distanceTo(LongLat other){
+    public double distanceTo(MapPoint other){
         // Standard pythagoras formula.
-        double diff_lng = this.longitude - other.longitude;
-        double diff_lat = this.latitude - other.latitude;
+        double diff_lng = this.x - other.x;
+        double diff_lat = this.y - other.y;
         double dist_squared = diff_lng * diff_lng + diff_lat * diff_lat;
         return Math.sqrt(dist_squared);
     }
@@ -55,7 +61,7 @@ public class LongLat {
      * @param other Point to check close to.
      * @return Whether the points are close to each other (i.e. within 0.00015 degrees).
      */
-    public boolean closeTo(LongLat other){
+    public boolean closeTo(MapPoint other){
         return this.distanceTo(other) < 0.00015;
     }
 
@@ -65,11 +71,12 @@ public class LongLat {
      *              0 degrees means east, then going counter clockwise. Can also use -999 to represent hovering - no movement.
      * @return The new position that the drone would be after taking the specified move.
      */
-    public LongLat nextPosition(int angle){
+    public MapPoint nextPosition(int angle){
         // Special 'hover' command.
         if (angle == -999){
-            return new LongLat(this.longitude, this.latitude);
+            return new MapPoint(this.x, this.y);
         }
+        // Angle must be a multiple of 10, and between 0 and 350.
         if (angle % 10 != 0 || angle < 0 || angle >= 360){
             throw new IllegalArgumentException("Invalid angle " + angle);
         }
@@ -80,6 +87,6 @@ public class LongLat {
         double angle_radians = (angle / 180.0) * Math.PI;
         double diff_long = Math.cos(angle_radians) * move_distance;
         double diff_lat = Math.sin(angle_radians) * move_distance;
-        return new LongLat(this.longitude + diff_long, this.latitude + diff_lat);
+        return new MapPoint(this.x + diff_long, this.y + diff_lat);
     }
 }
