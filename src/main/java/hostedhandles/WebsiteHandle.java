@@ -1,5 +1,6 @@
 package hostedhandles;
 
+import com.mapbox.geojson.FeatureCollection;
 import uk.ac.ed.inf.ParsedMenus;
 
 import java.io.IOException;
@@ -32,39 +33,35 @@ public class WebsiteHandle {
         this.port = port;
     }
 
-    /*
-     * Caching is good for the menu because we may need to request a large number of prices if this is used for students to check prices before buying.
-     * Also, this menu may be used by the best drone route algorithm, in which case we definitely don't want to be re-fetching and re-parsing each step.
-     */
-    private ParsedMenus cachedMenus = null;
-
-    private ParsedMenus getParsedMenus(){
-        if (cachedMenus == null){
-            try {
-                // Fetch, then cache for next time.
-                cachedMenus = this.fetchParsedMenus();
-            } catch (IOException | InterruptedException e) {
-                // This is most likely an issue with the website, so not recoverable.
-                throw new RuntimeException(e);
-            }
-        }
-        return cachedMenus;
+    public FeatureCollection fetchNoFlyZones(){
+        String noFlyString = fetchWebsiteFile("buildings/no-fly-zones.geojson");
+        return FeatureCollection.fromJson(noFlyString);
+    }
+    public void fetchWhatThreeWordsBox(String wtwBox){
+        // TODO:
     }
 
     /**
      * Downloads the latest menu from the website.
      */
-    private ParsedMenus fetchParsedMenus() throws IOException, InterruptedException {
+    public ParsedMenus fetchParsedMenus(){
+        return new ParsedMenus(fetchWebsiteFile("menus/menus.json"));
+    }
+    private String fetchWebsiteFile(String filename){
         // Request for fetching menus.json. This defaults to a 'GET' request.
-        HttpRequest request = HttpRequest.newBuilder().uri(this.getWebsiteURI("menus/menus.json")).build();
+        HttpRequest request = HttpRequest.newBuilder().uri(getWebsiteURI(filename)).build();
         // Send the request.
-        HttpResponse<String> response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() != RESPONSE_CODE_OK) {
-            throw new IOException("Bad request. Response status code: " + response.statusCode());
+        HttpResponse<String> response;
+        try {
+            response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            // This is most likely an issue with the website, so not recoverable.
+            throw new RuntimeException(e);
         }
-        String unparsed = response.body();
-        return new ParsedMenus(unparsed);
+        if (response.statusCode() != RESPONSE_CODE_OK) {
+            throw new RuntimeException("Error getting string from website. Response status code: " + response.statusCode());
+        }
+        return response.body();
     }
     private URI getWebsiteURI(String filename){
         return URI.create("http://" + machineName + ":" + port + "/" + filename);
