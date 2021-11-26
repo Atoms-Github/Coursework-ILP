@@ -1,9 +1,8 @@
 package uk.ac.ed.inf;
 
 
-import hostedhandles.DatabaseHandle;
-import hostedhandles.WebsiteHandle;
-import routing.Order;
+import dataDownload.DatabaseHandle;
+import dataDownload.WebsiteHandle;
 
 import java.sql.SQLException;
 
@@ -18,8 +17,9 @@ public class App
         System.out.println("Starting!");
         WebsiteHandle website = new WebsiteHandle("localhost", "9898");
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
-        for (Order order : database.getOrders()){
-            System.out.println(order.deliveryDate + " " + order.deliveryTarget + order.customerID);
-        }
+
+        var e = website.fetchWhatThreeWordsBox("army.monks.grapes");
+
+
     }
 }

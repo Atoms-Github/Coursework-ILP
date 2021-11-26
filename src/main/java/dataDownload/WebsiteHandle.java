@@ -1,7 +1,7 @@
-package hostedhandles;
+package dataDownload;
 
 import com.mapbox.geojson.FeatureCollection;
-import uk.ac.ed.inf.ParsedMenus;
+import routing.NamedMapPoint;
 
 import java.io.IOException;
 import java.net.URI;
@@ -37,8 +37,18 @@ public class WebsiteHandle {
         String noFlyString = fetchWebsiteFile("buildings/no-fly-zones.geojson");
         return FeatureCollection.fromJson(noFlyString);
     }
-    public void fetchWhatThreeWordsBox(String wtwBox){
-        // TODO:
+    public NamedMapPoint fetchWhatThreeWordsBox(String wtwString){
+        String[] split = wtwString.split("\\.");
+        if (split.length != 3){
+            throw new IllegalArgumentException("Invalid what three words address " + wtwString);
+        }
+        String wordsAsFilepath = wtwString.replace('.', '/');
+        String fullFilepath = "words/" + wordsAsFilepath + "/details.json";
+        String json = fetchWebsiteFile(fullFilepath);
+
+        ParsedWTW parsedWTW = ParsedWTW.parseFromString(json);
+
+        return new NamedMapPoint(parsedWTW.coordinates.lng, parsedWTW.coordinates.lat, parsedWTW.words);
     }
 
     /**

@@ -12,6 +12,8 @@ public class MapPoint {
      */
     public double y;
 
+
+
     /**
      * The bottom left corner of the drone's movement bounds (Top of the Meadows).
      */
@@ -29,6 +31,7 @@ public class MapPoint {
         this.x = x;
         this.y = y;
     }
+
 
     /**
      * Checks whether this point is within the drone's movement bounds.

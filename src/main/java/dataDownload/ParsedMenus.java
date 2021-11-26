@@ -1,4 +1,4 @@
-package uk.ac.ed.inf;
+package dataDownload;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
