@@ -21,6 +21,6 @@ public class App
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchParsedMenus());
         DroneRouter router = new DroneRouter(area, menus, processedCafes);
         DroneRouteResults results = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, processedOrders);
-        results.writeToDatabase(); // TODO: Run it twice, once trying to get all orders, and post the best one.
+        results.writeToOutput(); // TODO: Run it twice, once trying to get all orders, and post the best one.
     }
 }

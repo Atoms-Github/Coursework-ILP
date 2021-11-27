@@ -23,6 +23,7 @@ public class DroneRouter {
         CafeTracker tracker = new CafeTracker(menus, cafes, ordersToGo);
 
         DroneRouteResults results = new DroneRouteResults();
+        results.currentLocation = start; // TODO. Shouldn't be req.
         while(true){
             // For each move, we want to calculate which order to take next.
             ProcessedOrder bestOrder = calcBestNextOrder(start, ordersToGo, tracker, results.remainingShortMoves);
@@ -53,7 +54,7 @@ public class DroneRouter {
             }
             routeToCompleteOrder.addRoutedDestination(closestActiveShopRemaining, area);
             double routeLength = routeToCompleteOrder.totalMoveLength();
-            int routePrice = potentialOrder.getTotalPrice(shops.menus);
+            int routePrice = potentialOrder.getTotalPrice();
             double pricePerLength = (double) routePrice / routeLength;
 
             // Now we've calculated price per length, we want to work out if we can make it back to appleton if we do this order.

@@ -44,7 +44,7 @@ public class ProcessedOrder {
 
         return totalRoute;
     }
-    public int getTotalPrice(CafeMenus menus){
+    public int getTotalPrice(){
         int total = 0;
         for (ProcessedOrderItem item : orderItems){
             total += item.price;
