@@ -3,8 +3,11 @@ package uk.ac.ed.inf;
 
 import dataDownload.DatabaseHandle;
 import dataDownload.WebsiteHandle;
+import routing.DroneArea;
+import routing.DroneRouteResults;
 import routing.DroneRouter;
 import dataDownload.DBOrder;
+import routing.ProcessedOrder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,22 +31,18 @@ public class App
 
         // We're going to put a 'landmark' on all 4 corners of a rectangle surrounding the polygon of the no-fly zones. (out a bit, so no intersection).
 
-
-
-
         System.out.println("Starting!");
         WebsiteHandle website = new WebsiteHandle("localhost", "9898");
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
-        var processedOrders = new ArrayList<RoutedOrder>();
+        var processedOrders = new ArrayList<ProcessedOrder>();
         var orders = database.getOrders();
         for (DBOrder order : orders){
-
+            processedOrders.add(order.process());
         }
 
-
-        DroneRouter router = new DroneRouter(website.fetchNoFlyZones());
-        router.calculateDroneMoves(MapPoint.APPLETON_TOWER, processedOrders);
-
+        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchParsedMenus());
+        DroneRouter router = new DroneRouter(area);
+        DroneRouteResults results = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, processedOrders);
 
     }
 }

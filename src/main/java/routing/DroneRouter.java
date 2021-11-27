@@ -46,10 +46,10 @@ public class DroneRouter {
             int routePrice = potentialOrder.getTotalPrice(shops.menus);
             double pricePerLength = (double) routePrice / routeLength;
 
-            // Now we've calculated price per length, we want to work out if we can make it back to appleton if we do this.
+            // Now we've calculated price per length, we want to work out if we can make it back to appleton if we do this order.
             routeToCompleteOrder.addRoutedDestination(MapPoint.APPLETON_TOWER, area);
             int totalShortMovesEstimate = routeToCompleteOrder.totalShortMoveCountEstimate();
-            // Round up. See report where 1.15 comes from.
+            // Round up. See report for unlucky zig zag modifier.
             int totalShortMovesIfUnlucky = (int)((double)totalShortMovesEstimate * DroneUtils.UNLUCKY_ZIG_ZAG_MULTIPLIER) + 1;
 
             // Don't do this order if we're not going to make it back to appleton afterwards.
