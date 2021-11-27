@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * A parsed representation of all the items on the website.
  */
-public class ParsedMenus {
+public class CafeMenus {
     public List<Cafe> cafes;
     public static class Cafe{
         public String name;
@@ -35,7 +35,7 @@ public class ParsedMenus {
      * Parses a menu.
      * @param jsonString The menu, in json representation (starting with a json list []).
      */
-    public ParsedMenus(String jsonString){
+    public CafeMenus(String jsonString){
         Type listType = new TypeToken<ArrayList<Cafe>>() {}.getType();
         this.cafes = new Gson().<ArrayList<Cafe>>fromJson(jsonString, listType);
     }
@@ -46,8 +46,8 @@ public class ParsedMenus {
      * @return The item if found, or null if not.
      */
     public MenuItem getItem(String itemName){
-        for (ParsedMenus.Cafe cafe: cafes){
-            for (ParsedMenus.MenuItem item: cafe.menu){
+        for (CafeMenus.Cafe cafe: cafes){
+            for (CafeMenus.MenuItem item: cafe.menu){
                 if (item.item.equals(itemName)){
                     return item;
                 }

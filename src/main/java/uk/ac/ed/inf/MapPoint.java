@@ -1,6 +1,8 @@
 package uk.ac.ed.inf;
 
 
+import java.util.Objects;
+
 public class MapPoint {
     /**
      * X represents the point's longitude.
@@ -32,6 +34,18 @@ public class MapPoint {
         this.y = y;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MapPoint mapPoint = (MapPoint) o;
+        return Double.compare(mapPoint.x, x) == 0 && Double.compare(mapPoint.y, y) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
 
     /**
      * Checks whether this point is within the drone's movement bounds.

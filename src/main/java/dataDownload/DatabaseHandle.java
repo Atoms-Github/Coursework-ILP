@@ -1,7 +1,5 @@
 package dataDownload;
 
-import routing.Order;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +20,7 @@ public class DatabaseHandle {
         this.port = port;
     }
 
-    public ArrayList<Order> getOrders() throws SQLException {
+    public ArrayList<DBOrder> getOrders() throws SQLException {
         HashMap<String, ArrayList<String>> orderDetails = new HashMap<>();
         ResultSet orderDetailsResults = getConnection().createStatement().executeQuery("SELECT * FROM orderdetails");
         while (orderDetailsResults.next()){
@@ -33,11 +31,11 @@ public class DatabaseHandle {
             orderDetails.get(orderNumber).add(orderDetailsResults.getString("Item"));
         }
 
-        ArrayList<Order> foundOrders = new ArrayList<>();
+        ArrayList<DBOrder> foundOrders = new ArrayList<>();
         ResultSet ordersResultsSet = getConnection().createStatement().executeQuery("SELECT * FROM orders");
         while (ordersResultsSet.next()){
             String orderNumber = ordersResultsSet.getString("OrderNo");
-            Order newOrder = new Order(
+            DBOrder newOrder = new DBOrder(
                     orderNumber,
                     ordersResultsSet.getDate("DeliveryDate"),
                     ordersResultsSet.getString("Customer"),

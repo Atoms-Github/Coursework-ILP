@@ -50,12 +50,8 @@ public class WebsiteHandle {
 
         return new NamedMapPoint(parsedWTW.coordinates.lng, parsedWTW.coordinates.lat, parsedWTW.words);
     }
-
-    /**
-     * Downloads the latest menu from the website.
-     */
-    public ParsedMenus fetchParsedMenus(){
-        return new ParsedMenus(fetchWebsiteFile("menus/menus.json"));
+    public CafeMenus fetchParsedMenus(){
+        return new CafeMenus(fetchWebsiteFile("menus/menus.json"));
     }
     private String fetchWebsiteFile(String filename){
         // Request for fetching menus.json. This defaults to a 'GET' request.
