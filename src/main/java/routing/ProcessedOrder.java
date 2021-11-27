@@ -17,10 +17,11 @@ public class ProcessedOrder {
     }
 
     public ArrayList<MapPoint> getShopLocations(){
-        // TODO: Optimise with saving order's shop.
         ArrayList<MapPoint> locations = new ArrayList<>();
-
-        return null;
+        for (ProcessedOrderItem item : orderItems){
+            locations.add(item.shop.location.point);
+        }
+        return locations;
     }
     public DroneMoveList getDroneMovesForOrder(MapPoint start, DroneArea area){
         var orderShops = getShopLocations();
@@ -40,6 +41,10 @@ public class ProcessedOrder {
         return totalRoute;
     }
     public int getTotalPrice(CafeMenus menus){
-        return 0; // TODO:
+        int total = 0;
+        for (ProcessedOrderItem item : orderItems){
+            total += item.price;
+        }
+        return total;
     }
 }

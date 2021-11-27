@@ -8,6 +8,6 @@ public class DroneUtils {
 
 
     public static MapPoint getClosestPoint(List<MapPoint> points, MapPoint start){
-        return start; // TODO
+        return points.get(0); // TODO.
     }
 }

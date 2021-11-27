@@ -20,8 +20,12 @@ public class CafeTracker {
         for (ProcessedCafe cafe : cafes){
             this.itemsLeftPerCafe.put(cafe, 0);
         }
-        // TODO Populate itemsLeftPerCafe.
-
+        for (ProcessedOrder order : orders){
+            for (ProcessedOrderItem item : order.orderItems){
+                assert this.itemsLeftPerCafe.containsKey(item.shop); // If not, then we've been passed orders which contain a cafe not in the list of cafes.
+                this.itemsLeftPerCafe.put(item.shop, this.itemsLeftPerCafe.get(item.shop) + 1);
+            }
+        }
     }
 
     // Have data about what shops have items left.
