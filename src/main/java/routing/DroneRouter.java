@@ -26,10 +26,10 @@ public class DroneRouter {
         results.currentLocation = start; // TODO. Shouldn't be req.
         while(true){
             // For each move, we want to calculate which order to take next.
-            ProcessedOrder bestOrder = calcBestNextOrder(start, ordersToGo, tracker, results.remainingShortMoves);
+            ProcessedOrder bestOrder = calcBestNextOrder(results.currentLocation, ordersToGo, tracker, results.remainingShortMoves);
             if (bestOrder != null){
                 ordersToGo.remove(bestOrder);
-                DroneMoveList movesForBestOrder = bestOrder.getDroneMovesForOrder(start, area);
+                DroneMoveList movesForBestOrder = bestOrder.getDroneMovesForOrder(results.currentLocation, area);
                 results.addOrder(bestOrder, movesForBestOrder);
             }else{
                 // There is no more good order to do. Just go back to appleton.

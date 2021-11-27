@@ -1,6 +1,6 @@
 package routing;
 
-import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.*;
 import dataDownload.CafeMenus;
 import uk.ac.ed.inf.MapPoint;
 

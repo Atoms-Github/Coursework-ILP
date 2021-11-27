@@ -14,6 +14,9 @@ public class DroneMoveList {
     public DroneMoveList(ArrayList<DroneWaypoint> points) {
         this.points = points;
     }
+    public DroneMoveList() {
+        this.points = new ArrayList<>();
+    }
 
     public void append(DroneMoveList other){
         // If we've got some points, check that our end lines up with other's start.

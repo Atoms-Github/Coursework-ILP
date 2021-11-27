@@ -30,7 +30,7 @@ public class ProcessedOrder {
     public DroneMoveList getDroneMovesForOrder(MapPoint start, DroneArea area){
         ArrayList<MapPoint> orderShops = getShopLocations();
         DroneMoveList totalRoute = new DroneMoveList(new ArrayList<>());
-        totalRoute.points.add(new DroneWaypoint(MapPoint.APPLETON_TOWER, false));
+        totalRoute.points.add(new DroneWaypoint(start, false));
         while (orderShops.size() > 0){
             // TODO: Add hover information.
             MapPoint closestShop = DroneUtils.getClosestPoint(orderShops, start);
@@ -39,7 +39,7 @@ public class ProcessedOrder {
             orderShops.remove(closestShop);
         }
         // Now we need to get from the last shop to the customer.
-        var pathToEnd = area.pathfind(totalRoute.points.get(totalRoute.points.size() - 1).point, deliveryTarget.point);
+        var pathToEnd = area.pathfind(totalRoute.getLastLocation(), deliveryTarget.point);
         totalRoute.append(pathToEnd);
 
         return totalRoute;
