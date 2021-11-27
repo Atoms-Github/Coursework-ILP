@@ -19,13 +19,15 @@ public class DroneRouter {
     }
 
     public DroneRouteResults calculateDroneMoves(MapPoint start, List<ProcessedOrder> ordersList){
-        CafeTracker tracker = new CafeTracker(menus, cafes, ordersList);
+        ArrayList<ProcessedOrder> ordersToGo = new ArrayList<>(ordersList);
+        CafeTracker tracker = new CafeTracker(menus, cafes, ordersToGo);
 
         DroneRouteResults results = new DroneRouteResults();
         while(true){
             // For each move, we want to calculate which order to take next.
-            ProcessedOrder bestOrder = calcBestNextOrder(start, ordersList, tracker, results.remainingShortMoves);
+            ProcessedOrder bestOrder = calcBestNextOrder(start, ordersToGo, tracker, results.remainingShortMoves);
             if (bestOrder != null){
+                ordersToGo.remove(bestOrder);
                 DroneMoveList movesForBestOrder = bestOrder.getDroneMovesForOrder(start, area);
                 results.addOrder(bestOrder, movesForBestOrder);
             }else{
