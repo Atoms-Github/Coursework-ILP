@@ -31,7 +31,6 @@ public class App
 
         // We're going to put a 'landmark' on all 4 corners of a rectangle surrounding the polygon of the no-fly zones. (out a bit, so no intersection).
 
-        System.out.println("Starting!");
         WebsiteHandle website = new WebsiteHandle("localhost", "9898");
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
         var processedOrders = new ArrayList<ProcessedOrder>();
