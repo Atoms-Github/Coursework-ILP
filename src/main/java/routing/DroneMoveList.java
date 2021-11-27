@@ -16,10 +16,14 @@ public class DroneMoveList {
     }
 
     public void append(DroneMoveList other){
-        var firstOtherPoint = other.points.remove(0);
-        if (!firstOtherPoint.equals(points.get(points.size() - 1))){
-            throw new IllegalArgumentException("First must match last!");
+        // If we've got some points, check that our end lines up with other's start.
+        if (points.size() > 0){
+            var firstOtherPoint = other.points.remove(0).point;
+            if (!firstOtherPoint.equals(getLastLocation())){
+                throw new IllegalArgumentException("First must match last! Last: " + getLastLocation() + " first: " + firstOtherPoint);
+            }
         }
+
         // Merge all. (First point of other.points has already been removed).
         points.addAll(other.points);
     }

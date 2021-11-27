@@ -1,30 +1,38 @@
 package routing;
 
+import dataDownload.CafeMenus;
 import uk.ac.ed.inf.DroneUtils;
 import uk.ac.ed.inf.MapPoint;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DroneRouter {
     private final DroneArea area;
+    public final CafeMenus menus;
+    public final ArrayList<ProcessedCafe> cafes; // I know calling this final doesn't make the interior final, but I'll use the idea that it does.
 
-    public DroneRouter(DroneArea area) {
+    public DroneRouter(DroneArea area, CafeMenus menus, ArrayList<ProcessedCafe> cafes) {
         this.area = area;
+        this.menus = menus;
+        this.cafes = cafes;
     }
 
     public DroneRouteResults calculateDroneMoves(MapPoint start, List<ProcessedOrder> ordersList){
+        CafeTracker tracker = new CafeTracker(menus, cafes, ordersList);
+
         DroneRouteResults results = new DroneRouteResults();
         while(true){
             // For each move, we want to calculate which order to take next.
-            ProcessedOrder bestOrder = calcBestNextOrder(start, ordersList, null /*TODO*/, results.remainingShortMoves);
-            DroneMoveList movesForBestOrder = bestOrder.getDroneMovesForOrder(start, area);
-            if (movesForBestOrder != null){
+            ProcessedOrder bestOrder = calcBestNextOrder(start, ordersList, tracker, results.remainingShortMoves);
+            if (bestOrder != null){
+                DroneMoveList movesForBestOrder = bestOrder.getDroneMovesForOrder(start, area);
                 results.addOrder(bestOrder, movesForBestOrder);
-                return results;
             }else{
                 // There is no more good order to do. Just go back to appleton.
                 DroneMoveList routeBackToAppleton = area.pathfind(results.currentLocation, MapPoint.APPLETON_TOWER);
                 results.addMove(routeBackToAppleton);
+                return results;
             }
         }
     }

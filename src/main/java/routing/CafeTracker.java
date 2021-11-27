@@ -44,3 +44,5 @@ public class CafeTracker {
         return closest;
     }
 }
+
+// TODO: Could add garbo @NotNulls everywhere.

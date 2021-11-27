@@ -4,6 +4,8 @@ import dataDownload.CafeMenus;
 import uk.ac.ed.inf.DroneUtils;
 import uk.ac.ed.inf.MapPoint;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ProcessedOrder {
     public final String orderNo;
@@ -17,20 +19,22 @@ public class ProcessedOrder {
     }
 
     public ArrayList<MapPoint> getShopLocations(){
-        ArrayList<MapPoint> locations = new ArrayList<>();
+        HashSet<MapPoint> locationsSet = new HashSet<>();
         for (ProcessedOrderItem item : orderItems){
-            locations.add(item.shop.location.point);
+            locationsSet.add(item.shop.location.point);
         }
+        ArrayList<MapPoint> locations = new ArrayList<>(locationsSet);
+        assert locations.size() >= 1 && locations.size() <= 2;
         return locations;
     }
     public DroneMoveList getDroneMovesForOrder(MapPoint start, DroneArea area){
-        var orderShops = getShopLocations();
-        assert orderShops.size() > 0;
-        var totalRoute = new DroneMoveList(new ArrayList<>());
+        ArrayList<MapPoint> orderShops = getShopLocations();
+        DroneMoveList totalRoute = new DroneMoveList(new ArrayList<>());
+        totalRoute.points.add(new DroneWaypoint(MapPoint.APPLETON_TOWER, false));
         while (orderShops.size() > 0){
             // TODO: Add hover information.
-            var closestShop = DroneUtils.getClosestPoint(orderShops, start);
-            var pathToClosest = area.pathfind(start, closestShop);
+            MapPoint closestShop = DroneUtils.getClosestPoint(orderShops, start);
+            DroneMoveList pathToClosest = area.pathfind(totalRoute.getLastLocation(), closestShop);
             totalRoute.append(pathToClosest);
             orderShops.remove(closestShop);
         }

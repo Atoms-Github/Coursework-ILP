@@ -11,7 +11,8 @@ public class DroneRouteResults {
     }
     public void addOrder(ProcessedOrder order, DroneMoveList moves){
         // TODO: Implement, including decrementing remainingshortmoves.
-        remainingShortMoves -= 30;
+        remainingShortMoves -= 200;
+        System.out.println("Adding an order with " + moves.points.size() + " moves. " + remainingShortMoves + " moves left.");
     }
 
     public void writeToDatabase(){

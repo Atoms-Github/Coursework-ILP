@@ -1,6 +1,5 @@
 package uk.ac.ed.inf;
 
-
 import dataDownload.CafeMenus;
 import dataDownload.DatabaseHandle;
 import dataDownload.WebsiteHandle;
@@ -15,14 +14,12 @@ public class App
         WebsiteHandle website = new WebsiteHandle("localhost", "9898");
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
 
-        CafeMenus menu = website.fetchParsedMenus();
-
-        ArrayList<ProcessedCafe> processedCafes = menu.getProcessedCafes(website);
+        CafeMenus menus = website.fetchParsedMenus();
+        ArrayList<ProcessedCafe> processedCafes = menus.getProcessedCafes(website);
         ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes);
 
-
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchParsedMenus());
-        DroneRouter router = new DroneRouter(area);
+        DroneRouter router = new DroneRouter(area, menus, processedCafes);
         DroneRouteResults results = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, processedOrders);
         results.writeToDatabase(); // TODO: Run it twice, once trying to get all orders, and post the best one.
     }
