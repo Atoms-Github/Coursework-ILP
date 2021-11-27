@@ -8,16 +8,19 @@ import java.util.ArrayList;
 public class ProcessedOrder {
     public final String orderNo;
     public final NamedMapPoint deliveryTarget;
-    public final ArrayList<String> orderItems;
+    public final ArrayList<ProcessedOrderItem> orderItems;
 
-    public ProcessedOrder(String orderNo, NamedMapPoint deliveryTarget, ArrayList<String> orderItems) {
+    public ProcessedOrder(String orderNo, NamedMapPoint deliveryTarget, ArrayList<ProcessedOrderItem> orderItems) {
         this.orderNo = orderNo;
         this.deliveryTarget = deliveryTarget;
         this.orderItems = orderItems;
     }
 
     public ArrayList<MapPoint> getShopLocations(){
-        return null; // TODO. Also must clone.
+        // TODO: Optimise with saving order's shop.
+        ArrayList<MapPoint> locations = new ArrayList<>();
+
+        return null;
     }
     public DroneMoveList getDroneMovesForOrder(MapPoint start, DroneArea area){
         var orderShops = getShopLocations();

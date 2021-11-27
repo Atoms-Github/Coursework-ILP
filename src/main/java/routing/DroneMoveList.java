@@ -33,7 +33,14 @@ public class DroneMoveList {
     }
 
     public double totalMoveLength(){
-        return 0.0; // TODO:
+        if (points.size() == 0){
+            return 0.0;
+        }
+        double totalLength = 0.0;
+        for (int i = 1; i < this.points.size(); i++) {
+            totalLength += points.get(i - 1).point.distanceTo(points.get(i).point);
+        }
+        return totalLength;
     }
     public int totalShortMoveCountEstimate(){
         return (int) (totalMoveLength() / SHORT_MOVE_LENGTH) + 1; // Round up.

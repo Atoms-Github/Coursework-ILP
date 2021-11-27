@@ -29,7 +29,7 @@ public class DroneRouter {
         }
     }
 
-    private ProcessedOrder calcBestNextOrder(MapPoint start, List<ProcessedOrder> ordersList, ShopCollection shops, int maxMoves){
+    private ProcessedOrder calcBestNextOrder(MapPoint start, List<ProcessedOrder> ordersList, CafeTracker shops, int maxMoves){
         // To do this, we'll calculate the price per move of all potential moves,
         // including an extra move back to the nearest shop that still has an order to be completed at.
         double bestPriceToLength = Double.MIN_VALUE;

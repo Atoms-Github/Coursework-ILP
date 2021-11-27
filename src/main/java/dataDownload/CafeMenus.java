@@ -2,6 +2,8 @@ package dataDownload;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import routing.DBCafe;
+import routing.ProcessedCafe;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -11,15 +13,8 @@ import java.util.List;
  * A parsed representation of all the items on the website.
  */
 public class CafeMenus {
-    public List<Cafe> cafes;
-    public static class Cafe{
-        public String name;
-        /**
-         * The WhatThreeWords location of the cafe.
-         */
-        public String location;
-        public List<MenuItem> menu;
-    }
+    public List<DBCafe> cafes;
+
     public static class MenuItem{
         /**
          * The full long item name.
@@ -30,29 +25,21 @@ public class CafeMenus {
          */
         public Integer pence;
     }
-
     /**
      * Parses a menu.
      * @param jsonString The menu, in json representation (starting with a json list []).
      */
     public CafeMenus(String jsonString){
-        Type listType = new TypeToken<ArrayList<Cafe>>() {}.getType();
-        this.cafes = new Gson().<ArrayList<Cafe>>fromJson(jsonString, listType);
+        Type listType = new TypeToken<ArrayList<DBCafe>>() {}.getType();
+        this.cafes = new Gson().<ArrayList<DBCafe>>fromJson(jsonString, listType);
     }
 
-    /**
-     * Finds an item in the menu.
-     * @param itemName The full name of the item requested.
-     * @return The item if found, or null if not.
-     */
-    public MenuItem getItem(String itemName){
-        for (CafeMenus.Cafe cafe: cafes){
-            for (CafeMenus.MenuItem item: cafe.menu){
-                if (item.item.equals(itemName)){
-                    return item;
-                }
-            }
+    // TODO: Tidy?
+    public ArrayList<ProcessedCafe> getProcessedCafes(WebsiteHandle website){
+        ArrayList<ProcessedCafe> processedCafes = new ArrayList<>();
+        for (DBCafe cafe: cafes){
+            processedCafes.add(cafe.process(website));
         }
-        return null;
+        return processedCafes;
     }
 }

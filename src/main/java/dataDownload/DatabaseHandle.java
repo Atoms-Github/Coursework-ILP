@@ -1,8 +1,12 @@
 package dataDownload;
 
+import routing.ProcessedCafe;
+import routing.ProcessedOrder;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class DatabaseHandle {
     private final String machineName;
@@ -18,6 +22,14 @@ public class DatabaseHandle {
     public DatabaseHandle(String machineName, String port) {
         this.machineName = machineName;
         this.port = port;
+    }
+    public ArrayList<ProcessedOrder> getProcessedOrders(WebsiteHandle website, List<ProcessedCafe> cafes) throws SQLException {
+        ArrayList<ProcessedOrder> processedOrders = new ArrayList<>();
+        var orders = getOrders();
+        for (DBOrder order : orders){
+            processedOrders.add(order.process(website, cafes));
+        }
+        return processedOrders;
     }
 
     public ArrayList<DBOrder> getOrders() throws SQLException {

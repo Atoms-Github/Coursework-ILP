@@ -1,14 +1,13 @@
 package dataDownload;
 
 import org.apache.derby.client.am.DateTime;
-import routing.DroneArea;
-import routing.DroneMoveList;
-import routing.ProcessedOrder;
+import routing.*;
 import uk.ac.ed.inf.DroneUtils;
 import uk.ac.ed.inf.MapPoint;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DBOrder {
     public final String orderNo;
@@ -24,10 +23,18 @@ public class DBOrder {
         this.deliveryTarget = deliveryTarget;
         this.orderItems = orderItems;
     }
+    public ProcessedOrder process(WebsiteHandle handle, List<ProcessedCafe> cafes){
+        ArrayList<ProcessedOrderItem> processedOrderItems = new ArrayList<>();
+        for (String orderItemName : orderItems){
+            for (ProcessedCafe cafe : cafes){
+                if (cafe.menu.containsKey(orderItemName)){
+                    processedOrderItems.add(new ProcessedOrderItem(orderItemName, cafe, cafe.menu.get(orderItemName)));
+                    break;
+                }
+            }
+        }
 
-
-    public ProcessedOrder process(){
-        return null; // TODO:
+        return new ProcessedOrder(orderNo, handle.fetchWhatThreeWordsBox(deliveryTarget), processedOrderItems);
     }
 }
 

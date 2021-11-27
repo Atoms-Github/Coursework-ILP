@@ -20,6 +20,9 @@ public class DroneArea {
 
     public DroneMoveList pathfind(MapPoint start, MapPoint end){
         // TODO: Returns whole route, including start and end point.
-        return null;
+        var moveList = new DroneMoveList(new ArrayList<>());
+        moveList.points.add(new DroneWaypoint(start, false));
+        moveList.points.add(new DroneWaypoint(end, false));
+        return moveList;
     }
 }
