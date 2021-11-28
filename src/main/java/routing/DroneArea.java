@@ -4,6 +4,7 @@ import com.mapbox.geojson.*;
 import com.mapbox.geojson.Point;
 import com.mapbox.geojson.Polygon;
 import dataDownload.CafeMenus;
+import uk.ac.ed.inf.DroneUtils;
 import uk.ac.ed.inf.MapPoint;
 
 import java.awt.*;
@@ -16,7 +17,7 @@ public class DroneArea {
     public CafeMenus parsedMenus;
     public ArrayList<MapPoint> waypoints; // TODO: Work out additionalWaypoints using noFlyZones, and load real waypoints. Use FeatureCollection.BoundingBox!
 
-    private static final double clearance = 0.00003;
+    private static final double clearance = DroneUtils.SHORT_MOVE_LENGTH / 4.0;
 
     public DroneArea(FeatureCollection noFlyZones, CafeMenus parsedMenus) {
         this.parsedMenus = parsedMenus;
@@ -87,7 +88,8 @@ public class DroneArea {
 
         Rectangle2D.Double flyLineRect = new Rectangle2D.Double(center.x, center.y, clearance * 2.0, clearance * 2.0);
         AffineTransform at = new AffineTransform();
-        at.rotate(Math.atan2(diff.y, diff.x), center.x, center.y);
+        double radians = Math.atan2(diff.y, diff.x);
+        at.rotate(radians, center.x, center.y);
 
         for (Area a : noFlyZones){
             Shape flyLine = at.createTransformedShape(flyLineRect);
