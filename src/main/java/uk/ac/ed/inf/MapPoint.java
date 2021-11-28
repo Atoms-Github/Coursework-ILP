@@ -75,11 +75,13 @@ public class MapPoint {
      * @return Distance to the other point, in longitude/latidude degrees.
      */
     public double distanceTo(MapPoint other){
+        return Math.sqrt(distanceToSquared(other));
+    }
+    public double distanceToSquared(MapPoint other){
         // Standard pythagoras formula.
         double diff_lng = this.x - other.x;
         double diff_lat = this.y - other.y;
-        double dist_squared = diff_lng * diff_lng + diff_lat * diff_lat;
-        return Math.sqrt(dist_squared);
+        return diff_lng * diff_lng + diff_lat * diff_lat;
     }
 
     /**

@@ -50,8 +50,11 @@ public class DroneArea {
                 }
                 System.out.println("Loaded no-fly zone with " + polygon.coordinates().get(0).size() + " points.");
                 path.closePath();
+                this.waypoints.addAll(DroneUtils.getPathsBoundingBox(path, DroneUtils.SHORT_MOVE_LENGTH)); // TODO: Refine.
+
                 thisNoFlyZone.add(new Area(path));
                 this.noFlyZones.add(thisNoFlyZone);
+
                 // TODO: Add extra waypoints.
             }
         }
@@ -97,7 +100,7 @@ public class DroneArea {
         MapPoint center = new MapPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 
         VisualTests.setupVisualTest();
-        double width = start.distanceTo(end);
+        double width = start.distanceTo(end) + clearance * 2.0;
         Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-width / 2.0, -clearance, width, clearance * 2.0);
         AffineTransform at = new AffineTransform();
         at.translate(center.x, center.y);

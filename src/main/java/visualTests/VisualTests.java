@@ -91,7 +91,7 @@ public class VisualTests {
             Graphics2D g2d = (Graphics2D) g.create();
 
 
-            for (ColouredArea area : visual.shapes){
+            for (ColouredArea area : new ArrayList<>(visual.shapes)){
                 g2d.setColor(Color.BLACK);
                 AffineTransform atMy = new AffineTransform();
                 atMy.translate(getWidth() / 2.0, getHeight() / 2.0);

@@ -19,12 +19,6 @@ public class App
         ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes);
 
 
-        processedOrders.clear();
-        ArrayList<ProcessedOrderItem> testItems = new ArrayList<>();
-        testItems.add(new ProcessedOrderItem("TestItem", processedCafes.get(0), 25));
-        processedOrders.add(new ProcessedOrder("TestOrder", new NamedMapPoint(-3.1907, 55.9437, "TestDest"), testItems));
-
-
 
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());
         DroneRouter router = new DroneRouter(area, menus, processedCafes);
