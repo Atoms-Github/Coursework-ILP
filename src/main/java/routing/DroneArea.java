@@ -78,7 +78,7 @@ public class DroneArea {
     public DroneMoveList pathfind(MapPoint start, MapPoint end){
         return pathfind_recursive(start, end, 0);
     }
-    private boolean canFlyBetween(MapPoint start, MapPoint end){
+    public boolean canFlyBetween(MapPoint start, MapPoint end){
         MapPoint diff = new MapPoint(end.x - start.x, end.y - start.y);
         if (Math.abs(diff.x) < 0.00000015 && Math.abs(diff.y) < 0.00000015){
             return true;
