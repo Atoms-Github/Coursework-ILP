@@ -1,6 +1,7 @@
 package routing;
 
 import com.mapbox.geojson.*;
+import com.mapbox.geojson.Point;
 import com.mapbox.geojson.Polygon;
 import dataDownload.CafeMenus;
 import uk.ac.ed.inf.MapPoint;
@@ -8,6 +9,7 @@ import uk.ac.ed.inf.MapPoint;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DroneArea {
     public ArrayList<Area> noFlyZones;
@@ -28,12 +30,17 @@ public class DroneArea {
         for (Feature feature : noFlyZones.features()){
             if (feature.geometry() instanceof Polygon){
                 Polygon polygon = (Polygon) feature.geometry();
-                Area area = new Area();
-                for (var lineSegment : polygon.coordinates()){
-                    assert lineSegment.size() == 2; // Expect lines to have 2 points on them.
-                    area.add(new Area(new Line2D.Double(lineSegment.get(0).longitude(),lineSegment.get(0).latitude(),lineSegment.get(1).longitude(),lineSegment.get(1).latitude())));
+                Area thisNoFlyZone = new Area();
+                assert polygon.coordinates().size() == 1; // TODO: Maybe put into loop.
+                Path2D path = new Path2D.Double();
+                path.moveTo(polygon.coordinates().get(0).get(0).longitude(), polygon.coordinates().get(0).get(0).latitude());
+                for (Point p : polygon.coordinates().get(0)){
+                    path.lineTo(p.longitude(), p.latitude());
                 }
-                this.noFlyZones.add(area);
+                path.closePath();
+                thisNoFlyZone.add(new Area(path));
+                this.noFlyZones.add(thisNoFlyZone);
+
                 // TODO: Add extra waypoints.
             }
         }
