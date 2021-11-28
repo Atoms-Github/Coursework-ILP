@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class DroneRouteResults {
-    public int remainingShortMoves = 200;
+    public int remainingShortMoves = 1500;
     public MapPoint currentLocation;
     public ArrayList<ProcessedOrder> completedOrders = new ArrayList<>();
     public DroneMoveList currentMoves = new DroneMoveList();
