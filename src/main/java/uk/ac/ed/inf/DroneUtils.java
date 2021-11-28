@@ -10,7 +10,16 @@ public class DroneUtils { // TODO: Tidy. Don't have utils point :).
 
 
     public static MapPoint getClosestPoint(List<MapPoint> points, MapPoint start){
-        return points.get(0); // TODO.
+        MapPoint closest = null;
+        double bestDistance = Double.MAX_VALUE;
+        for (MapPoint point : points){
+            double distance = point.distanceTo(start);
+            if (distance < bestDistance){
+                bestDistance = distance;
+                closest = point;
+            }
+        }
+        return closest;
     }
 
     public static ArrayList<MapPoint> getPathsBoundingBox(Path2D path, double border){

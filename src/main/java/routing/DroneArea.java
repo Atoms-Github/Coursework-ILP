@@ -16,7 +16,7 @@ import java.util.List;
 public class DroneArea {
     public ArrayList<Area> noFlyZones;
     public CafeMenus parsedMenus;
-    public ArrayList<MapPoint> waypoints; // TODO: Work out additionalWaypoints using noFlyZones, and load real waypoints. Use FeatureCollection.BoundingBox!
+    public ArrayList<MapPoint> waypoints;
 
 //    private static final double clearance = 0.00001;
     private static final double clearance = DroneUtils.SHORT_MOVE_LENGTH / 4.0;
@@ -50,12 +50,10 @@ public class DroneArea {
                 }
                 System.out.println("Loaded no-fly zone with " + polygon.coordinates().get(0).size() + " points.");
                 path.closePath();
-                this.waypoints.addAll(DroneUtils.getPathsBoundingBox(path, DroneUtils.SHORT_MOVE_LENGTH)); // TODO: Refine.
+                this.waypoints.addAll(DroneUtils.getPathsBoundingBox(path, DroneUtils.SHORT_MOVE_LENGTH)); // TODO: Refine border size.
 
                 thisNoFlyZone.add(new Area(path));
                 this.noFlyZones.add(thisNoFlyZone);
-
-                // TODO: Add extra waypoints.
             }
         }
     }
@@ -71,7 +69,6 @@ public class DroneArea {
             if (depth < 3) {
                 DroneMoveList shortestGoodMove = null;
                 double shortestDistance = Double.MAX_VALUE;
-                // TODO: Do "FindMin" to find best way around here. Shouldn't be too nasty. Just save them as you gen them, then pick min.
                 for (MapPoint waypoint : waypoints) {
                     if (canFlyBetween(start, waypoint)) {
                         DroneMoveList maybeRoute = pathfind_recursive(waypoint, end, depth + 1);
@@ -95,7 +92,6 @@ public class DroneArea {
             // We've failed.
             return null;
         }
-        // TODO: Returns whole route, including start and end point.
 
     }
     public DroneMoveList pathfind(MapPoint start, MapPoint end){
