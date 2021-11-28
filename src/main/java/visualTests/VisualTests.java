@@ -1,5 +1,12 @@
 package visualTests;
 
+import dataDownload.CafeMenus;
+import dataDownload.DatabaseHandle;
+import dataDownload.WebsiteHandle;
+import routing.DroneArea;
+import routing.ProcessedCafe;
+import routing.ProcessedOrder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +14,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -51,8 +59,8 @@ public class VisualTests {
         });
     }
     private static class ColouredArea{
-        private Shape shape;
-        private Color colour;
+        private final Shape shape;
+        private final Color colour;
 
         public ColouredArea(Shape shape, Color colour) {
             this.shape = shape;
@@ -61,21 +69,10 @@ public class VisualTests {
     }
 
     public class TestPane extends JPanel {
-
-        private Rectangle rect01;
-        private Rectangle rect02;
-
-        private int angle = 0;
-
         public TestPane() {
-
-            rect01 = new Rectangle(0, 0, 100, 100);
-            rect02 = new Rectangle(0, 0, 100, 100);
-//            visual.shapes.add(rect01);
             Timer timer = new Timer(40, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    angle++;
                     repaint();
                 }
             });
@@ -85,7 +82,7 @@ public class VisualTests {
 
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(250, 250);
+            return new Dimension(500, 500);
         }
 
         @Override

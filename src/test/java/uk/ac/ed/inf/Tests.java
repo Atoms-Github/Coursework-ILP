@@ -17,7 +17,10 @@ public class Tests {
     private static final MapPoint BOTTOM_MIDDLE_G_SQUARE = new MapPoint(	-3.1885, 		55.9440);
     private static final MapPoint BOTTOM_LEFT_WAYPOINT = new MapPoint(-3.1916, 		55.9437);
     private static final MapPoint TOP_RIGHT_WAYPOINT = new MapPoint(-3.1862, 	55.9457);
+    private static final MapPoint FAILED_TEST_TOP_LEFT = new MapPoint(-3.1910650730133057, 55.94562530517578);
     private static final MapPoint APPLETON_MAP_POINT = MapPoint.APPLETON_TOWER;
+
+
 
     @Test
     public void testFlyBetween() throws SQLException {
@@ -29,7 +32,7 @@ public class Tests {
         ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes);
 
 
-        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchParsedMenus());
+        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());
 
 
         assertTrue(area.canFlyBetween(APPLETON_MAP_POINT, BOTTOM_MIDDLE_G_SQUARE));
@@ -43,6 +46,13 @@ public class Tests {
         assertTrue(area.canFlyBetween(TOP_RIGHT_WAYPOINT, APPLETON_MAP_POINT));
         assertFalse(area.canFlyBetween(TOP_RIGHT_WAYPOINT, BOTTOM_LEFT_WAYPOINT));
         assertFalse(area.canFlyBetween(TOP_RIGHT_WAYPOINT, BOTTOM_MIDDLE_G_SQUARE));
+
+        assertTrue(area.canFlyBetween(BOTTOM_LEFT_WAYPOINT, TOP_LEFT_CAFE));
+        assertTrue(area.canFlyBetween(BOTTOM_LEFT_WAYPOINT, APPLETON_MAP_POINT));
+        assertFalse(area.canFlyBetween(BOTTOM_LEFT_WAYPOINT, TOP_RIGHT_WAYPOINT));
+        assertTrue(area.canFlyBetween(BOTTOM_LEFT_WAYPOINT, BOTTOM_MIDDLE_G_SQUARE));
+
+
         while(true){
             if (1==2){
                 break;
@@ -59,7 +69,7 @@ public class Tests {
         ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes);
 
 
-        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchParsedMenus());
+        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());
         boolean result = area.canFlyBetween(TOP_RIGHT_WAYPOINT, BOTTOM_MIDDLE_G_SQUARE);
         while(true){
             if (1==2){

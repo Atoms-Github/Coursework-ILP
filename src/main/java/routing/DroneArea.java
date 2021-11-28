@@ -21,13 +21,21 @@ public class DroneArea {
 //    private static final double clearance = 0.00001;
     private static final double clearance = DroneUtils.SHORT_MOVE_LENGTH / 4.0;
 
-    public DroneArea(FeatureCollection noFlyZones, CafeMenus parsedMenus) {
+    public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks, CafeMenus parsedMenus) {
         this.parsedMenus = parsedMenus;
         this.waypoints = new ArrayList<>();
         this.noFlyZones = new ArrayList<>();
 
         this.waypoints.add(new MapPoint(-3.1913, 55.9456));
         this.waypoints.add(new MapPoint(-3.1861, 55.9447));
+
+        assert landmarks.features() != null;
+        for (Feature feature : landmarks.features()){
+            if (feature.geometry() instanceof Point){
+                Point point = (Point) feature.geometry();
+                this.waypoints.add(new MapPoint(point.longitude(), point.latitude()));
+            }
+        }
 
         assert noFlyZones.features() != null;
         for (Feature feature : noFlyZones.features()){
@@ -70,7 +78,7 @@ public class DroneArea {
                 }
             }
             if (depth == 0) {
-                throw new RuntimeException("Can't path!");
+                throw new RuntimeException("Can't path from " + start + " to " + end + "!");
             }
             // We've failed.
             return null;

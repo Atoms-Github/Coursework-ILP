@@ -37,6 +37,10 @@ public class WebsiteHandle {
         String noFlyString = fetchWebsiteFile("buildings/no-fly-zones.geojson");
         return FeatureCollection.fromJson(noFlyString);
     }
+    public FeatureCollection fetchLandmarks(){
+        String noFlyString = fetchWebsiteFile("buildings/landmarks.geojson");
+        return FeatureCollection.fromJson(noFlyString);
+    }
     public NamedMapPoint fetchWhatThreeWordsBox(String wtwString){
         String[] split = wtwString.split("\\.");
         if (split.length != 3){
