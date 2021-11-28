@@ -18,12 +18,15 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class VisualTests {
     private static VisualTests visual;
-    private ArrayList<Shape> shapes = new ArrayList<Shape>();
+    private final ArrayList<ColouredArea> shapes = new ArrayList<ColouredArea>();
     public static void setupVisualTest(){
         visual = new VisualTests();
     }
     public static void drawArea(Area area){
-        visual.shapes.add(area);
+        visual.shapes.add(new ColouredArea(area, Color.BLACK));
+    }
+    public static void drawArea(Area area, Color color){
+        visual.shapes.add(new ColouredArea(area, color));
     }
 
     public VisualTests() {
@@ -44,6 +47,15 @@ public class VisualTests {
                 frame.setVisible(true);
             }
         });
+    }
+    private static class ColouredArea{
+        private Shape shape;
+        private Color colour;
+
+        public ColouredArea(Shape shape, Color colour) {
+            this.shape = shape;
+            this.colour = colour;
+        }
     }
 
     public class TestPane extends JPanel {
@@ -80,17 +92,18 @@ public class VisualTests {
             Graphics2D g2d = (Graphics2D) g.create();
 
 
-            for (Shape shape : visual.shapes){
+            for (ColouredArea area : visual.shapes){
                 g2d.setColor(Color.BLACK);
                 AffineTransform atMy = new AffineTransform();
-                atMy.translate(3.1882,-55.9447);
-                double scale = 2.0;
+                atMy.translate(getWidth() / 2.0, getHeight() / 2.0);
+                double scale = 100000.0;
                 atMy.scale(scale, scale);
 
-                atMy.translate(100.0,100.0);
+                atMy.translate(3.1882,-55.9447);
 //                atMy.translate(getWidth() / 2.0,getHeight() / 2.0);
                 Path2D.Double pathMy2d = new Path2D.Double();
-                pathMy2d.append(shape.getPathIterator(atMy), true);
+                pathMy2d.append(area.shape.getPathIterator(atMy), true);
+                g2d.setColor(area.colour);
                 g2d.fill(pathMy2d);
             }
 

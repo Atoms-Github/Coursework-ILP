@@ -18,8 +18,8 @@ public class DroneArea {
     public CafeMenus parsedMenus;
     public ArrayList<MapPoint> waypoints; // TODO: Work out additionalWaypoints using noFlyZones, and load real waypoints. Use FeatureCollection.BoundingBox!
 
-    private static final double clearance = 4.0;
-//    private static final double clearance = DroneUtils.SHORT_MOVE_LENGTH / 4.0;
+//    private static final double clearance = 0.00001;
+    private static final double clearance = DroneUtils.SHORT_MOVE_LENGTH / 4.0;
 
     public DroneArea(FeatureCollection noFlyZones, CafeMenus parsedMenus) {
         this.parsedMenus = parsedMenus;
@@ -89,17 +89,17 @@ public class DroneArea {
         MapPoint center = new MapPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 
         VisualTests.setupVisualTest();
-        Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-clearance, -clearance, clearance * 4.0, clearance * 2.0);
+        Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-clearance, -clearance, start.distanceTo(end), clearance * 2.0);
         VisualTests.drawArea(new Area(flyLineRect));
         AffineTransform at = new AffineTransform();
-        at.rotate(Math.atan2(diff.y, diff.x), center.x, center.y);
         at.translate(center.x, center.y);
+        at.rotate(Math.atan2(diff.y, diff.x));
 
 //        VisualTests.drawArea(new Area(new Rectangle2D.Double(0.0,0.0,200.0,200.0)));
         for (Area a : noFlyZones){
             Shape flyLine = at.createTransformedShape(flyLineRect);
             Area flyLineArea = new Area(flyLine);
-            VisualTests.drawArea((Area) flyLineArea.clone());
+            VisualTests.drawArea((Area) flyLineArea.clone(), Color.BLUE);
             flyLineArea.intersect(a);
             boolean intersects = !flyLineArea.isEmpty();
             if (intersects){
