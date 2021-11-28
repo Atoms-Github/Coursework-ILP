@@ -69,15 +69,24 @@ public class DroneArea {
         }else{ // Can't go straight. Need to use waypoints.
             // If we're not at max depth, try to go deeper.
             if (depth < 3) {
+                DroneMoveList shortestGoodMove = null;
+                double shortestDistance = Double.MAX_VALUE;
                 // TODO: Do "FindMin" to find best way around here. Shouldn't be too nasty. Just save them as you gen them, then pick min.
                 for (MapPoint waypoint : waypoints) {
                     if (canFlyBetween(start, waypoint)) {
                         DroneMoveList maybeRoute = pathfind_recursive(waypoint, end, depth + 1);
                         if (maybeRoute != null) {
                             maybeRoute.points.add(0, new DroneWaypoint(start, false));
-                            return maybeRoute;
+                            double myDistance = maybeRoute.totalMoveLength();
+                            if (myDistance < shortestDistance){
+                                shortestDistance = myDistance;
+                                shortestGoodMove = maybeRoute;
+                            }
                         }
                     }
+                }
+                if(shortestGoodMove != null){
+                    return shortestGoodMove;
                 }
             }
             if (depth == 0) {
