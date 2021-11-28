@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -83,11 +84,17 @@ public class VisualTests {
                 g2d.setColor(Color.PINK);
                 g2d.draw(shape);
                 g2d.setColor(Color.BLACK);
+
                 AffineTransform atMy = new AffineTransform();
-                atMy.scale(100000.0,100000.0);
-                GeneralPath pathMy = new GeneralPath();
-                pathMy.append(shape.getPathIterator(atMy), true);
-                g2d.fill(pathMy);
+                atMy.translate(3.1882,-55.9447);
+                double scale = 2.0;
+                atMy.scale(scale, scale);
+
+                atMy.translate(100.0,100.0);
+//                atMy.translate(getWidth() / 2.0,getHeight() / 2.0);
+                Path2D.Double pathMy2d = new Path2D.Double();
+                pathMy2d.append(shape.getPathIterator(atMy), true);
+                g2d.fill(pathMy2d);
             }
 
             g2d.dispose();
