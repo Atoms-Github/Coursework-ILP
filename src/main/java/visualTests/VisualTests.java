@@ -1,19 +1,14 @@
-package uk.ac.ed.inf;
+package visualTests;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -61,7 +56,7 @@ public class VisualTests {
 
             rect01 = new Rectangle(0, 0, 100, 100);
             rect02 = new Rectangle(0, 0, 100, 100);
-
+//            visual.shapes.add(rect01);
             Timer timer = new Timer(40, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -83,46 +78,16 @@ public class VisualTests {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g.create();
 
-            int width = getWidth();
-            int height = getHeight();
-
-            AffineTransform at = new AffineTransform();
-
-            int center = width / 2;
-
-            int x = center + (center - rect01.width) / 2;
-            int y = (height - rect01.height) / 2;
-            at.translate(x, y);
-            at.rotate(Math.toRadians(angle), rect01.width / 2, rect01.height / 2);
-            GeneralPath path1 = new GeneralPath();
-            path1.append(rect01.getPathIterator(at), true);
-            g2d.fill(path1);
-
-            g2d.setColor(Color.BLUE);
-            g2d.draw(path1.getBounds());
-
-            at = new AffineTransform();
-            x = (center - rect02.width) / 2;
-            y = (height - rect02.height) / 2;
-            at.translate(x, y);
-            at.rotate(Math.toRadians(-angle), rect02.width / 2, rect02.height / 2);
-            GeneralPath path2 = new GeneralPath();
-            path2.append(rect01.getPathIterator(at), true);
-            g2d.fill(path2);
-
-            g2d.setColor(Color.BLUE);
-            g2d.draw(path2.getBounds());
-
-            Area a1 = new Area(path1);
-            Area a2 = new Area(path2);
-            a2.intersect(a1);
-            if (!a2.isEmpty()) {
-                g2d.setColor(Color.RED);
-                g2d.fill(a2);
-            }
 
             for (Shape shape : visual.shapes){
+                g2d.setColor(Color.PINK);
                 g2d.draw(shape);
+                g2d.setColor(Color.BLACK);
+                AffineTransform atMy = new AffineTransform();
+                atMy.scale(100000.0,100000.0);
+                GeneralPath pathMy = new GeneralPath();
+                pathMy.append(shape.getPathIterator(atMy), true);
+                g2d.fill(pathMy);
             }
 
             g2d.dispose();
@@ -131,3 +96,11 @@ public class VisualTests {
     }
 
 }
+
+
+
+
+//            AffineTransform at = new AffineTransform();
+//            GeneralPath path1 = new GeneralPath();
+//            path1.append(rect01.getPathIterator(at), true);
+//            g2d.fill(path1);

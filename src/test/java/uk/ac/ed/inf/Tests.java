@@ -55,7 +55,12 @@ public class Tests {
 
 
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchParsedMenus());
-
-        assertFalse(area.canFlyBetween(TOP_RIGHT_WAYPOINT, BOTTOM_MIDDLE_G_SQUARE));
+        boolean result = area.canFlyBetween(TOP_RIGHT_WAYPOINT, BOTTOM_MIDDLE_G_SQUARE);
+        while(true){
+            if (1==2){
+                break;
+            }
+        }
+        assertFalse(result);
     }
 }

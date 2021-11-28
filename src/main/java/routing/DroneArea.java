@@ -6,6 +6,7 @@ import com.mapbox.geojson.Polygon;
 import dataDownload.CafeMenus;
 import uk.ac.ed.inf.DroneUtils;
 import uk.ac.ed.inf.MapPoint;
+import visualTests.VisualTests;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -91,15 +92,19 @@ public class DroneArea {
         double radians = Math.atan2(diff.y, diff.x);
         at.rotate(radians, center.x, center.y);
 
+        VisualTests.setupVisualTest();
         for (Area a : noFlyZones){
             Shape flyLine = at.createTransformedShape(flyLineRect);
             Area flyLineArea = new Area(flyLine);
+            VisualTests.drawArea(flyLineArea);
             flyLineArea.intersect(a);
             boolean intersects = !flyLineArea.isEmpty();
             if (intersects){
                 return false;
             }
+            VisualTests.drawArea(a);
         }
+        VisualTests.drawArea(new Area(new Rectangle2D.Double(100.0,100.0,200.0,200.0)));
         return true;
     }
 //    private double distanceBetweenLines(MapPoint start1, MapPoint end1, MapPoint start2, MapPoint end2){
