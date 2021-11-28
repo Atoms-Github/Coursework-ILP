@@ -18,9 +18,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class VisualTests {
     private static VisualTests visual;
-    private final ArrayList<ColouredArea> shapes = new ArrayList<ColouredArea>();
+    private final ArrayList<ColouredArea> shapes = new ArrayList<>();
     public static void setupVisualTest(){
-        visual = new VisualTests();
+        if (visual == null){
+            visual = new VisualTests();
+        }
     }
     public static void drawArea(Area area){
         visual.shapes.add(new ColouredArea(area, Color.BLACK));
@@ -97,7 +99,7 @@ public class VisualTests {
                 AffineTransform atMy = new AffineTransform();
                 atMy.translate(getWidth() / 2.0, getHeight() / 2.0);
                 double scale = 100000.0;
-                atMy.scale(scale, scale);
+                atMy.scale(scale, -scale);
 
                 atMy.translate(3.1882,-55.9447);
 //                atMy.translate(getWidth() / 2.0,getHeight() / 2.0);

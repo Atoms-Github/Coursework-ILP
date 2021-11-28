@@ -31,7 +31,6 @@ public class Tests {
 
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchParsedMenus());
 
-        assertFalse(area.canFlyBetween(TOP_RIGHT_WAYPOINT, BOTTOM_MIDDLE_G_SQUARE));
 
         assertTrue(area.canFlyBetween(APPLETON_MAP_POINT, BOTTOM_MIDDLE_G_SQUARE));
         assertFalse(area.canFlyBetween(APPLETON_MAP_POINT, TOP_LEFT_CAFE));
@@ -43,6 +42,12 @@ public class Tests {
         assertTrue(area.canFlyBetween(TOP_RIGHT_WAYPOINT, TOP_LEFT_CAFE));
         assertTrue(area.canFlyBetween(TOP_RIGHT_WAYPOINT, APPLETON_MAP_POINT));
         assertFalse(area.canFlyBetween(TOP_RIGHT_WAYPOINT, BOTTOM_LEFT_WAYPOINT));
+        assertFalse(area.canFlyBetween(TOP_RIGHT_WAYPOINT, BOTTOM_MIDDLE_G_SQUARE));
+        while(true){
+            if (1==2){
+                break;
+            }
+        }
     }
     @Test
     public void testFlyBetweenVisual() throws SQLException {
