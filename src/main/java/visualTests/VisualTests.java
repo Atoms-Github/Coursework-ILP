@@ -81,10 +81,7 @@ public class VisualTests {
 
 
             for (Shape shape : visual.shapes){
-                g2d.setColor(Color.PINK);
-                g2d.draw(shape);
                 g2d.setColor(Color.BLACK);
-
                 AffineTransform atMy = new AffineTransform();
                 atMy.translate(3.1882,-55.9447);
                 double scale = 2.0;

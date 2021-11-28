@@ -89,15 +89,14 @@ public class DroneArea {
         MapPoint center = new MapPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 
         VisualTests.setupVisualTest();
-        Rectangle2D.Double flyLineRect = new Rectangle2D.Double(center.x, center.y, clearance * 2.0, clearance * 2.0);
+        Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-clearance, -clearance, clearance * 4.0, clearance * 2.0);
         VisualTests.drawArea(new Area(flyLineRect));
         AffineTransform at = new AffineTransform();
-        double radians = Math.atan2(diff.y, diff.x);
-        at.rotate(radians, center.x, center.y);
+        at.rotate(Math.atan2(diff.y, diff.x), center.x, center.y);
+        at.translate(center.x, center.y);
 
 //        VisualTests.drawArea(new Area(new Rectangle2D.Double(0.0,0.0,200.0,200.0)));
         for (Area a : noFlyZones){
-            VisualTests.drawArea(a);
             Shape flyLine = at.createTransformedShape(flyLineRect);
             Area flyLineArea = new Area(flyLine);
             VisualTests.drawArea((Area) flyLineArea.clone());
@@ -106,6 +105,7 @@ public class DroneArea {
             if (intersects){
                 return false;
             }
+            VisualTests.drawArea(a);
         }
         return true;
     }
