@@ -26,7 +26,7 @@ public class DroneRouteResults {
         // TODO: Implement, including decrementing remainingshortmoves.
         remainingShortMoves -= newMoves.totalShortMoveCountEstimate();
 
-        System.out.println("Adding an order worth " + order.getTotalPrice() + " with " + newMoves.points.size()
+        System.out.println("Adding an order " + order.orderNo + " worth " + order.getTotalPrice() + " with " + newMoves.points.size()
                 + " moves. " + remainingShortMoves + " moves left.");
         completedOrders.add(order);
         currentMoves.append(newMoves);
