@@ -1,5 +1,6 @@
 package routing;
 
+import uk.ac.ed.inf.DroneUtils;
 import uk.ac.ed.inf.MapPoint;
 
 import java.util.ArrayList;
@@ -54,8 +55,34 @@ public class DroneMoveList {
     }
 
 
-    public ArrayList<DroneAction> genDroneActions(){
-        // TODO.
-        return null;
+    public ArrayList<DroneAction> genDroneActions(MapPoint exactStartLocation){
+        MapPoint exactCurrentLocation = exactStartLocation;
+        ArrayList<DroneAction> actions = new ArrayList<>();
+        for (int firstIndex = 0; firstIndex < points.size() - 1; firstIndex++) {
+            DroneWaypoint fromPoint = points.get(firstIndex);
+            DroneWaypoint toPoint = points.get(firstIndex + 1);
+            while (!exactCurrentLocation.closeTo(toPoint.point)){
+                double angleExact = exactCurrentLocation.angleTo(toPoint.point); // TODO: Need to add/subtract 90 probs.
+                double angleRounded = DroneUtils.round(angleExact, 10); // Round to nearest 10.
+                int droneAngle = (int) angleRounded;
+                
+
+            }
+        }
+
+        return actions;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

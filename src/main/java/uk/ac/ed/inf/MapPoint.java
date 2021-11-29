@@ -89,7 +89,17 @@ public class MapPoint {
      * @return Whether the points are close to each other (i.e. within 0.00015 degrees).
      */
     public boolean closeTo(MapPoint other){
-        return this.distanceTo(other) < 0.00015;
+        return this.distanceTo(other) < DroneUtils.TOLERANCE;
+    }
+    public double angleTo(MapPoint other){
+        double diffY = other.y - y;
+        double diffX = other.x - x;
+        double angleRadians = Math.atan2(diffY, diffX);
+        double angleDegrees = angleRadians / (Math.PI * 2) * 180;
+        if (angleDegrees < 0.0){
+            angleDegrees += 360.0;
+        }
+        return angleDegrees;
     }
 
     /**

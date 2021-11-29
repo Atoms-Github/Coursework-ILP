@@ -18,7 +18,7 @@ public class DroneArea {
     public ArrayList<MapPoint> waypoints;
 
 //    private static final double clearance = 0.00001;
-    private static final double CLEARANCE = DroneUtils.SHORT_MOVE_LENGTH / 4.0; // TODO: This needs to be less than 1 move. This is so doesn't miss on desti.
+    private static final double CLEARANCE = DroneUtils.SHORT_MOVE_LENGTH; // This can't be anything smaller, as then we may be misaligned for next move.
 
 
     public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks, CafeMenus parsedMenus) {
@@ -107,6 +107,8 @@ public class DroneArea {
         AffineTransform at = new AffineTransform();
         at.translate(center.x, center.y);
         at.rotate(Math.atan2(diff.y, diff.x));
+
+        // TODO: Use angle to.
 
         Rectangle2D.Double startRect = new Rectangle2D.Double(start.x, start.y,  DroneUtils.SHORT_MOVE_LENGTH, DroneUtils.SHORT_MOVE_LENGTH);
         Rectangle2D.Double endRect = new Rectangle2D.Double(end.x, end.y,  DroneUtils.SHORT_MOVE_LENGTH, DroneUtils.SHORT_MOVE_LENGTH);
