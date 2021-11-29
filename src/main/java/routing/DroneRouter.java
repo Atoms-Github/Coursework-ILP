@@ -34,7 +34,7 @@ public class DroneRouter {
             }else{
                 // There is no more good order to do. Just go back to appleton.
                 DroneMoveList routeBackToAppleton = area.pathfind(results.currentLocation, MapPoint.APPLETON_TOWER);
-                results.addMove(routeBackToAppleton);
+                results.addMove(null, routeBackToAppleton); // TODO: Refact.
                 return results;
             }
         }

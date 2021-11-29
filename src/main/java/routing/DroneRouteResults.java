@@ -13,8 +13,9 @@ public class DroneRouteResults {
     ArrayList<DroneAction> droneActions = new ArrayList<>();
 
 
-    public void addMove(DroneMoveList moves){
-        ArrayList<DroneAction> actions = moves.genDroneActions(exactCurrentLocation); // TODO: Need to increase accuracy everywhere. Need to know exact start location. // Nice. I've got 'currentLocation' :).
+    public void addMove(ProcessedOrder order, DroneMoveList moves){
+        // TODO: Check that return to shop isn't in this list with this order.
+        ArrayList<DroneAction> actions = moves.genDroneActions(order, exactCurrentLocation); // TODO: Need to increase accuracy everywhere. Need to know exact start location. // Nice. I've got 'currentLocation' :).
         int movesUsed = actions.size();
         remainingShortMoves -= movesUsed;
 
@@ -24,7 +25,7 @@ public class DroneRouteResults {
     public void addOrder(ProcessedOrder order, DroneMoveList moves){
         System.out.println("Routing order " + order.orderNo + " worth " + order.getTotalPrice());
         completedOrders.add(order);
-        addMove(moves);
+        addMove(order, moves);
     }
 
     public void writeToOutput(String filename, DatabaseHandle database){

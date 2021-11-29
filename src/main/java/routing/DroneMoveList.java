@@ -55,21 +55,22 @@ public class DroneMoveList {
     }
 
 
-    public ArrayList<DroneAction> genDroneActions(MapPoint exactStartLocation){
+    public ArrayList<DroneAction> genDroneActions(ProcessedOrder currentOrder, MapPoint exactStartLocation){
         MapPoint exactCurrentLocation = exactStartLocation;
         ArrayList<DroneAction> actions = new ArrayList<>();
         for (int firstIndex = 0; firstIndex < points.size() - 1; firstIndex++) {
             DroneWaypoint fromPoint = points.get(firstIndex);
+            // TODO: Hover command.
             DroneWaypoint toPoint = points.get(firstIndex + 1);
             while (!exactCurrentLocation.closeTo(toPoint.point)){
                 double angleExact = exactCurrentLocation.angleTo(toPoint.point); // TODO: Need to add/subtract 90 probs.
                 double angleRounded = DroneUtils.round(angleExact, 10); // Round to nearest 10.
                 int droneAngle = (int) angleRounded;
-                
-
+                MapPoint nextPoint = exactCurrentLocation.nextPosition(droneAngle);
+                actions.add(DroneAction.moveActionOrder(currentOrder, droneAngle, exactCurrentLocation, nextPoint));
+                exactCurrentLocation = nextPoint;
             }
         }
-
         return actions;
     }
 }
