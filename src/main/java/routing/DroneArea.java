@@ -11,7 +11,6 @@ import visualTests.VisualTests;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DroneArea {
     public ArrayList<Area> noFlyZones;
@@ -19,15 +18,13 @@ public class DroneArea {
     public ArrayList<MapPoint> waypoints;
 
 //    private static final double clearance = 0.00001;
-    private static final double clearance = DroneUtils.SHORT_MOVE_LENGTH / 4.0;
+    private static final double CLEARANCE = DroneUtils.SHORT_MOVE_LENGTH / 4.0; // TODO: This needs to be less than 1 move. This is so doesn't miss on desti.
+
 
     public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks, CafeMenus parsedMenus) {
         this.parsedMenus = parsedMenus;
         this.waypoints = new ArrayList<>();
         this.noFlyZones = new ArrayList<>();
-
-        this.waypoints.add(new MapPoint(-3.1913, 55.9456));
-        this.waypoints.add(new MapPoint(-3.1861, 55.9447));
 
         assert landmarks.features() != null;
         for (Feature feature : landmarks.features()){
@@ -50,7 +47,7 @@ public class DroneArea {
                 }
                 System.out.println("Loaded no-fly zone with " + polygon.coordinates().get(0).size() + " points.");
                 path.closePath();
-                this.waypoints.addAll(DroneUtils.getPathsBoundingBox(path, DroneUtils.SHORT_MOVE_LENGTH)); // TODO: Refine border size.
+                waypoints.addAll(DroneUtils.getPathsBoundingBox(path, DroneUtils.SHORT_MOVE_LENGTH)); // TODO: Refine border size.
 
                 thisNoFlyZone.add(new Area(path));
                 this.noFlyZones.add(thisNoFlyZone);
@@ -104,9 +101,9 @@ public class DroneArea {
         }
         MapPoint center = new MapPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 
-        VisualTests.setupVisualTest();
-        double width = start.distanceTo(end) + clearance * 2.0;
-        Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-width / 2.0, -clearance, width, clearance * 2.0);
+//        VisualTests.setupVisualTest();
+        double width = start.distanceTo(end) + CLEARANCE * 2.0;
+        Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-width / 2.0, -CLEARANCE, width, CLEARANCE * 2.0);
         AffineTransform at = new AffineTransform();
         at.translate(center.x, center.y);
         at.rotate(Math.atan2(diff.y, diff.x));

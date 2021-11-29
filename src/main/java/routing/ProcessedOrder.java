@@ -45,7 +45,7 @@ public class ProcessedOrder {
         return totalRoute;
     }
     public int getTotalPrice(){
-        int total = 0;
+        int total = 50; // 50p delivery charge.
         for (ProcessedOrderItem item : orderItems){
             total += item.price;
         }

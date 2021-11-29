@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class App
 {
     public static void main( String[] args ) throws SQLException {
+        long milis = System.currentTimeMillis();
         WebsiteHandle website = new WebsiteHandle("localhost", "9898");
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
 
@@ -23,6 +24,8 @@ public class App
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());
         DroneRouter router = new DroneRouter(area, menus, processedCafes);
         DroneRouteResults results = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, processedOrders);
-        results.writeToOutput("drone-27-12-2023.geojson"); // TODO: Run it twice, once trying to get all orders, and post the best one. (Maybe?).
+        results.writeToOutput("drone-27-12-2023.geojson", database); // TODO: Run it twice, once trying to get all orders, and post the best one. (Maybe?).
+
+        System.out.println("Completed in " + (System.currentTimeMillis() - milis) + "ms.");
     }
 }

@@ -49,7 +49,13 @@ public class DroneMoveList {
         }
         return totalLength;
     }
-    public int totalShortMoveCountEstimate(){
-        return (int) (totalMoveLength() / SHORT_MOVE_LENGTH) + 1; // Round up.
+    public int shortMoveSafeEstimate(){
+        return (int) (totalMoveLength() / SHORT_MOVE_LENGTH) + 1 /* Round up */ + points.size() /* Assuming max 1 hover per waypoint */;
+    }
+
+
+    public ArrayList<DroneAction> genDroneActions(){
+        // TODO.
+        return null;
     }
 }

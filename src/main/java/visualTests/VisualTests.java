@@ -33,10 +33,14 @@ public class VisualTests {
         }
     }
     public static void drawArea(Area area){
-        visual.shapes.add(new ColouredArea(area, Color.BLACK));
+        if (visual != null){
+            visual.shapes.add(new ColouredArea(area, Color.BLACK));
+        }
     }
     public static void drawArea(Area area, Color color){
-        visual.shapes.add(new ColouredArea(area, color));
+        if (visual != null){
+            visual.shapes.add(new ColouredArea(area, color));
+        }
     }
 
     public VisualTests() {
