@@ -2,7 +2,9 @@ package routing;
 
 import uk.ac.ed.inf.DroneUtils;
 import uk.ac.ed.inf.MapPoint;
+import visualTests.VisualTests;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static uk.ac.ed.inf.DroneUtils.SHORT_MOVE_LENGTH;
@@ -67,12 +69,25 @@ public class DroneMoveList {
         for (int firstIndex = 0; firstIndex < points.size() - 1; firstIndex++) {
             DroneWaypoint fromPoint = points.get(firstIndex);
             DroneWaypoint toPoint = points.get(firstIndex + 1);
+            int iterations = 0;
             while (!exactCurrentLocation.closeTo(toPoint.point)){
                 double angleExact = exactCurrentLocation.angleTo(toPoint.point); // TODO: Need to add/subtract 90 probs.
                 double angleRounded = DroneUtils.round(angleExact, 10); // Round to nearest 10.
                 int droneAngle = (int) angleRounded;
-                MapPoint nextPoint = exactCurrentLocation.nextPosition(droneAngle);
+                MapPoint nextPoint = exactCurrentLocation.nextPosition(droneAngle, SHORT_MOVE_LENGTH);
                 actions.add(DroneAction.moveActionOrder(currentOrder, droneAngle, exactCurrentLocation, nextPoint));
+                iterations ++;
+                if (iterations > 10000){
+                    int e = 2;
+                    VisualTests.setupVisualTest();
+                    VisualTests.drawPoint(exactCurrentLocation, Color.GREEN); // Green ontop of pink.
+                    VisualTests.drawPoint(toPoint.point, Color.RED);
+                    VisualTests.drawPoint(nextPoint, Color.PINK);
+                    while(true){
+
+                    }
+//                    throw new RuntimeException("Can't find small route."); // TODO.
+                }
                 exactCurrentLocation = nextPoint;
             }
             if (toPoint.mustHover){

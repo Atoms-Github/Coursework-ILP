@@ -6,14 +6,12 @@ import dataDownload.WebsiteHandle;
 import routing.DroneArea;
 import routing.ProcessedCafe;
 import routing.ProcessedOrder;
+import uk.ac.ed.inf.MapPoint;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Path2D;
+import java.awt.geom.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -33,9 +31,11 @@ public class VisualTests {
         }
     }
     public static void drawArea(Area area){
-        if (visual != null){
-            visual.shapes.add(new ColouredArea(area, Color.BLACK));
-        }
+        drawArea(area, Color.BLACK);
+    }
+    public static void drawPoint(MapPoint point, Color color){
+        double width = 0.00011;
+        drawArea(new Area(new Rectangle2D.Double(point.x - width / 2, point.y - width / 2, width, width)), color);
     }
     public static void drawArea(Area area, Color color){
         if (visual != null){

@@ -98,7 +98,7 @@ public class MapPoint {
         double diffY = other.y - y;
         double diffX = other.x - x;
         double angleRadians = Math.atan2(diffY, diffX);
-        double angleDegrees = angleRadians / (Math.PI * 2) * 180;
+        double angleDegrees = angleRadians / Math.PI * 180;
         if (angleDegrees < 0.0){
             angleDegrees += 360.0;
         }
@@ -111,16 +111,12 @@ public class MapPoint {
      *              0 degrees means east, then going counter clockwise. Can also use -999 to represent hovering - no movement.
      * @return The new position that the drone would be after taking the specified move.
      */
-    public MapPoint nextPosition(int angle){
+    public MapPoint nextPosition(int angle, double move_distance){ // TODO: Remove param.
         // Special 'hover' command.
         if (angle == -999){
             return new MapPoint(this.x, this.y);
         }
-        // Angle must be a multiple of 10, and between 0 and 350.
-        if (angle % 10 != 0 || angle < 0 || angle >= 360){
-            throw new IllegalArgumentException("Invalid angle " + angle);
-        }
-        double move_distance = 0.00015;
+
         // We need to go 1 move in the 'angle' direction.
         // 0 degrees means east, 90 means north. This means we start right, and go counterclockwise.
         // This is a little counterintuitive, but works if we use cos for x (long) and sin for y (lat).

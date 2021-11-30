@@ -22,8 +22,7 @@ public class DroneRouter {
         ArrayList<ProcessedOrder> ordersToGo = new ArrayList<>(ordersList);
         CafeTracker tracker = new CafeTracker(menus, cafes, ordersToGo);
 
-        DroneRouteResults results = new DroneRouteResults();
-        results.currentLocation = start; // TODO. Shouldn't be req.
+        DroneRouteResults results = new DroneRouteResults(1500, start);
         while(true){
             // For each move, we want to calculate which order to take next.
             ProcessedOrder bestOrder = calcBestNextOrder(results.currentLocation, ordersToGo, tracker, results.remainingShortMoves);

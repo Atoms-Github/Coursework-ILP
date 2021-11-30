@@ -60,6 +60,18 @@ public class Tests {
         }
     }
     @Test
+    public void testAngles(){
+        for (int angle = 0; angle <= 360; angle+= 45.0) {
+            MapPoint start = new MapPoint(0.0,0.0);
+            MapPoint afterMove = start.nextPosition(angle, 1.0);
+            double angleTo = start.angleTo(afterMove);
+            double diff = Math.abs(angleTo - angle);
+
+            assertTrue("Innacurate at " + angle + " : " + angleTo + " : " + afterMove, diff < 0.01);
+
+        }
+    }
+    @Test
     public void testFlyBetweenVisual() throws SQLException {
         WebsiteHandle website = new WebsiteHandle("localhost", "9898");
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
