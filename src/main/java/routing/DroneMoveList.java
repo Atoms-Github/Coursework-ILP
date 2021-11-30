@@ -59,7 +59,10 @@ public class DroneMoveList {
         return totalLength;
     }
     public int shortMoveSafeEstimate(){
-        return (int) (totalMoveLength() / SHORT_MOVE_LENGTH) + 1 /* Round up */ + points.size() /* Assuming max 1 hover per waypoint */;
+        // Round up. See report for unlucky zig zag modifier.
+        return (int) (totalMoveLength() * DroneUtils.UNLUCKY_ZIG_ZAG_MULTIPLIER / SHORT_MOVE_LENGTH) + 1 /* Round up */
+                + points.size() /* Assuming max 1 hover per waypoint */
+                + points.size() /* Assuming 1 excess move wasted to get in closer to point */;
     }
 
 

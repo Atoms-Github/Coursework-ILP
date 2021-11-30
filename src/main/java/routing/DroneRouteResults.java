@@ -45,7 +45,7 @@ public class DroneRouteResults {
 
     }
 
-    private int getTotalPrice() {
+    public int getTotalPrice() {
         int totalMoney = 0;
         for (ProcessedOrder order : completedOrders){
             totalMoney += order.getTotalPrice();
