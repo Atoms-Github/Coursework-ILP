@@ -31,7 +31,7 @@ public class DroneRouteResults {
     public void writeToOutput(String filename, DatabaseHandle database){
         System.out.println("Writing to database. Total value: " + getTotalPrice());
         OutputWriter writer = new OutputWriter(filename, database);
-        writer.write(droneActions, completedOrders);
+        writer.write(droneActions);
 
     }
 

@@ -20,21 +20,26 @@ public class OutputWriter {
         this.filename = filename;
         this.database = database;
     }
+    private void writeGeoJson(ArrayList<DroneAction> droneActions){
+        ArrayList<Point> points = new ArrayList<>();
+        if (droneActions.size() > 0){
+            points.add(droneActions.get(0).from.toGeoPoint());
+        }
+        for (DroneAction action : droneActions){
+            points.add(action.to.toGeoPoint());
+        }
 
-    public void write(ArrayList<DroneAction> droneActions, ArrayList<ProcessedOrder> completedOrders){
-//        ArrayList<Point> points = new ArrayList<>();
-//        for (DroneWaypoint waypoint : currentMoves.points){
-//            points.add(Point.fromLngLat(waypoint.point.x, waypoint.point.y));
-//        }
-//        LineString lines = LineString.fromLngLats(points);
-//        FeatureCollection featureCollection = FeatureCollection.fromFeature(Feature.fromGeometry(lines));
-//        String json = featureCollection.toJson();
-//
-//        try {
-//            Files.write( Paths.get(filename), json.getBytes());
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-        // TODO.
+        LineString lines = LineString.fromLngLats(points);
+        FeatureCollection featureCollection = FeatureCollection.fromFeature(Feature.fromGeometry(lines));
+        String json = featureCollection.toJson();
+        try {
+            Files.write( Paths.get(filename), json.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void write(ArrayList<DroneAction> droneActions){
+        writeGeoJson(droneActions);
     }
 }

@@ -1,6 +1,9 @@
 package uk.ac.ed.inf;
 
 
+import com.mapbox.geojson.Point;
+
+
 import java.util.Objects;
 
 public class MapPoint {
@@ -125,5 +128,9 @@ public class MapPoint {
         double diff_long = Math.cos(angle_radians) * move_distance;
         double diff_lat = Math.sin(angle_radians) * move_distance;
         return new MapPoint(this.x + diff_long, this.y + diff_lat);
+    }
+
+    public Point toGeoPoint() {
+        return Point.fromLngLat(x, y);
     }
 }
