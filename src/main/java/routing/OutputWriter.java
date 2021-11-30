@@ -11,6 +11,7 @@ import uk.ac.ed.inf.DroneUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class OutputWriter {
@@ -28,7 +29,7 @@ public class OutputWriter {
             for (int i = 1; i < droneActions.size(); i++) {
                 double distanceToFrom = droneActions.get(i - 1).to.distanceTo(droneActions.get(i).from);
                 if (distanceToFrom > 0.0){
-                    throw new RuntimeException("Jumped!"); // TODO: Remove. Maybe write to thinggy.
+                    throw new RuntimeException("Jumped!"); // TODO: Remove. Maybe write to stderr.
                 }
 
             }
@@ -36,10 +37,10 @@ public class OutputWriter {
         for (DroneAction action : droneActions){
             double distanceFromTo = action.from.distanceTo(action.to);
             double diff15 = Math.abs(distanceFromTo - DroneUtils.SHORT_MOVE_LENGTH);
-            if (distanceFromTo != 0.0 || diff15 > DroneUtils.SHORT_MOVE_LENGTH / 10){
-                throw new RuntimeException("Bad distance!"); // TODO: Remove. Maybe write to thinggy.
+            boolean good = distanceFromTo == 0.0 || diff15 < DroneUtils.SHORT_MOVE_LENGTH / 10;
+            if (!good){
+                throw new RuntimeException("Bad distance! " + distanceFromTo + " : " + diff15); // TODO: Remove. Maybe write to stderr.
             }
-            System.out.println(distanceFromTo);
             points.add(action.to.toGeoPoint());
         }
 
@@ -52,8 +53,12 @@ public class OutputWriter {
             throw new RuntimeException(e);
         }
     }
+    private void setupTables(){
+        // TODO: Delete and remake tables.
+    }
 
-    public void write(ArrayList<DroneAction> droneActions){
+    public void write(ArrayList<DroneAction> droneActions) throws SQLException {
         writeGeoJson(droneActions);
+        database.writeTodatabase(droneActions);
     }
 }

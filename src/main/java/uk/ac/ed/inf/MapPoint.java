@@ -15,7 +15,7 @@ public class MapPoint {
     /**
      * Y represents the point's Latitude.
      */
-    public double y;
+    public double y; // TODO: Could half tidy by having functions GetLong or GetLat on this point.
 
 
 

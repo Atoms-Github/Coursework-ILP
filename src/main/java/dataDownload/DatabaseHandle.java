@@ -1,23 +1,22 @@
 package dataDownload;
 
+import routing.DroneAction;
 import routing.ProcessedCafe;
 import routing.ProcessedOrder;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class DatabaseHandle {
     private final String machineName;
     private final String port;
 
-    private Connection dbConnection = null;
+    private Connection connection = null;
     private Connection getConnection() throws SQLException {
-        if (dbConnection == null){
-            dbConnection = DriverManager.getConnection("jdbc:derby://" + machineName + ":" + port + "/derbyDB");
+        if (connection == null){
+            connection = DriverManager.getConnection("jdbc:derby://" + machineName + ":" + port + "/derbyDB");
         }
-        return dbConnection;
+        return connection;
     }
     public DatabaseHandle(String machineName, String port) {
         this.machineName = machineName;
@@ -60,8 +59,68 @@ public class DatabaseHandle {
 
         return foundOrders;
     }
-    public void postResultsToDB(){
-        // TODO. Also use preparared statements, as in PDF.
+    private void dropTable(String tableName) throws SQLException{
+        DatabaseMetaData databaseMetadata = connection.getMetaData();
+        ResultSet resultSet = databaseMetadata.getTables(null, null, tableName, null);
+        // If the resultSet is not empty then the table exists, so we can drop it
+        if (resultSet.next()) {
+            Statement statement = connection.createStatement();
+            statement.execute("drop table " + tableName);
+        }
+    }
+    private void setupOutputTables() throws SQLException {
+        dropTable("DELIVERIES");
+        dropTable("FLIGHTPATH");
+
+        Statement statement = connection.createStatement();
+        statement.execute(
+                "create table deliveries(orderNo char(8)," +
+                        "deliveredTo varchar(19)," +
+                        "costInPence int)");
+        statement.execute(
+                "create table flightpath(orderNo char(8)," +
+                        "fromLongitude double," +
+                        "fromLatitude double," +
+                        "angle integer," +
+                        "toLongitude double," +
+                        "toLatitude double)");
+    }
+    public void writeTodatabase(ArrayList<DroneAction> droneActions) throws SQLException {
+        HashSet<ProcessedOrder> completedOrders = new HashSet<>();
+        setupOutputTables();
+
+        PreparedStatement psActions = connection.prepareStatement("insert into flightpath values " +
+                "(?, ?, ?, ?, ?, ?)");
+        for (DroneAction action : droneActions){
+            String orderNo = "noorders";
+            if (action.order != null){
+                orderNo = action.order.orderNo;
+                completedOrders.add(action.order);
+            }
+            psActions.setString(1, orderNo);
+            psActions.setDouble(2, action.from.x);
+            psActions.setDouble(3, action.from.y);
+            psActions.setInt(4, action.angle);
+            psActions.setDouble(5, action.to.x);
+            psActions.setDouble(6, action.to.y);
+            psActions.execute();
+
+        }
+        PreparedStatement psDeliveries = connection.prepareStatement("insert into deliveries values (?, ?, ?)");
+        for(ProcessedOrder order : completedOrders){
+            psDeliveries.setString(1, order.orderNo);
+            psDeliveries.setString(2, order.deliveryTarget.whatThreeWordsLoc);
+            psDeliveries.setInt(3, order.getTotalPrice());
+            psDeliveries.execute();
+        }
 
     }
 }
+
+
+
+
+
+
+
+

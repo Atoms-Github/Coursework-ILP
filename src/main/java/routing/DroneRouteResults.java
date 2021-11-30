@@ -3,6 +3,7 @@ package routing;
 import dataDownload.DatabaseHandle;
 import uk.ac.ed.inf.MapPoint;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DroneRouteResults {
@@ -37,7 +38,7 @@ public class DroneRouteResults {
         addMove(order, moves);
     }
 
-    public void writeToOutput(String filename, DatabaseHandle database){
+    public void writeToOutput(String filename, DatabaseHandle database) throws SQLException {
         System.out.println("Writing to database. Total value: " + getTotalPrice());
         OutputWriter writer = new OutputWriter(filename, database);
         writer.write(droneActions);
