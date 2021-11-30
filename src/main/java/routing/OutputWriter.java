@@ -53,10 +53,6 @@ public class OutputWriter {
             throw new RuntimeException(e);
         }
     }
-    private void setupTables(){
-        // TODO: Delete and remake tables.
-    }
-
     public void write(ArrayList<DroneAction> droneActions) throws SQLException {
         writeGeoJson(droneActions);
         database.writeTodatabase(droneActions);

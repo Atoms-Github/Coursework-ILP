@@ -22,16 +22,16 @@ public class DatabaseHandle {
         this.machineName = machineName;
         this.port = port;
     }
-    public ArrayList<ProcessedOrder> getProcessedOrders(WebsiteHandle website, List<ProcessedCafe> cafes) throws SQLException {
+    public ArrayList<ProcessedOrder> getProcessedOrders(WebsiteHandle website, List<ProcessedCafe> cafes, String dateString) throws SQLException {
         ArrayList<ProcessedOrder> processedOrders = new ArrayList<>();
-        var orders = getOrders();
+        var orders = getOrders(dateString);
         for (DBOrder order : orders){
             processedOrders.add(order.process(website, cafes));
         }
         return processedOrders;
     }
 
-    public ArrayList<DBOrder> getOrders() throws SQLException {
+    public ArrayList<DBOrder> getOrders(String dateString) throws SQLException {
         HashMap<String, ArrayList<String>> orderDetails = new HashMap<>();
         ResultSet orderDetailsResults = getConnection().createStatement().executeQuery("SELECT * FROM orderdetails");
         while (orderDetailsResults.next()){
@@ -43,7 +43,7 @@ public class DatabaseHandle {
         }
 
         ArrayList<DBOrder> foundOrders = new ArrayList<>();
-        ResultSet ordersResultsSet = getConnection().createStatement().executeQuery("SELECT * FROM orders WHERE deliverydate = '2023-12-27'");  // TODO: Query from input.
+        ResultSet ordersResultsSet = getConnection().createStatement().executeQuery("SELECT * FROM orders WHERE deliverydate = '" + dateString + "'");  // TODO: Query from input.
         while (ordersResultsSet.next()){
             String orderNumber = ordersResultsSet.getString("OrderNo");
             DBOrder newOrder = new DBOrder(

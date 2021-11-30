@@ -29,7 +29,7 @@ public class Tests {
 
         CafeMenus menus = website.fetchParsedMenus();
         ArrayList<ProcessedCafe> processedCafes = menus.getProcessedCafes(website);
-        ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes);
+        ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes, "27-12-2023");
 
 
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());
@@ -78,7 +78,7 @@ public class Tests {
 
         CafeMenus menus = website.fetchParsedMenus();
         ArrayList<ProcessedCafe> processedCafes = menus.getProcessedCafes(website);
-        ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes);
+        ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes, "27-12-2023");
 
 
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());
@@ -91,3 +91,5 @@ public class Tests {
         assertFalse(result);
     }
 }
+
+// TODO: Make it all run faster. Probs just by doing depth 2.
