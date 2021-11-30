@@ -1,20 +1,20 @@
 package routing;
 
-import data.MapPoint;
-import data.ProcessedCafe;
+import cafes.ProcessedCafe;
+import inputOutput.IOMenus;
+import world.MapPoint;
 import data.ProcessedOrder;
 import data.ProcessedOrderItem;
-import inputOutput.JsonMenus;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class CafeTracker {
-    public JsonMenus menus;
+    public IOMenus menus;
     public List<ProcessedCafe> cafes;
     public HashMap<ProcessedCafe, Integer> itemsLeftPerCafe; // Storing this here instead of in cafes, so ProcessedCafes can be immutable.
 
-    public CafeTracker(JsonMenus menus, List<ProcessedCafe> cafes, List<ProcessedOrder> orders) {
+    public CafeTracker(IOMenus menus, List<ProcessedCafe> cafes, List<ProcessedOrder> orders) {
         this.menus = menus;
         this.cafes = cafes;
         this.itemsLeftPerCafe = new HashMap<>();

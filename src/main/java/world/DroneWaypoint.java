@@ -1,4 +1,4 @@
-package data;
+package world;
 
 import java.util.Objects;
 

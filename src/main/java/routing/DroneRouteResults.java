@@ -1,13 +1,16 @@
 package routing;
 
 import data.DroneAction;
-import data.DroneMoveList;
-import data.MapPoint;
+import inputOutput.IOCompletedOrder;
+import inputOutput.OutputWriter;
+import world.DroneMoveList;
+import world.MapPoint;
 import data.ProcessedOrder;
 import inputOutput.DatabaseHandle;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DroneRouteResults {
     public int remainingShortMoves;
@@ -44,8 +47,14 @@ public class DroneRouteResults {
     public void writeToOutput(String filename, DatabaseHandle database) throws SQLException {
         System.out.println("Writing to database. Total value: " + getTotalPrice());
         OutputWriter writer = new OutputWriter(filename, database);
-        writer.write(droneActions);
-
+        writer.write(droneActions, getOutputOrders());
+    }
+    private List<IOCompletedOrder> getOutputOrders(){
+        List<IOCompletedOrder> orders = new ArrayList<>();
+        for (ProcessedOrder order : completedOrders){
+            orders.add(new IOCompletedOrder(order.orderNo, order.deliveryTarget.whatThreeWordsLoc, order.getTotalPrice()));
+        }
+        return orders;
     }
 
     public int getTotalPrice() {

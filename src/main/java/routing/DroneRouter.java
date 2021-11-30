@@ -1,10 +1,11 @@
 package routing;
 
-import data.DroneMoveList;
-import data.MapPoint;
-import data.ProcessedCafe;
+import world.DroneArea;
+import world.DroneMoveList;
+import world.MapPoint;
+import cafes.ProcessedCafe;
 import data.ProcessedOrder;
-import inputOutput.JsonMenus;
+import inputOutput.IOMenus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,10 @@ public class DroneRouter {
     public static final double SHORT_MOVE_LENGTH = 0.00015;
     public static final double UNLUCKY_ZIG_ZAG_MULTIPLIER = 1.15; // See report for where this comes from. // TODO: Real calculation.
     private final DroneArea area;
-    public final JsonMenus menus;
+    public final IOMenus menus;
     public final ArrayList<ProcessedCafe> cafes; // I know calling this final doesn't make the interior final, but I'll use the idea that it does.
 
-    public DroneRouter(DroneArea area, JsonMenus menus, ArrayList<ProcessedCafe> cafes) {
+    public DroneRouter(DroneArea area, IOMenus menus, ArrayList<ProcessedCafe> cafes) {
         this.area = area;
         this.menus = menus;
         this.cafes = cafes;

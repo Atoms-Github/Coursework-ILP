@@ -1,9 +1,10 @@
 package routing;
 
-import data.MapPoint;
-import data.ProcessedCafe;
+import world.DroneArea;
+import world.MapPoint;
+import cafes.ProcessedCafe;
 import data.ProcessedOrder;
-import inputOutput.JsonMenus;
+import inputOutput.IOMenus;
 import inputOutput.DatabaseHandle;
 import inputOutput.WebsiteHandle;
 
@@ -20,7 +21,7 @@ public class App
         WebsiteHandle website = new WebsiteHandle("localhost", args[3]);
         DatabaseHandle database = new DatabaseHandle("localhost", args[4]);
 
-        JsonMenus menus = website.fetchParsedMenus();
+        IOMenus menus = website.fetchParsedMenus();
         ArrayList<ProcessedCafe> processedCafes = menus.getProcessedCafes(website);
         ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes, dateStringDatabase);
 

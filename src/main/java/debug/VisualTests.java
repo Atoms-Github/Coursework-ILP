@@ -1,6 +1,6 @@
 package debug;
 
-import data.MapPoint;
+import world.MapPoint;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

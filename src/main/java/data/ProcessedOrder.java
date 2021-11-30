@@ -1,6 +1,6 @@
 package data;
 
-import routing.DroneArea;
+import world.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,12 +1,10 @@
-package routing;
+package world;
 
 import com.mapbox.geojson.*;
 import com.mapbox.geojson.Point;
 import com.mapbox.geojson.Polygon;
-import data.DroneMoveList;
-import data.DroneWaypoint;
-import data.MapPoint;
-import inputOutput.JsonMenus;
+import routing.DroneRouter;
+import inputOutput.IOMenus;
 import debug.VisualTests;
 
 import java.awt.*;
@@ -15,14 +13,14 @@ import java.util.ArrayList;
 
 public class DroneArea {
     public ArrayList<Area> noFlyZones;
-    public JsonMenus parsedMenus;
+    public IOMenus parsedMenus;
     public ArrayList<MapPoint> waypoints;
 
 //    private static final double clearance = 0.00001;
     private static final double CLEARANCE = DroneRouter.SHORT_MOVE_LENGTH; // This can't be anything smaller, as then we may be misaligned for next move.
 
 
-    public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks, JsonMenus parsedMenus) {
+    public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks, IOMenus parsedMenus) {
         this.parsedMenus = parsedMenus;
         this.waypoints = new ArrayList<>();
         this.noFlyZones = new ArrayList<>();

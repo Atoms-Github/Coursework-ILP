@@ -1,13 +1,13 @@
 package uk.ac.ed.inf;
 
-import data.MapPoint;
-import data.ProcessedCafe;
+import world.DroneArea;
+import world.MapPoint;
+import cafes.ProcessedCafe;
 import data.ProcessedOrder;
-import inputOutput.JsonMenus;
+import inputOutput.IOMenus;
 import inputOutput.DatabaseHandle;
 import inputOutput.WebsiteHandle;
 import org.junit.Test;
-import routing.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class Tests {
         WebsiteHandle website = new WebsiteHandle("localhost", "9898");
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
 
-        JsonMenus menus = website.fetchParsedMenus();
+        IOMenus menus = website.fetchParsedMenus();
         ArrayList<ProcessedCafe> processedCafes = menus.getProcessedCafes(website);
         ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes, "27-12-2023");
 
@@ -79,7 +79,7 @@ public class Tests {
         WebsiteHandle website = new WebsiteHandle("localhost", "9898");
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
 
-        JsonMenus menus = website.fetchParsedMenus();
+        IOMenus menus = website.fetchParsedMenus();
         ArrayList<ProcessedCafe> processedCafes = menus.getProcessedCafes(website);
         ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes, "27-12-2023");
 

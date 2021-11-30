@@ -1,7 +1,8 @@
-package data;
+package world;
 
+import data.DroneAction;
+import data.ProcessedOrder;
 import debug.VisualTests;
-import routing.DroneArea;
 import routing.DroneRouter;
 
 import java.awt.*;
@@ -79,7 +80,7 @@ public class DroneMoveList {
                 double angleRounded = (double) (10 * (Math.round(angleExact / 10))); // Round to nearest 10.
                 int droneAngle = (int) angleRounded;
                 MapPoint nextPoint = exactCurrentLocation.nextPosition(droneAngle, SHORT_MOVE_LENGTH);
-                actions.add(DroneAction.moveActionOrder(currentOrder, droneAngle, exactCurrentLocation, nextPoint));
+                actions.add(DroneAction.moveActionOrder(currentOrder.orderNo, droneAngle, exactCurrentLocation, nextPoint));
                 iterations ++;
                 if (iterations > 10000){
                     int e = 2;
@@ -95,7 +96,7 @@ public class DroneMoveList {
                 exactCurrentLocation = nextPoint;
             }
             if (toPoint.mustHover){
-                actions.add(DroneAction.hoverAction(currentOrder, exactCurrentLocation));
+                actions.add(DroneAction.hoverAction(currentOrder.orderNo, exactCurrentLocation));
             }
         }
         return actions;

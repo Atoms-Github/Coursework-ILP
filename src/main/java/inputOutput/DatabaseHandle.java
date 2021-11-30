@@ -1,7 +1,7 @@
 package inputOutput;
 
 import data.DroneAction;
-import data.ProcessedCafe;
+import cafes.ProcessedCafe;
 import data.ProcessedOrder;
 
 import java.sql.*;
@@ -25,13 +25,13 @@ public class DatabaseHandle {
     public ArrayList<ProcessedOrder> getProcessedOrders(WebsiteHandle website, List<ProcessedCafe> cafes, String dateString) throws SQLException {
         ArrayList<ProcessedOrder> processedOrders = new ArrayList<>();
         var orders = getOrders(dateString);
-        for (DatabaseOrder order : orders){
+        for (IOOrder order : orders){
             processedOrders.add(order.process(website, cafes));
         }
         return processedOrders;
     }
 
-    public ArrayList<DatabaseOrder> getOrders(String dateString) throws SQLException {
+    public ArrayList<IOOrder> getOrders(String dateString) throws SQLException {
         HashMap<String, ArrayList<String>> orderDetails = new HashMap<>();
         ResultSet orderDetailsResults = getConnection().createStatement().executeQuery("SELECT * FROM orderdetails");
         while (orderDetailsResults.next()){
@@ -42,11 +42,11 @@ public class DatabaseHandle {
             orderDetails.get(orderNumber).add(orderDetailsResults.getString("Item"));
         }
 
-        ArrayList<DatabaseOrder> foundOrders = new ArrayList<>();
+        ArrayList<IOOrder> foundOrders = new ArrayList<>();
         ResultSet ordersResultsSet = getConnection().createStatement().executeQuery("SELECT * FROM orders WHERE deliverydate = '" + dateString + "'");
         while (ordersResultsSet.next()){
             String orderNumber = ordersResultsSet.getString("OrderNo");
-            DatabaseOrder newOrder = new DatabaseOrder(
+            IOOrder newOrder = new IOOrder(
                     orderNumber,
                     ordersResultsSet.getDate("DeliveryDate"),
                     ordersResultsSet.getString("Customer"),
@@ -85,19 +85,13 @@ public class DatabaseHandle {
                         "toLongitude double," +
                         "toLatitude double)");
     }
-    public void writeTodatabase(ArrayList<DroneAction> droneActions) throws SQLException {
-        HashSet<ProcessedOrder> completedOrders = new HashSet<>();
+    public void writeTodatabase(List<DroneAction> droneActions, List<IOCompletedOrder> completedOrders) throws SQLException {
         setupOutputTables();
 
         PreparedStatement psActions = connection.prepareStatement("insert into flightpath values " +
                 "(?, ?, ?, ?, ?, ?)");
         for (DroneAction action : droneActions){
-            String orderNo = "noorders";
-            if (action.order != null){
-                orderNo = action.order.orderNo;
-                completedOrders.add(action.order);
-            }
-            psActions.setString(1, orderNo);
+            psActions.setString(1, action.orderNo);
             psActions.setDouble(2, action.from.x);
             psActions.setDouble(3, action.from.y);
             psActions.setInt(4, action.angle);
@@ -107,14 +101,15 @@ public class DatabaseHandle {
 
         }
         PreparedStatement psDeliveries = connection.prepareStatement("insert into deliveries values (?, ?, ?)");
-        for(ProcessedOrder order : completedOrders){
+        for(IOCompletedOrder order : completedOrders){
             psDeliveries.setString(1, order.orderNo);
-            psDeliveries.setString(2, order.deliveryTarget.whatThreeWordsLoc);
-            psDeliveries.setInt(3, order.getTotalPrice());
+            psDeliveries.setString(2, order.deliveredTo);
+            psDeliveries.setInt(3, order.costPence);
             psDeliveries.execute();
         }
 
     }
+
 }
 
 

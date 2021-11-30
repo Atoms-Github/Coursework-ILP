@@ -1,5 +1,7 @@
 package data;
 
+import cafes.ProcessedCafe;
+
 public class ProcessedOrderItem {
     public final String name;
 

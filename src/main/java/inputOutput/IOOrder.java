@@ -1,6 +1,6 @@
 package inputOutput;
 
-import data.ProcessedCafe;
+import cafes.ProcessedCafe;
 import data.ProcessedOrder;
 import data.ProcessedOrderItem;
 
@@ -8,14 +8,14 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseOrder {
+public class IOOrder {
     public final String orderNo;
     public final Date deliveryDate;
     public final String customerID;
     public final String deliveryTarget;
     public final List<String> orderItems;
 
-    public DatabaseOrder(String orderNo, Date deliveryDate, String customerID, String deliveryTarget, List<String> orderItems) {
+    public IOOrder(String orderNo, Date deliveryDate, String customerID, String deliveryTarget, List<String> orderItems) {
         this.orderNo = orderNo;
         this.deliveryDate = deliveryDate;
         this.customerID = customerID;

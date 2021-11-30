@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-public class ParsedThreeWords {
+public class IOThreeWordsPoint {
     public JsonPoint coordinates;
     public String words;
     public static class JsonPoint{
@@ -14,8 +14,8 @@ public class ParsedThreeWords {
     }
 
 
-    public static ParsedThreeWords parseFromString(String jsonString){
-        Type listType = new TypeToken<ParsedThreeWords>() {}.getType();
+    public static IOThreeWordsPoint parseFromString(String jsonString){
+        Type listType = new TypeToken<IOThreeWordsPoint>() {}.getType();
         return new Gson().fromJson(jsonString, listType);
     }
 }

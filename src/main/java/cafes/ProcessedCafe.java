@@ -1,4 +1,6 @@
-package data;
+package cafes;
+
+import world.NamedMapPoint;
 
 import java.util.HashMap;
 

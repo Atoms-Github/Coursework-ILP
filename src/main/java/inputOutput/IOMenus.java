@@ -2,7 +2,7 @@ package inputOutput;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import data.ProcessedCafe;
+import cafes.ProcessedCafe;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * A parsed representation of all the items on the website.
  */
-public class JsonMenus {
-    public List<DBCafe> cafes;
+public class IOMenus {
+    public List<IOCafe> cafes;
 
     public static class MenuItem{
         /**
@@ -28,15 +28,15 @@ public class JsonMenus {
      * Parses a menu.
      * @param jsonString The menu, in json representation (starting with a json list []).
      */
-    public JsonMenus(String jsonString){
-        Type listType = new TypeToken<ArrayList<DBCafe>>() {}.getType();
-        this.cafes = new Gson().<ArrayList<DBCafe>>fromJson(jsonString, listType);
+    public IOMenus(String jsonString){
+        Type listType = new TypeToken<ArrayList<IOCafe>>() {}.getType();
+        this.cafes = new Gson().<ArrayList<IOCafe>>fromJson(jsonString, listType);
     }
 
     // TODO: Tidy?
     public ArrayList<ProcessedCafe> getProcessedCafes(WebsiteHandle website){
         ArrayList<ProcessedCafe> processedCafes = new ArrayList<>();
-        for (DBCafe cafe: cafes){
+        for (IOCafe cafe: cafes){
             processedCafes.add(cafe.process(website));
         }
         return processedCafes;

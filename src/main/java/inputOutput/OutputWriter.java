@@ -1,4 +1,4 @@
-package routing;
+package inputOutput;
 
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
@@ -6,12 +6,14 @@ import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 import data.DroneAction;
 import inputOutput.DatabaseHandle;
+import routing.DroneRouter;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OutputWriter {
     private final String filename;
@@ -52,8 +54,8 @@ public class OutputWriter {
             throw new RuntimeException(e);
         }
     }
-    public void write(ArrayList<DroneAction> droneActions) throws SQLException {
+    public void write(ArrayList<DroneAction> droneActions, List<IOCompletedOrder> orders) throws SQLException {
         writeGeoJson(droneActions);
-        database.writeTodatabase(droneActions);
+        database.writeTodatabase(droneActions, orders);
     }
 }
