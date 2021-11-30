@@ -48,3 +48,5 @@ public class DroneRouteResults {
 
 
 // TODO: Replace all ArrayLists with List where possible.
+
+// TODO: Don't use DroneWaypoint classname, since waypoint is something else.

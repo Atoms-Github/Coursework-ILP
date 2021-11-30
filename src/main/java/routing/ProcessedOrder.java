@@ -35,6 +35,7 @@ public class ProcessedOrder {
             // TODO: Add hover information.
             MapPoint closestShop = DroneUtils.getClosestPoint(orderShops, start);
             DroneMoveList pathToClosest = area.pathfind(totalRoute.getLastLocation(), closestShop);
+            pathToClosest.points.get(pathToClosest.points.size() - 1).mustHover = true;
             totalRoute.append(pathToClosest);
             orderShops.remove(closestShop);
         }

@@ -22,9 +22,12 @@ public class DroneMoveList {
     public void append(DroneMoveList other){
         // If we've got some points, check that our end lines up with other's start.
         if (points.size() > 0){
-            var firstOtherPoint = other.points.remove(0).point;
-            if (!firstOtherPoint.equals(getLastLocation())){
-                throw new IllegalArgumentException("First must match last! Last: " + getLastLocation() + " first: " + firstOtherPoint);
+            DroneWaypoint firstOtherPoint = other.points.remove(0);
+            if (!firstOtherPoint.point.equals(getLastLocation())){
+                throw new IllegalArgumentException("First must match last! Last: " + getLastLocation() + " first: " + firstOtherPoint.point);
+            }
+            if (firstOtherPoint.mustHover){
+                getLastWaypoint().mustHover = true;
             }
         }
 
@@ -38,6 +41,9 @@ public class DroneMoveList {
     }
     public MapPoint getLastLocation(){
         return points.get(points.size() - 1).point;
+    }
+    public DroneWaypoint getLastWaypoint(){
+        return points.get(points.size() - 1);
     }
 
     public double totalMoveLength(){
@@ -60,7 +66,6 @@ public class DroneMoveList {
         ArrayList<DroneAction> actions = new ArrayList<>();
         for (int firstIndex = 0; firstIndex < points.size() - 1; firstIndex++) {
             DroneWaypoint fromPoint = points.get(firstIndex);
-            // TODO: Hover command.
             DroneWaypoint toPoint = points.get(firstIndex + 1);
             while (!exactCurrentLocation.closeTo(toPoint.point)){
                 double angleExact = exactCurrentLocation.angleTo(toPoint.point); // TODO: Need to add/subtract 90 probs.
@@ -69,6 +74,9 @@ public class DroneMoveList {
                 MapPoint nextPoint = exactCurrentLocation.nextPosition(droneAngle);
                 actions.add(DroneAction.moveActionOrder(currentOrder, droneAngle, exactCurrentLocation, nextPoint));
                 exactCurrentLocation = nextPoint;
+            }
+            if (toPoint.mustHover){
+                actions.add(DroneAction.hoverAction(currentOrder, exactCurrentLocation));
             }
         }
         return actions;
