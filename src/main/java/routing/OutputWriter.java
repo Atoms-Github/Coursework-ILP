@@ -6,6 +6,7 @@ import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 import dataDownload.DatabaseHandle;
 import dataDownload.WebsiteHandle;
+import uk.ac.ed.inf.DroneUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,8 +25,21 @@ public class OutputWriter {
         ArrayList<Point> points = new ArrayList<>();
         if (droneActions.size() > 0){
             points.add(droneActions.get(0).from.toGeoPoint());
+            for (int i = 1; i < droneActions.size(); i++) {
+                double distanceToFrom = droneActions.get(i - 1).to.distanceTo(droneActions.get(i).from);
+                if (distanceToFrom > 0.0){
+                    throw new RuntimeException("Jumped!"); // TODO: Remove. Maybe write to thinggy.
+                }
+
+            }
         }
         for (DroneAction action : droneActions){
+            double distanceFromTo = action.from.distanceTo(action.to);
+            double diff15 = Math.abs(distanceFromTo - DroneUtils.SHORT_MOVE_LENGTH);
+            if (distanceFromTo != 0.0 || diff15 > DroneUtils.SHORT_MOVE_LENGTH / 10){
+                throw new RuntimeException("Bad distance!"); // TODO: Remove. Maybe write to thinggy.
+            }
+            System.out.println(distanceFromTo);
             points.add(action.to.toGeoPoint());
         }
 
