@@ -13,9 +13,7 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-// Taken from https://stackoverflow.com/questions/20927189/detecting-collision-of-two-sprites-that-can-rotate/20928531#20928531.
-
-public class VisualTests {
+public class VisualTests { // TODO: Remove?
     private static VisualTests visual;
     private final ArrayList<ColouredArea> shapes = new ArrayList<>();
     public static void setupVisualTest(){
@@ -102,18 +100,7 @@ public class VisualTests {
                 g2d.setColor(area.colour);
                 g2d.fill(pathMy2d);
             }
-
             g2d.dispose();
         }
-
     }
-
 }
-
-
-
-
-//            AffineTransform at = new AffineTransform();
-//            GeneralPath path1 = new GeneralPath();
-//            path1.append(rect01.getPathIterator(at), true);
-//            g2d.fill(path1);

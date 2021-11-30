@@ -1,35 +1,35 @@
 package routing;
 
-import cafes.ProcessedCafe;
+import orders.Cafe;
 import inputOutput.IOMenus;
 import world.MapPoint;
-import data.ProcessedOrder;
-import data.ProcessedOrderItem;
+import orders.Order;
+import orders.OrderItem;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class CafeTracker {
     public IOMenus menus;
-    public List<ProcessedCafe> cafes;
-    public HashMap<ProcessedCafe, Integer> itemsLeftPerCafe; // Storing this here instead of in cafes, so ProcessedCafes can be immutable.
+    public List<Cafe> cafes;
+    public HashMap<Cafe, Integer> itemsLeftPerCafe; // Storing this here instead of in cafes, so ProcessedCafes can be immutable.
 
-    public CafeTracker(IOMenus menus, List<ProcessedCafe> cafes, List<ProcessedOrder> orders) {
+    public CafeTracker(IOMenus menus, List<Cafe> cafes, List<Order> orders) {
         this.menus = menus;
         this.cafes = cafes;
         this.itemsLeftPerCafe = new HashMap<>();
-        for (ProcessedCafe cafe : cafes){
+        for (Cafe cafe : cafes){
             this.itemsLeftPerCafe.put(cafe, 0);
         }
-        for (ProcessedOrder order : orders){
-            for (ProcessedOrderItem item : order.orderItems){
+        for (Order order : orders){
+            for (OrderItem item : order.orderItems){
                 assert this.itemsLeftPerCafe.containsKey(item.shop); // If not, then we've been passed orders which contain a cafe not in the list of cafes.
                 this.itemsLeftPerCafe.put(item.shop, this.itemsLeftPerCafe.get(item.shop) + 1);
             }
         }
     }
-    public void completeOrder(ProcessedOrder order){
-        for (ProcessedOrderItem item : order.orderItems){
+    public void completeOrder(Order order){
+        for (OrderItem item : order.orderItems){
             this.itemsLeftPerCafe.put(item.shop, this.itemsLeftPerCafe.get(item.shop) - 1);
         }
     }
@@ -38,7 +38,7 @@ public class CafeTracker {
     public MapPoint getClosestShopWithItemsLeft(MapPoint location){
         MapPoint closest = null;
         double closestDistance = Double.MAX_VALUE;
-        for (ProcessedCafe cafe : cafes){
+        for (Cafe cafe : cafes){
             if (itemsLeftPerCafe.get(cafe) > 0){
                 double myDistance = location.distanceTo(cafe.location.point);
                 if (myDistance < closestDistance){

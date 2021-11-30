@@ -1,4 +1,4 @@
-package world;
+package world.drone;
 
 import com.mapbox.geojson.*;
 import com.mapbox.geojson.Point;
@@ -6,6 +6,9 @@ import com.mapbox.geojson.Polygon;
 import routing.DroneRouter;
 import inputOutput.IOMenus;
 import debug.VisualTests;
+import world.MapPoint;
+import world.drone.DroneWaypoint;
+import world.drone.MoveList;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -64,20 +67,20 @@ public class DroneArea {
         return points;
     }
 
-    public DroneMoveList pathfind_recursive(MapPoint start, MapPoint end, int depth){
+    public MoveList pathfind_recursive(MapPoint start, MapPoint end, int depth){
         if (canFlyBetween(start, end)){
-            var moveList = new DroneMoveList(new ArrayList<>());
+            var moveList = new MoveList(new ArrayList<>());
             moveList.points.add(new DroneWaypoint(start, false));
             moveList.points.add(new DroneWaypoint(end, false));
             return moveList;
         }else{ // Can't go straight. Need to use waypoints.
             // If we're not at max depth, try to go deeper.
             if (depth < 3) {
-                DroneMoveList shortestGoodMove = null;
+                MoveList shortestGoodMove = null;
                 double shortestDistance = Double.MAX_VALUE;
                 for (MapPoint waypoint : waypoints) {
                     if (canFlyBetween(start, waypoint)) {
-                        DroneMoveList maybeRoute = pathfind_recursive(waypoint, end, depth + 1);
+                        MoveList maybeRoute = pathfind_recursive(waypoint, end, depth + 1);
                         if (maybeRoute != null) {
                             maybeRoute.points.add(0, new DroneWaypoint(start, false));
                             double myDistance = maybeRoute.totalMoveLength();
@@ -100,7 +103,7 @@ public class DroneArea {
         }
 
     }
-    public DroneMoveList pathfind(MapPoint start, MapPoint end){
+    public MoveList pathfind(MapPoint start, MapPoint end){
         return pathfind_recursive(start, end, 0);
     }
     public boolean canFlyBetween(MapPoint start, MapPoint end){

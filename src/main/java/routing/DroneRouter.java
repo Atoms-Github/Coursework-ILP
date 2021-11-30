@@ -1,10 +1,10 @@
 package routing;
 
-import world.DroneArea;
-import world.DroneMoveList;
+import world.drone.DroneArea;
+import world.drone.MoveList;
 import world.MapPoint;
-import cafes.ProcessedCafe;
-import data.ProcessedOrder;
+import orders.Cafe;
+import orders.Order;
 import inputOutput.IOMenus;
 
 import java.util.ArrayList;
@@ -15,22 +15,22 @@ public class DroneRouter {
     public static final double UNLUCKY_ZIG_ZAG_MULTIPLIER = 1.15; // See report for where this comes from. // TODO: Real calculation.
     private final DroneArea area;
     public final IOMenus menus;
-    public final ArrayList<ProcessedCafe> cafes; // I know calling this final doesn't make the interior final, but I'll use the idea that it does.
+    public final ArrayList<Cafe> cafes; // I know calling this final doesn't make the interior final, but I'll use the idea that it does.
 
-    public DroneRouter(DroneArea area, IOMenus menus, ArrayList<ProcessedCafe> cafes) {
+    public DroneRouter(DroneArea area, IOMenus menus, ArrayList<Cafe> cafes) {
         this.area = area;
         this.menus = menus;
         this.cafes = cafes;
     }
 
-    public DroneRouteResults calculateDroneMoves(MapPoint start, List<ProcessedOrder> ordersList, PathingTechnique technique){
-        ArrayList<ProcessedOrder> ordersToGo = new ArrayList<>(ordersList);
+    public DroneRouteResults calculateDroneMoves(MapPoint start, List<Order> ordersList, PathingTechnique technique){
+        ArrayList<Order> ordersToGo = new ArrayList<>(ordersList);
         CafeTracker tracker = new CafeTracker(menus, cafes, ordersToGo);
 
         DroneRouteResults results = new DroneRouteResults(1500, start);
         while(true){
             // For each move, we want to calculate which order to take next.
-            ProcessedOrder bestOrder = switch (technique) {
+            Order bestOrder = switch (technique) {
                 case MAX_PRICE_PER_MOVE -> calcBestNextOrderPricePerMove(results.currentLocation, ordersToGo, tracker, results.remainingShortMoves);
                 case MAX_ORDER_COUNT -> calcBestNextOrderMaxOrders(results.currentLocation, ordersToGo, tracker, results.remainingShortMoves);
             };
@@ -38,24 +38,24 @@ public class DroneRouter {
             if (bestOrder != null){
                 ordersToGo.remove(bestOrder);
                 tracker.completeOrder(bestOrder);
-                DroneMoveList movesForBestOrder = bestOrder.getDroneMovesForOrder(results.currentLocation, area);
+                MoveList movesForBestOrder = bestOrder.getDroneMovesForOrder(results.currentLocation, area);
                 results.addOrder(bestOrder, movesForBestOrder);
             }else{
                 // There is no more good order to do. Just go back to appleton.
-                DroneMoveList routeBackToAppleton = area.pathfind(results.currentLocation, MapPoint.APPLETON_TOWER);
-                results.addMove(null, routeBackToAppleton); // TODO: Refact.
+                MoveList routeBackToAppleton = area.pathfind(results.currentLocation, MapPoint.APPLETON_TOWER);
+                results.addMove("noOrders", routeBackToAppleton);
                 return results;
             }
         }
     }
 
-    private ProcessedOrder calcBestNextOrderPricePerMove(MapPoint start, List<ProcessedOrder> ordersList, CafeTracker shops, int maxMoves){
+    private Order calcBestNextOrderPricePerMove(MapPoint start, List<Order> ordersList, CafeTracker shops, int maxMoves){
         // To do this, we'll calculate the price per move of all potential moves,
         // including an extra move back to the nearest shop that still has an order to be completed at.
         double bestPriceToLength = Double.MIN_VALUE;
-        ProcessedOrder bestOrder = null;
-        for (ProcessedOrder potentialOrder : ordersList){
-            DroneMoveList routeToCompleteOrder = potentialOrder.getDroneMovesForOrder(start, area);
+        Order bestOrder = null;
+        for (Order potentialOrder : ordersList){
+            MoveList routeToCompleteOrder = potentialOrder.getDroneMovesForOrder(start, area);
             MapPoint closestActiveShopRemaining = shops.getClosestShopWithItemsLeft(routeToCompleteOrder.getLastLocation());
             if (closestActiveShopRemaining == null){
                 // If no more shops with orders left, this is the last order, thus the best.
@@ -84,16 +84,16 @@ public class DroneRouter {
         }
         return bestOrder;
     }
-    private ProcessedOrder calcBestNextOrderMaxOrders(MapPoint start, List<ProcessedOrder> ordersList, CafeTracker shops, int maxMoves){
+    private Order calcBestNextOrderMaxOrders(MapPoint start, List<Order> ordersList, CafeTracker shops, int maxMoves){
         double distanceToClosestOrder = Double.MAX_VALUE;
-        ProcessedOrder bestOrder = null;
-        for (ProcessedOrder potentialOrder : ordersList){
+        Order bestOrder = null;
+        for (Order potentialOrder : ordersList){
             double distToClosestShop = Double.MAX_VALUE;
             for (MapPoint point : potentialOrder.getShopLocations()){
-                DroneMoveList pathToPoint = area.pathfind(start, point);
+                MoveList pathToPoint = area.pathfind(start, point);
                 distToClosestShop = Math.min(distToClosestShop, pathToPoint.totalMoveLength());
             }
-            DroneMoveList routeToCompleteOrder = potentialOrder.getDroneMovesForOrder(start, area);
+            MoveList routeToCompleteOrder = potentialOrder.getDroneMovesForOrder(start, area);
 
             routeToCompleteOrder.addRoutedDestination(MapPoint.APPLETON_TOWER, area);
             int totalShortMovesEstimate = routeToCompleteOrder.shortMoveSafeEstimate();

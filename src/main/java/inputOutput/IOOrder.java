@@ -1,8 +1,8 @@
 package inputOutput;
 
-import cafes.ProcessedCafe;
-import data.ProcessedOrder;
-import data.ProcessedOrderItem;
+import orders.Cafe;
+import orders.Order;
+import orders.OrderItem;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -22,18 +22,18 @@ public class IOOrder {
         this.deliveryTarget = deliveryTarget;
         this.orderItems = orderItems;
     }
-    public ProcessedOrder process(WebsiteHandle handle, List<ProcessedCafe> cafes){
-        ArrayList<ProcessedOrderItem> processedOrderItems = new ArrayList<>();
-        for (String orderItemName : orderItems){
-            for (ProcessedCafe cafe : cafes){
+    public Order process(WebsiteHandle handle, List<Cafe> cafes){
+        ArrayList<OrderItem> orderItems = new ArrayList<>();
+        for (String orderItemName : this.orderItems){
+            for (Cafe cafe : cafes){
                 if (cafe.menu.containsKey(orderItemName)){
-                    processedOrderItems.add(new ProcessedOrderItem(orderItemName, cafe, cafe.menu.get(orderItemName)));
+                    orderItems.add(new OrderItem(orderItemName, cafe, cafe.menu.get(orderItemName)));
                     break;
                 }
             }
         }
 
-        return new ProcessedOrder(orderNo, handle.fetchWhatThreeWordsBox(deliveryTarget), processedOrderItems);
+        return new Order(orderNo, handle.fetchWhatThreeWordsBox(deliveryTarget), orderItems);
     }
 }
 

@@ -1,6 +1,6 @@
 package inputOutput;
 
-import cafes.ProcessedCafe;
+import orders.Cafe;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,11 +14,11 @@ public class IOCafe {
     public List<IOMenus.MenuItem> menu;
 
 
-    public ProcessedCafe process(WebsiteHandle website){
+    public Cafe process(WebsiteHandle website){
         HashMap<String, Integer> menuMap = new HashMap<>();
         for (IOMenus.MenuItem menuItem : menu){
             menuMap.put(menuItem.item, menuItem.pence);
         }
-        return new ProcessedCafe(menuMap, website.fetchWhatThreeWordsBox(location));
+        return new Cafe(menuMap, website.fetchWhatThreeWordsBox(location));
     }
 }

@@ -1,9 +1,9 @@
-package world;
+package world.drone;
 
-import data.DroneAction;
-import data.ProcessedOrder;
+import inputOutput.IODroneAction;
 import debug.VisualTests;
 import routing.DroneRouter;
+import world.MapPoint;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,19 +11,19 @@ import java.util.List;
 
 import static routing.DroneRouter.SHORT_MOVE_LENGTH;
 
-public class DroneMoveList {
+public class MoveList {
     // Yes, having this also include the start point makes us create and destroy a fair number
     // of unnecessary points, but it makes the code cleaner overall.
     public List<DroneWaypoint> points;
 
-    public DroneMoveList(List<DroneWaypoint> points) {
+    public MoveList(List<DroneWaypoint> points) {
         this.points = points;
     }
-    public DroneMoveList() {
+    public MoveList() {
         this.points = new ArrayList<>();
     }
 
-    public void append(DroneMoveList other){
+    public void append(MoveList other){
         // If we've got some points, check that our end lines up with other's start.
         if (points.size() > 0){
             DroneWaypoint firstOtherPoint = other.points.remove(0);
@@ -40,7 +40,7 @@ public class DroneMoveList {
     }
     public void addRoutedDestination(MapPoint target, DroneArea area){
         assert points.size() > 0;
-        DroneMoveList newRoute = area.pathfind(getLastLocation(), target);
+        MoveList newRoute = area.pathfind(getLastLocation(), target);
         append(newRoute);
     }
     public MapPoint getLastLocation(){
@@ -68,9 +68,9 @@ public class DroneMoveList {
     }
 
 
-    public ArrayList<DroneAction> genDroneActions(ProcessedOrder currentOrder, MapPoint exactStartLocation){
+    public ArrayList<IODroneAction> genDroneActions(String orderNo, MapPoint exactStartLocation){
         MapPoint exactCurrentLocation = exactStartLocation;
-        ArrayList<DroneAction> actions = new ArrayList<>();
+        ArrayList<IODroneAction> actions = new ArrayList<>();
         for (int firstIndex = 0; firstIndex < points.size() - 1; firstIndex++) {
             DroneWaypoint fromPoint = points.get(firstIndex);
             DroneWaypoint toPoint = points.get(firstIndex + 1);
@@ -80,7 +80,7 @@ public class DroneMoveList {
                 double angleRounded = (double) (10 * (Math.round(angleExact / 10))); // Round to nearest 10.
                 int droneAngle = (int) angleRounded;
                 MapPoint nextPoint = exactCurrentLocation.nextPosition(droneAngle, SHORT_MOVE_LENGTH);
-                actions.add(DroneAction.moveActionOrder(currentOrder.orderNo, droneAngle, exactCurrentLocation, nextPoint));
+                actions.add(IODroneAction.moveActionOrder(orderNo, droneAngle, exactCurrentLocation, nextPoint));
                 iterations ++;
                 if (iterations > 10000){
                     int e = 2;
@@ -96,7 +96,7 @@ public class DroneMoveList {
                 exactCurrentLocation = nextPoint;
             }
             if (toPoint.mustHover){
-                actions.add(DroneAction.hoverAction(currentOrder.orderNo, exactCurrentLocation));
+                actions.add(IODroneAction.hoverAction(orderNo, exactCurrentLocation));
             }
         }
         return actions;

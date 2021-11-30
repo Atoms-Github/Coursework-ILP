@@ -1,11 +1,11 @@
 package routing;
 
-import data.DroneAction;
+import inputOutput.IODroneAction;
 import inputOutput.IOCompletedOrder;
 import inputOutput.OutputWriter;
-import world.DroneMoveList;
+import world.drone.MoveList;
 import world.MapPoint;
-import data.ProcessedOrder;
+import orders.Order;
 import inputOutput.DatabaseHandle;
 
 import java.sql.SQLException;
@@ -16,8 +16,8 @@ public class DroneRouteResults {
     public int remainingShortMoves;
     public MapPoint currentLocation; // This is for pathfinding. Not exact movement. I.e. 'Closest destination'.
     public MapPoint exactCurrentLocation; // This is for converting the path to a list of small moves. Not for pathfinding.
-    public ArrayList<ProcessedOrder> completedOrders = new ArrayList<>();
-    ArrayList<DroneAction> droneActions = new ArrayList<>();
+    public ArrayList<Order> completedOrders = new ArrayList<>();
+    ArrayList<IODroneAction> droneActions = new ArrayList<>();
 
     public DroneRouteResults(int remainingShortMoves, MapPoint currentLocation) {
         this.remainingShortMoves = remainingShortMoves;
@@ -25,9 +25,9 @@ public class DroneRouteResults {
         this.exactCurrentLocation = currentLocation;
     }
 
-    public void addMove(ProcessedOrder order, DroneMoveList moves){
+    public void addMove(String orderNo, MoveList moves){
         // TODO: Check that return to shop isn't in this list with this order.
-        ArrayList<DroneAction> actions = moves.genDroneActions(order, exactCurrentLocation);
+        ArrayList<IODroneAction> actions = moves.genDroneActions(orderNo, exactCurrentLocation);
         int movesUsed = actions.size();
         remainingShortMoves -= movesUsed;
 
@@ -38,10 +38,10 @@ public class DroneRouteResults {
         }
         droneActions.addAll(actions);
     }
-    public void addOrder(ProcessedOrder order, DroneMoveList moves){
+    public void addOrder(Order order, MoveList moves){
         System.out.println("Routing order " + order.orderNo + " worth " + order.getTotalPrice());
         completedOrders.add(order);
-        addMove(order, moves);
+        addMove(order.orderNo, moves);
     }
 
     public void writeToOutput(String filename, DatabaseHandle database) throws SQLException {
@@ -51,7 +51,7 @@ public class DroneRouteResults {
     }
     private List<IOCompletedOrder> getOutputOrders(){
         List<IOCompletedOrder> orders = new ArrayList<>();
-        for (ProcessedOrder order : completedOrders){
+        for (Order order : completedOrders){
             orders.add(new IOCompletedOrder(order.orderNo, order.deliveryTarget.whatThreeWordsLoc, order.getTotalPrice()));
         }
         return orders;
@@ -59,7 +59,7 @@ public class DroneRouteResults {
 
     public int getTotalPrice() {
         int totalMoney = 0;
-        for (ProcessedOrder order : completedOrders){
+        for (Order order : completedOrders){
             totalMoney += order.getTotalPrice();
         }
         return totalMoney;

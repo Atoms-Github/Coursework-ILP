@@ -2,7 +2,7 @@ package inputOutput;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import cafes.ProcessedCafe;
+import orders.Cafe;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -34,11 +34,11 @@ public class IOMenus {
     }
 
     // TODO: Tidy?
-    public ArrayList<ProcessedCafe> getProcessedCafes(WebsiteHandle website){
-        ArrayList<ProcessedCafe> processedCafes = new ArrayList<>();
-        for (IOCafe cafe: cafes){
-            processedCafes.add(cafe.process(website));
+    public ArrayList<Cafe> getProcessedCafes(WebsiteHandle website){
+        ArrayList<Cafe> cafes = new ArrayList<>();
+        for (IOCafe cafe: this.cafes){
+            cafes.add(cafe.process(website));
         }
-        return processedCafes;
+        return cafes;
     }
 }

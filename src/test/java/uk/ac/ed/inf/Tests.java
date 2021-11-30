@@ -1,9 +1,9 @@
 package uk.ac.ed.inf;
 
-import world.DroneArea;
+import world.drone.DroneArea;
 import world.MapPoint;
-import cafes.ProcessedCafe;
-import data.ProcessedOrder;
+import orders.Cafe;
+import orders.Order;
 import inputOutput.IOMenus;
 import inputOutput.DatabaseHandle;
 import inputOutput.WebsiteHandle;
@@ -31,8 +31,8 @@ public class Tests {
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
 
         IOMenus menus = website.fetchParsedMenus();
-        ArrayList<ProcessedCafe> processedCafes = menus.getProcessedCafes(website);
-        ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes, "27-12-2023");
+        ArrayList<Cafe> cafes = menus.getProcessedCafes(website);
+        ArrayList<Order> orders = database.getProcessedOrders(website, cafes, "27-12-2023");
 
 
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());
@@ -80,8 +80,8 @@ public class Tests {
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
 
         IOMenus menus = website.fetchParsedMenus();
-        ArrayList<ProcessedCafe> processedCafes = menus.getProcessedCafes(website);
-        ArrayList<ProcessedOrder> processedOrders = database.getProcessedOrders(website, processedCafes, "27-12-2023");
+        ArrayList<Cafe> cafes = menus.getProcessedCafes(website);
+        ArrayList<Order> orders = database.getProcessedOrders(website, cafes, "27-12-2023");
 
 
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());

@@ -1,4 +1,6 @@
-package world;
+package world.drone;
+
+import world.MapPoint;
 
 import java.util.Objects;
 

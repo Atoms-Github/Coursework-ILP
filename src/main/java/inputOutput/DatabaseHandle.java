@@ -1,8 +1,7 @@
 package inputOutput;
 
-import data.DroneAction;
-import cafes.ProcessedCafe;
-import data.ProcessedOrder;
+import orders.Cafe;
+import orders.Order;
 
 import java.sql.*;
 import java.util.*;
@@ -22,8 +21,8 @@ public class DatabaseHandle {
         this.machineName = machineName;
         this.port = port;
     }
-    public ArrayList<ProcessedOrder> getProcessedOrders(WebsiteHandle website, List<ProcessedCafe> cafes, String dateString) throws SQLException {
-        ArrayList<ProcessedOrder> processedOrders = new ArrayList<>();
+    public ArrayList<Order> getProcessedOrders(WebsiteHandle website, List<Cafe> cafes, String dateString) throws SQLException {
+        ArrayList<Order> processedOrders = new ArrayList<>();
         var orders = getOrders(dateString);
         for (IOOrder order : orders){
             processedOrders.add(order.process(website, cafes));
@@ -85,12 +84,12 @@ public class DatabaseHandle {
                         "toLongitude double," +
                         "toLatitude double)");
     }
-    public void writeTodatabase(List<DroneAction> droneActions, List<IOCompletedOrder> completedOrders) throws SQLException {
+    public void writeTodatabase(List<IODroneAction> droneActions, List<IOCompletedOrder> completedOrders) throws SQLException {
         setupOutputTables();
 
         PreparedStatement psActions = connection.prepareStatement("insert into flightpath values " +
                 "(?, ?, ?, ?, ?, ?)");
-        for (DroneAction action : droneActions){
+        for (IODroneAction action : droneActions){
             psActions.setString(1, action.orderNo);
             psActions.setDouble(2, action.from.x);
             psActions.setDouble(3, action.from.y);

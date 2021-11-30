@@ -4,8 +4,6 @@ import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
-import data.DroneAction;
-import inputOutput.DatabaseHandle;
 import routing.DroneRouter;
 
 import java.io.IOException;
@@ -23,7 +21,7 @@ public class OutputWriter {
         this.filename = filename;
         this.database = database;
     }
-    private void writeGeoJson(ArrayList<DroneAction> droneActions){
+    private void writeGeoJson(ArrayList<IODroneAction> droneActions){
         ArrayList<Point> points = new ArrayList<>();
         if (droneActions.size() > 0){
             points.add(droneActions.get(0).from.toGeoPoint());
@@ -35,7 +33,7 @@ public class OutputWriter {
 
             }
         }
-        for (DroneAction action : droneActions){
+        for (IODroneAction action : droneActions){
             double distanceFromTo = action.from.distanceTo(action.to);
             double diff15 = Math.abs(distanceFromTo - DroneRouter.SHORT_MOVE_LENGTH);
             boolean good = distanceFromTo == 0.0 || diff15 < DroneRouter.SHORT_MOVE_LENGTH / 10;
@@ -54,7 +52,7 @@ public class OutputWriter {
             throw new RuntimeException(e);
         }
     }
-    public void write(ArrayList<DroneAction> droneActions, List<IOCompletedOrder> orders) throws SQLException {
+    public void write(ArrayList<IODroneAction> droneActions, List<IOCompletedOrder> orders) throws SQLException {
         writeGeoJson(droneActions);
         database.writeTodatabase(droneActions, orders);
     }
