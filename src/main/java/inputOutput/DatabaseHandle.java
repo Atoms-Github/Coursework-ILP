@@ -1,8 +1,8 @@
-package dataDownload;
+package inputOutput;
 
-import routing.DroneAction;
-import routing.ProcessedCafe;
-import routing.ProcessedOrder;
+import data.DroneAction;
+import data.ProcessedCafe;
+import data.ProcessedOrder;
 
 import java.sql.*;
 import java.util.*;
@@ -25,13 +25,13 @@ public class DatabaseHandle {
     public ArrayList<ProcessedOrder> getProcessedOrders(WebsiteHandle website, List<ProcessedCafe> cafes, String dateString) throws SQLException {
         ArrayList<ProcessedOrder> processedOrders = new ArrayList<>();
         var orders = getOrders(dateString);
-        for (DBOrder order : orders){
+        for (DatabaseOrder order : orders){
             processedOrders.add(order.process(website, cafes));
         }
         return processedOrders;
     }
 
-    public ArrayList<DBOrder> getOrders(String dateString) throws SQLException {
+    public ArrayList<DatabaseOrder> getOrders(String dateString) throws SQLException {
         HashMap<String, ArrayList<String>> orderDetails = new HashMap<>();
         ResultSet orderDetailsResults = getConnection().createStatement().executeQuery("SELECT * FROM orderdetails");
         while (orderDetailsResults.next()){
@@ -42,11 +42,11 @@ public class DatabaseHandle {
             orderDetails.get(orderNumber).add(orderDetailsResults.getString("Item"));
         }
 
-        ArrayList<DBOrder> foundOrders = new ArrayList<>();
+        ArrayList<DatabaseOrder> foundOrders = new ArrayList<>();
         ResultSet ordersResultsSet = getConnection().createStatement().executeQuery("SELECT * FROM orders WHERE deliverydate = '" + dateString + "'");
         while (ordersResultsSet.next()){
             String orderNumber = ordersResultsSet.getString("OrderNo");
-            DBOrder newOrder = new DBOrder(
+            DatabaseOrder newOrder = new DatabaseOrder(
                     orderNumber,
                     ordersResultsSet.getDate("DeliveryDate"),
                     ordersResultsSet.getString("Customer"),

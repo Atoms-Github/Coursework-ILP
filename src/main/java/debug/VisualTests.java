@@ -1,6 +1,6 @@
 package debug;
 
-import routing.MapPoint;
+import data.MapPoint;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

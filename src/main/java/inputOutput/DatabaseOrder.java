@@ -1,19 +1,21 @@
-package dataDownload;
+package inputOutput;
 
-import routing.*;
+import data.ProcessedCafe;
+import data.ProcessedOrder;
+import data.ProcessedOrderItem;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBOrder {
+public class DatabaseOrder {
     public final String orderNo;
     public final Date deliveryDate;
     public final String customerID;
     public final String deliveryTarget;
     public final List<String> orderItems;
 
-    public DBOrder(String orderNo, Date deliveryDate, String customerID, String deliveryTarget, List<String> orderItems) {
+    public DatabaseOrder(String orderNo, Date deliveryDate, String customerID, String deliveryTarget, List<String> orderItems) {
         this.orderNo = orderNo;
         this.deliveryDate = deliveryDate;
         this.customerID = customerID;

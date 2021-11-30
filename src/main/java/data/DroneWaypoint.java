@@ -1,4 +1,4 @@
-package routing;
+package data;
 
 import java.util.Objects;
 

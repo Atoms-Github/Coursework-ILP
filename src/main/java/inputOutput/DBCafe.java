@@ -1,7 +1,6 @@
-package routing;
+package inputOutput;
 
-import dataDownload.CafeMenus;
-import dataDownload.WebsiteHandle;
+import data.ProcessedCafe;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,12 +11,12 @@ public class DBCafe {
      * The WhatThreeWords location of the cafe.
      */
     public String location;
-    public List<CafeMenus.MenuItem> menu;
+    public List<JsonMenus.MenuItem> menu;
 
 
     public ProcessedCafe process(WebsiteHandle website){
         HashMap<String, Integer> menuMap = new HashMap<>();
-        for (CafeMenus.MenuItem menuItem : menu){
+        for (JsonMenus.MenuItem menuItem : menu){
             menuMap.put(menuItem.item, menuItem.pence);
         }
         return new ProcessedCafe(menuMap, website.fetchWhatThreeWordsBox(location));

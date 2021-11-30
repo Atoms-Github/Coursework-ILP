@@ -1,11 +1,11 @@
-package dataDownload;
+package inputOutput;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-public class ParsedWTW {
+public class ParsedThreeWords {
     public JsonPoint coordinates;
     public String words;
     public static class JsonPoint{
@@ -14,8 +14,8 @@ public class ParsedWTW {
     }
 
 
-    public static ParsedWTW parseFromString(String jsonString){
-        Type listType = new TypeToken<ParsedWTW>() {}.getType();
+    public static ParsedThreeWords parseFromString(String jsonString){
+        Type listType = new TypeToken<ParsedThreeWords>() {}.getType();
         return new Gson().fromJson(jsonString, listType);
     }
 }

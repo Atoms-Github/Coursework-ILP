@@ -3,7 +3,10 @@ package routing;
 import com.mapbox.geojson.*;
 import com.mapbox.geojson.Point;
 import com.mapbox.geojson.Polygon;
-import dataDownload.CafeMenus;
+import data.DroneMoveList;
+import data.DroneWaypoint;
+import data.MapPoint;
+import inputOutput.JsonMenus;
 import debug.VisualTests;
 
 import java.awt.*;
@@ -12,14 +15,14 @@ import java.util.ArrayList;
 
 public class DroneArea {
     public ArrayList<Area> noFlyZones;
-    public CafeMenus parsedMenus;
+    public JsonMenus parsedMenus;
     public ArrayList<MapPoint> waypoints;
 
 //    private static final double clearance = 0.00001;
     private static final double CLEARANCE = DroneRouter.SHORT_MOVE_LENGTH; // This can't be anything smaller, as then we may be misaligned for next move.
 
 
-    public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks, CafeMenus parsedMenus) {
+    public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks, JsonMenus parsedMenus) {
         this.parsedMenus = parsedMenus;
         this.waypoints = new ArrayList<>();
         this.noFlyZones = new ArrayList<>();
@@ -45,7 +48,7 @@ public class DroneArea {
                 }
                 System.out.println("Loaded no-fly zone with " + polygon.coordinates().get(0).size() + " points.");
                 path.closePath();
-                waypoints.addAll(getPathsBoundingBox(path, DroneRouter.SHORT_MOVE_LENGTH)); // TODO: Refine border size.
+                waypoints.addAll(getPathsBoundingBox(path, DroneRouter.SHORT_MOVE_LENGTH * 1.1)); // Since need 1x on each edge, this'll safely allow past.
 
                 thisNoFlyZone.add(new Area(path));
                 this.noFlyZones.add(thisNoFlyZone);

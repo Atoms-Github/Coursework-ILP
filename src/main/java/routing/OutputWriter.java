@@ -4,7 +4,8 @@ import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
-import dataDownload.DatabaseHandle;
+import data.DroneAction;
+import inputOutput.DatabaseHandle;
 
 import java.io.IOException;
 import java.nio.file.Files;

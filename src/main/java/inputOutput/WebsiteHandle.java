@@ -1,7 +1,7 @@
-package dataDownload;
+package inputOutput;
 
 import com.mapbox.geojson.FeatureCollection;
-import routing.NamedMapPoint;
+import data.NamedMapPoint;
 
 import java.io.IOException;
 import java.net.URI;
@@ -50,12 +50,12 @@ public class WebsiteHandle {
         String fullFilepath = "words/" + wordsAsFilepath + "/details.json";
         String json = fetchWebsiteFile(fullFilepath);
 
-        ParsedWTW parsedWTW = ParsedWTW.parseFromString(json);
+        ParsedThreeWords parsedWTW = ParsedThreeWords.parseFromString(json);
 
         return new NamedMapPoint(parsedWTW.coordinates.lng, parsedWTW.coordinates.lat, parsedWTW.words);
     }
-    public CafeMenus fetchParsedMenus(){
-        return new CafeMenus(fetchWebsiteFile("menus/menus.json"));
+    public JsonMenus fetchParsedMenus(){
+        return new JsonMenus(fetchWebsiteFile("menus/menus.json"));
     }
     private String fetchWebsiteFile(String filename){
         // Request for fetching menus.json. This defaults to a 'GET' request.

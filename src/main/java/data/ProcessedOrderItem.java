@@ -1,4 +1,4 @@
-package routing;
+package data;
 
 public class ProcessedOrderItem {
     public final String name;

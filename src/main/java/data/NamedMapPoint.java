@@ -1,4 +1,4 @@
-package routing;
+package data;
 
 public class NamedMapPoint {
     public MapPoint point;
