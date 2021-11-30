@@ -4,7 +4,7 @@ import com.mapbox.geojson.*;
 import com.mapbox.geojson.Point;
 import com.mapbox.geojson.Polygon;
 import dataDownload.CafeMenus;
-import visualTests.VisualTests;
+import debug.VisualTests;
 
 import java.awt.*;
 import java.awt.geom.*;

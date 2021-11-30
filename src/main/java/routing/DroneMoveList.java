@@ -1,6 +1,6 @@
 package routing;
 
-import visualTests.VisualTests;
+import debug.VisualTests;
 
 import java.awt.*;
 import java.util.ArrayList;

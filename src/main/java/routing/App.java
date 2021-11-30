@@ -35,7 +35,7 @@ public class App
             bestResults = resultsMaxOrders;
             System.out.println("Best results by maximizing_orders.");
         }
-        bestResults.writeToOutput("drone-" + dateStringFilename + ".geojson", database); // TODO: Run it twice, once trying to get all orders, and post the best one. (Maybe?).
+        bestResults.writeToOutput("drone-" + dateStringFilename + ".geojson", database);
 
         System.out.println("Completed in " + (System.currentTimeMillis() - milis) + "ms.");
     }
@@ -52,3 +52,9 @@ public class App
 // TODO: Do DB order thing and only request for 1 day. We don't care about multiple days. Don't load them all.
 
 // TODO: Test the max orders thing, by running from some earlier dates. Max should win then.
+
+
+// TODO: Make sure moves forward 1 extra to get closer where it can, instead of settling for 1 off, since that may, tho unlikely, cause issue - check going close to no fly zone.
+
+
+// TODO: Test Test, especially close to no-fly-zones, and hovering. Also test 'current order' field of DB. Should no include back to shop flight.

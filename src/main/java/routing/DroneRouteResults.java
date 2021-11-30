@@ -20,7 +20,7 @@ public class DroneRouteResults {
 
     public void addMove(ProcessedOrder order, DroneMoveList moves){
         // TODO: Check that return to shop isn't in this list with this order.
-        ArrayList<DroneAction> actions = moves.genDroneActions(order, exactCurrentLocation); // TODO: Need to increase accuracy everywhere. Need to know exact start location. // Nice. I've got 'currentLocation' :).
+        ArrayList<DroneAction> actions = moves.genDroneActions(order, exactCurrentLocation);
         int movesUsed = actions.size();
         remainingShortMoves -= movesUsed;
 
@@ -52,10 +52,4 @@ public class DroneRouteResults {
         return totalMoney;
     }
 }
-
-
-
-
-// TODO: Replace all ArrayLists with List where possible.
-
 // TODO: Don't use DroneWaypoint classname, since waypoint is something else.

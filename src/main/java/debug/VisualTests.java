@@ -1,4 +1,4 @@
-package visualTests;
+package debug;
 
 import routing.MapPoint;
 
