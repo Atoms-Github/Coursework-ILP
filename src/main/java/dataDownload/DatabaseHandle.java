@@ -43,7 +43,7 @@ public class DatabaseHandle {
         }
 
         ArrayList<DBOrder> foundOrders = new ArrayList<>();
-        ResultSet ordersResultsSet = getConnection().createStatement().executeQuery("SELECT * FROM orders WHERE deliverydate = '" + dateString + "'");  // TODO: Query from input.
+        ResultSet ordersResultsSet = getConnection().createStatement().executeQuery("SELECT * FROM orders WHERE deliverydate = '" + dateString + "'");
         while (ordersResultsSet.next()){
             String orderNumber = ordersResultsSet.getString("OrderNo");
             DBOrder newOrder = new DBOrder(

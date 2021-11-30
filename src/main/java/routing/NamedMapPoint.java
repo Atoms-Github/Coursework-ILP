@@ -1,7 +1,5 @@
 package routing;
 
-import uk.ac.ed.inf.MapPoint;
-
 public class NamedMapPoint {
     public MapPoint point;
     public String whatThreeWordsLoc;

@@ -5,8 +5,6 @@ import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 import dataDownload.DatabaseHandle;
-import dataDownload.WebsiteHandle;
-import uk.ac.ed.inf.DroneUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,8 +34,8 @@ public class OutputWriter {
         }
         for (DroneAction action : droneActions){
             double distanceFromTo = action.from.distanceTo(action.to);
-            double diff15 = Math.abs(distanceFromTo - DroneUtils.SHORT_MOVE_LENGTH);
-            boolean good = distanceFromTo == 0.0 || diff15 < DroneUtils.SHORT_MOVE_LENGTH / 10;
+            double diff15 = Math.abs(distanceFromTo - DroneRouter.SHORT_MOVE_LENGTH);
+            boolean good = distanceFromTo == 0.0 || diff15 < DroneRouter.SHORT_MOVE_LENGTH / 10;
             if (!good){
                 throw new RuntimeException("Bad distance! " + distanceFromTo + " : " + diff15); // TODO: Remove. Maybe write to stderr.
             }

@@ -1,18 +1,11 @@
 package visualTests;
 
-import dataDownload.CafeMenus;
-import dataDownload.DatabaseHandle;
-import dataDownload.WebsiteHandle;
-import routing.DroneArea;
-import routing.ProcessedCafe;
-import routing.ProcessedOrder;
-import uk.ac.ed.inf.MapPoint;
+import routing.MapPoint;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.*;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;

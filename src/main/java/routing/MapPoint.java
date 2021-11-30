@@ -1,12 +1,14 @@
-package uk.ac.ed.inf;
+package routing;
 
 
 import com.mapbox.geojson.Point;
 
 
+import java.util.List;
 import java.util.Objects;
 
 public class MapPoint {
+    public static final double CLOSE_TOLERANCE = 0.00015;
     /**
      * X represents the point's longitude.
      */
@@ -35,6 +37,19 @@ public class MapPoint {
     public MapPoint(double x, double y){
         this.x = x;
         this.y = y;
+    }
+
+    public MapPoint getClosestPoint(List<MapPoint> points){
+        MapPoint closest = null;
+        double bestDistance = Double.MAX_VALUE;
+        for (MapPoint point : points){
+            double distance = this.distanceTo(point);
+            if (distance < bestDistance){
+                bestDistance = distance;
+                closest = point;
+            }
+        }
+        return closest;
     }
 
     @Override
@@ -92,7 +107,7 @@ public class MapPoint {
      * @return Whether the points are close to each other (i.e. within 0.00015 degrees).
      */
     public boolean closeTo(MapPoint other){
-        return this.distanceTo(other) < DroneUtils.TOLERANCE;
+        return this.distanceTo(other) < CLOSE_TOLERANCE;
     }
     public double angleTo(MapPoint other){
         double diffY = other.y - y;

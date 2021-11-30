@@ -4,8 +4,6 @@ import com.mapbox.geojson.*;
 import com.mapbox.geojson.Point;
 import com.mapbox.geojson.Polygon;
 import dataDownload.CafeMenus;
-import uk.ac.ed.inf.DroneUtils;
-import uk.ac.ed.inf.MapPoint;
 import visualTests.VisualTests;
 
 import java.awt.*;
@@ -18,7 +16,7 @@ public class DroneArea {
     public ArrayList<MapPoint> waypoints;
 
 //    private static final double clearance = 0.00001;
-    private static final double CLEARANCE = DroneUtils.SHORT_MOVE_LENGTH; // This can't be anything smaller, as then we may be misaligned for next move.
+    private static final double CLEARANCE = DroneRouter.SHORT_MOVE_LENGTH; // This can't be anything smaller, as then we may be misaligned for next move.
 
 
     public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks, CafeMenus parsedMenus) {
@@ -47,12 +45,22 @@ public class DroneArea {
                 }
                 System.out.println("Loaded no-fly zone with " + polygon.coordinates().get(0).size() + " points.");
                 path.closePath();
-                waypoints.addAll(DroneUtils.getPathsBoundingBox(path, DroneUtils.SHORT_MOVE_LENGTH)); // TODO: Refine border size.
+                waypoints.addAll(getPathsBoundingBox(path, DroneRouter.SHORT_MOVE_LENGTH)); // TODO: Refine border size.
 
                 thisNoFlyZone.add(new Area(path));
                 this.noFlyZones.add(thisNoFlyZone);
             }
         }
+    }
+
+    public static ArrayList<MapPoint> getPathsBoundingBox(Path2D path, double border){
+        ArrayList<MapPoint> points = new ArrayList<>();
+        var bounds = path.getBounds2D();
+        points.add(new MapPoint(bounds.getX() - border, bounds.getY() - border));
+        points.add(new MapPoint(bounds.getX() + bounds.getWidth() + border, bounds.getY() - border));
+        points.add(new MapPoint(bounds.getX() - border, bounds.getY() + bounds.getHeight() + border));
+        points.add(new MapPoint(bounds.getX() + bounds.getWidth() + border, bounds.getY() + bounds.getHeight() + border));
+        return points;
     }
 
     public DroneMoveList pathfind_recursive(MapPoint start, MapPoint end, int depth){
@@ -110,8 +118,8 @@ public class DroneArea {
 
         // TODO: Use angle to.
 
-        Rectangle2D.Double startRect = new Rectangle2D.Double(start.x, start.y,  DroneUtils.SHORT_MOVE_LENGTH, DroneUtils.SHORT_MOVE_LENGTH);
-        Rectangle2D.Double endRect = new Rectangle2D.Double(end.x, end.y,  DroneUtils.SHORT_MOVE_LENGTH, DroneUtils.SHORT_MOVE_LENGTH);
+        Rectangle2D.Double startRect = new Rectangle2D.Double(start.x, start.y,  DroneRouter.SHORT_MOVE_LENGTH, DroneRouter.SHORT_MOVE_LENGTH);
+        Rectangle2D.Double endRect = new Rectangle2D.Double(end.x, end.y,  DroneRouter.SHORT_MOVE_LENGTH, DroneRouter.SHORT_MOVE_LENGTH);
         VisualTests.drawArea(new Area(startRect), Color.GREEN);
         VisualTests.drawArea(new Area(endRect), Color.RED);
 

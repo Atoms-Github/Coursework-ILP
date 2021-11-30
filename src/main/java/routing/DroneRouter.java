@@ -1,13 +1,13 @@
 package routing;
 
 import dataDownload.CafeMenus;
-import uk.ac.ed.inf.DroneUtils;
-import uk.ac.ed.inf.MapPoint;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DroneRouter {
+    public static final double SHORT_MOVE_LENGTH = 0.00015;
+    public static final double UNLUCKY_ZIG_ZAG_MULTIPLIER = 1.15; // See report for where this comes from. // TODO: Real calculation.
     private final DroneArea area;
     public final CafeMenus menus;
     public final ArrayList<ProcessedCafe> cafes; // I know calling this final doesn't make the interior final, but I'll use the idea that it does.
@@ -32,6 +32,7 @@ public class DroneRouter {
 
             if (bestOrder != null){
                 ordersToGo.remove(bestOrder);
+                tracker.completeOrder(bestOrder);
                 DroneMoveList movesForBestOrder = bestOrder.getDroneMovesForOrder(results.currentLocation, area);
                 results.addOrder(bestOrder, movesForBestOrder);
             }else{
@@ -64,7 +65,7 @@ public class DroneRouter {
             routeToCompleteOrder.addRoutedDestination(MapPoint.APPLETON_TOWER, area);
             int totalShortMovesEstimate = routeToCompleteOrder.shortMoveSafeEstimate();
             // Round up. See report for unlucky zig zag modifier.
-            int totalShortMovesIfUnlucky = (int)((double)totalShortMovesEstimate * DroneUtils.UNLUCKY_ZIG_ZAG_MULTIPLIER) + 1;
+            int totalShortMovesIfUnlucky = (int)((double)totalShortMovesEstimate * UNLUCKY_ZIG_ZAG_MULTIPLIER) + 1;
 
             // Don't do this order if we're not going to make it back to appleton afterwards.
             if (totalShortMovesIfUnlucky > maxMoves){

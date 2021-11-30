@@ -1,9 +1,7 @@
 package routing;
 
-import uk.ac.ed.inf.DroneUtils;
-import uk.ac.ed.inf.MapPoint;
-
 public class DroneAction {
+    public static final int DRONE_ANGLE_HOVER = -999;
     public final ProcessedOrder order;
     public final int angle;
     public final MapPoint from;
@@ -23,6 +21,6 @@ public class DroneAction {
         return new DroneAction(order, angle, from, to);
     }
     public static DroneAction hoverAction(ProcessedOrder order, MapPoint location){
-        return new DroneAction(order, DroneUtils.DRONE_ANGLE_HOVER, location, location);
+        return new DroneAction(order, DRONE_ANGLE_HOVER, location, location);
     }
 }

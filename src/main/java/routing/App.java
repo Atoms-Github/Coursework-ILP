@@ -1,4 +1,4 @@
-package uk.ac.ed.inf;
+package routing;
 
 import dataDownload.CafeMenus;
 import dataDownload.DatabaseHandle;
@@ -40,3 +40,15 @@ public class App
         System.out.println("Completed in " + (System.currentTimeMillis() - milis) + "ms.");
     }
 }
+// TODO: Check dependency output thing for geobox json, as mentioned. Runtime dependency.
+
+
+
+// TODO: Wash everything with private, and getters setters, or final.
+
+
+
+
+// TODO: Do DB order thing and only request for 1 day. We don't care about multiple days. Don't load them all.
+
+// TODO: Test the max orders thing, by running from some earlier dates. Max should win then.

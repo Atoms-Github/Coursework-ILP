@@ -1,7 +1,5 @@
 package routing;
 
-import uk.ac.ed.inf.MapPoint;
-
 import java.util.Objects;
 
 public class DroneWaypoint {

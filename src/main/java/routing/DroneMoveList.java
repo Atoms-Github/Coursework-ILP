@@ -1,13 +1,11 @@
 package routing;
 
-import uk.ac.ed.inf.DroneUtils;
-import uk.ac.ed.inf.MapPoint;
 import visualTests.VisualTests;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-import static uk.ac.ed.inf.DroneUtils.SHORT_MOVE_LENGTH;
+import static routing.DroneRouter.SHORT_MOVE_LENGTH;
 
 public class DroneMoveList {
     // Yes, having this also include the start point makes us create and destroy a fair number
@@ -60,7 +58,7 @@ public class DroneMoveList {
     }
     public int shortMoveSafeEstimate(){
         // Round up. See report for unlucky zig zag modifier.
-        return (int) (totalMoveLength() * DroneUtils.UNLUCKY_ZIG_ZAG_MULTIPLIER / SHORT_MOVE_LENGTH) + 1 /* Round up */
+        return (int) (totalMoveLength() * DroneRouter.UNLUCKY_ZIG_ZAG_MULTIPLIER / SHORT_MOVE_LENGTH) + 1 /* Round up */
                 + points.size() /* Assuming max 1 hover per waypoint */
                 + points.size() /* Assuming 1 excess move wasted to get in closer to point */;
     }
@@ -74,8 +72,8 @@ public class DroneMoveList {
             DroneWaypoint toPoint = points.get(firstIndex + 1);
             int iterations = 0;
             while (!exactCurrentLocation.closeTo(toPoint.point)){
-                double angleExact = exactCurrentLocation.angleTo(toPoint.point); // TODO: Need to add/subtract 90 probs.
-                double angleRounded = DroneUtils.round(angleExact, 10); // Round to nearest 10.
+                double angleExact = exactCurrentLocation.angleTo(toPoint.point);
+                double angleRounded = (double) (10 * (Math.round(angleExact / 10))); // Round to nearest 10.
                 int droneAngle = (int) angleRounded;
                 MapPoint nextPoint = exactCurrentLocation.nextPosition(droneAngle, SHORT_MOVE_LENGTH);
                 actions.add(DroneAction.moveActionOrder(currentOrder, droneAngle, exactCurrentLocation, nextPoint));

@@ -1,9 +1,6 @@
 package dataDownload;
 
-import org.apache.derby.client.am.DateTime;
 import routing.*;
-import uk.ac.ed.inf.DroneUtils;
-import uk.ac.ed.inf.MapPoint;
 
 import java.sql.Date;
 import java.util.ArrayList;

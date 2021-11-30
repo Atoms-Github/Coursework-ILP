@@ -1,11 +1,7 @@
 package routing;
 
-import dataDownload.CafeMenus;
-import uk.ac.ed.inf.DroneUtils;
-import uk.ac.ed.inf.MapPoint;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 public class ProcessedOrder {
     public final String orderNo;
@@ -32,8 +28,7 @@ public class ProcessedOrder {
         DroneMoveList totalRoute = new DroneMoveList(new ArrayList<>());
         totalRoute.points.add(new DroneWaypoint(start, false));
         while (orderShops.size() > 0){
-            // TODO: Add hover information.
-            MapPoint closestShop = DroneUtils.getClosestPoint(orderShops, start);
+            MapPoint closestShop = start.getClosestPoint(orderShops);
             DroneMoveList pathToClosest = area.pathfind(totalRoute.getLastLocation(), closestShop);
             pathToClosest.points.get(pathToClosest.points.size() - 1).mustHover = true;
             totalRoute.append(pathToClosest);

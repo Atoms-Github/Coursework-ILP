@@ -1,7 +1,6 @@
 package routing;
 
 import dataDownload.DatabaseHandle;
-import uk.ac.ed.inf.MapPoint;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package routing;
 
 import dataDownload.CafeMenus;
-import uk.ac.ed.inf.MapPoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ public class CafeTracker {
     public CafeMenus menus;
     public ArrayList<ProcessedCafe> cafes;
     public HashMap<ProcessedCafe, Integer> itemsLeftPerCafe; // Storing this here instead of in cafes, so ProcessedCafes can be immutable.
-    // TODO: Decrement itemsLeftPerCafe somewhere.
 
     public CafeTracker(CafeMenus menus, ArrayList<ProcessedCafe> cafes, List<ProcessedOrder> orders) {
         this.menus = menus;
@@ -25,6 +23,11 @@ public class CafeTracker {
                 assert this.itemsLeftPerCafe.containsKey(item.shop); // If not, then we've been passed orders which contain a cafe not in the list of cafes.
                 this.itemsLeftPerCafe.put(item.shop, this.itemsLeftPerCafe.get(item.shop) + 1);
             }
+        }
+    }
+    public void completeOrder(ProcessedOrder order){
+        for (ProcessedOrderItem item : order.orderItems){
+            this.itemsLeftPerCafe.put(item.shop, this.itemsLeftPerCafe.get(item.shop) - 1);
         }
     }
 
