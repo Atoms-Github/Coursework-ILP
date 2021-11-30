@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class DroneRouteResults {
     public int remainingShortMoves;
     public MapPoint currentLocation; // This is for pathfinding. Not exact movement. I.e. 'Closest destination'.
-    public MapPoint exactCurrentLocation; // TODO use. This is for converting the path to a list of small moves. Not for pathfinding.
+    public MapPoint exactCurrentLocation; // This is for converting the path to a list of small moves. Not for pathfinding.
     public ArrayList<ProcessedOrder> completedOrders = new ArrayList<>();
     ArrayList<DroneAction> droneActions = new ArrayList<>();
 

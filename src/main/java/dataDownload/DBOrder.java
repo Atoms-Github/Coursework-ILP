@@ -11,9 +11,9 @@ public class DBOrder {
     public final Date deliveryDate;
     public final String customerID;
     public final String deliveryTarget;
-    public final ArrayList<String> orderItems;
+    public final List<String> orderItems;
 
-    public DBOrder(String orderNo, Date deliveryDate, String customerID, String deliveryTarget, ArrayList<String> orderItems) {
+    public DBOrder(String orderNo, Date deliveryDate, String customerID, String deliveryTarget, List<String> orderItems) {
         this.orderNo = orderNo;
         this.deliveryDate = deliveryDate;
         this.customerID = customerID;

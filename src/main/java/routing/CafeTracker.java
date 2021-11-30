@@ -8,10 +8,10 @@ import java.util.List;
 
 public class CafeTracker {
     public CafeMenus menus;
-    public ArrayList<ProcessedCafe> cafes;
+    public List<ProcessedCafe> cafes;
     public HashMap<ProcessedCafe, Integer> itemsLeftPerCafe; // Storing this here instead of in cafes, so ProcessedCafes can be immutable.
 
-    public CafeTracker(CafeMenus menus, ArrayList<ProcessedCafe> cafes, List<ProcessedOrder> orders) {
+    public CafeTracker(CafeMenus menus, List<ProcessedCafe> cafes, List<ProcessedOrder> orders) {
         this.menus = menus;
         this.cafes = cafes;
         this.itemsLeftPerCafe = new HashMap<>();

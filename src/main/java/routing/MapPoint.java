@@ -126,7 +126,7 @@ public class MapPoint {
      *              0 degrees means east, then going counter clockwise. Can also use -999 to represent hovering - no movement.
      * @return The new position that the drone would be after taking the specified move.
      */
-    public MapPoint nextPosition(int angle, double move_distance){ // TODO: Remove param.
+    public MapPoint nextPosition(int angle, double move_distance){
         // Special 'hover' command.
         if (angle == -999){
             return new MapPoint(this.x, this.y);

@@ -27,7 +27,7 @@ public class OutputWriter {
             for (int i = 1; i < droneActions.size(); i++) {
                 double distanceToFrom = droneActions.get(i - 1).to.distanceTo(droneActions.get(i).from);
                 if (distanceToFrom > 0.0){
-                    throw new RuntimeException("Jumped!"); // TODO: Remove. Maybe write to stderr.
+                    System.err.println("GeoJson seemed to jump?");
                 }
 
             }
@@ -37,7 +37,7 @@ public class OutputWriter {
             double diff15 = Math.abs(distanceFromTo - DroneRouter.SHORT_MOVE_LENGTH);
             boolean good = distanceFromTo == 0.0 || diff15 < DroneRouter.SHORT_MOVE_LENGTH / 10;
             if (!good){
-                throw new RuntimeException("Bad distance! " + distanceFromTo + " : " + diff15); // TODO: Remove. Maybe write to stderr.
+                System.err.println("Bad distance! " + distanceFromTo + " : " + diff15);
             }
             points.add(action.to.toGeoPoint());
         }

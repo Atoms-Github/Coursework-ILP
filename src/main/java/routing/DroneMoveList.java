@@ -4,15 +4,16 @@ import visualTests.VisualTests;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import static routing.DroneRouter.SHORT_MOVE_LENGTH;
 
 public class DroneMoveList {
     // Yes, having this also include the start point makes us create and destroy a fair number
     // of unnecessary points, but it makes the code cleaner overall.
-    public ArrayList<DroneWaypoint> points;
+    public List<DroneWaypoint> points;
 
-    public DroneMoveList(ArrayList<DroneWaypoint> points) {
+    public DroneMoveList(List<DroneWaypoint> points) {
         this.points = points;
     }
     public DroneMoveList() {
