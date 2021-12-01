@@ -44,11 +44,11 @@ public class App
         System.out.println("Completed in " + (System.currentTimeMillis() - startTimeMilis) + "ms.");
     }
 }
-// TODO: Check dependency output thing for geobox json, as mentioned. Runtime dependency.
 
 
 
-// TODO: Wash everything with private, and getters setters, or final.
+
+
 
 
 
@@ -62,3 +62,5 @@ public class App
 
 
 // TODO: Test Test, especially close to no-fly-zones, and hovering. Also test 'current order' field of DB. Should no include back to shop flight.
+
+// TODO: Debug print, with colour per order?

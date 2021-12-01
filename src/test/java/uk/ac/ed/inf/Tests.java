@@ -94,5 +94,3 @@ public class Tests {
         assertFalse(result);
     }
 }
-
-// TODO: Make it all run faster. Probs just by doing depth 2.

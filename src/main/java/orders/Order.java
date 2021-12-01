@@ -2,7 +2,7 @@ package orders;
 
 import world.*;
 import world.drone.DroneArea;
-import world.drone.DroneWaypoint;
+import world.drone.DroneTaskPoint;
 import world.drone.MoveList;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class Order {
     public MoveList getDroneMovesForOrder(MapPoint start, DroneArea area){
         ArrayList<MapPoint> orderShops = getShopLocations();
         MoveList totalRoute = new MoveList(new ArrayList<>());
-        totalRoute.points.add(new DroneWaypoint(start, false));
+        totalRoute.points.add(new DroneTaskPoint(start, false));
         while (orderShops.size() > 0){
             MapPoint closestShop = start.getClosestPoint(orderShops);
             MoveList pathToClosest = area.pathfind(totalRoute.getLastLocation(), closestShop);

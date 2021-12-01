@@ -31,26 +31,26 @@ public class DatabaseHandle {
     }
 
     public ArrayList<IOOrder> getOrders(String dateString) throws SQLException {
-        HashMap<String, ArrayList<String>> orderDetails = new HashMap<>();
-        ResultSet orderDetailsResults = getConnection().createStatement().executeQuery("SELECT * FROM orderdetails");
-        while (orderDetailsResults.next()){
-            String orderNumber = orderDetailsResults.getString("OrderNo");
-            if (!orderDetails.containsKey(orderNumber)){
-                orderDetails.put(orderNumber, new ArrayList<>());
-            }
-            orderDetails.get(orderNumber).add(orderDetailsResults.getString("Item"));
-        }
 
+        PreparedStatement detailsPrepared = getConnection().prepareStatement("SELECT * FROM orderdetails WHERE orderno = ?");
         ArrayList<IOOrder> foundOrders = new ArrayList<>();
         ResultSet ordersResultsSet = getConnection().createStatement().executeQuery("SELECT * FROM orders WHERE deliverydate = '" + dateString + "'");
         while (ordersResultsSet.next()){
             String orderNumber = ordersResultsSet.getString("OrderNo");
+
+            ArrayList<String> orderItems = new ArrayList<>();
+            detailsPrepared.setString(1, orderNumber);
+            ResultSet detailsResults = detailsPrepared.executeQuery();
+            while (detailsResults.next()){
+                orderItems.add(detailsResults.getString("Item"));
+            }
+
             IOOrder newOrder = new IOOrder(
                     orderNumber,
                     ordersResultsSet.getDate("DeliveryDate"),
                     ordersResultsSet.getString("Customer"),
                     ordersResultsSet.getString("DeliverTo"),
-                    orderDetails.getOrDefault(orderNumber, new ArrayList<>())
+                    orderItems
             );
             foundOrders.add(newOrder);
         }

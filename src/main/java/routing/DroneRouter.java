@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DroneRouter {
     public static final double SHORT_MOVE_LENGTH = 0.00015;
-    public static final double UNLUCKY_ZIG_ZAG_MULTIPLIER = 1.15; // See report for where this comes from. // TODO: Real calculation.
+    public static final double UNLUCKY_ZIG_ZAG_MULTIPLIER = 1.15; // See report for where this comes from.
     private final DroneArea area;
     public final IOMenus menus;
     public final ArrayList<Cafe> cafes; // I know calling this final doesn't make the interior final, but I'll use the idea that it does.

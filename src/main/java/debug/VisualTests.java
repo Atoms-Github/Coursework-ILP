@@ -13,7 +13,7 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class VisualTests { // TODO: Remove?
+public class VisualTests {
     private static VisualTests visual;
     private final ArrayList<ColouredArea> shapes = new ArrayList<>();
     public static void setupVisualTest(){

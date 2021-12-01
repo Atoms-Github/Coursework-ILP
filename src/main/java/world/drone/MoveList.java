@@ -14,9 +14,9 @@ import static routing.DroneRouter.SHORT_MOVE_LENGTH;
 public class MoveList {
     // Yes, having this also include the start point makes us create and destroy a fair number
     // of unnecessary points, but it makes the code cleaner overall.
-    public List<DroneWaypoint> points;
+    public List<DroneTaskPoint> points;
 
-    public MoveList(List<DroneWaypoint> points) {
+    public MoveList(List<DroneTaskPoint> points) {
         this.points = points;
     }
     public MoveList() {
@@ -26,7 +26,7 @@ public class MoveList {
     public void append(MoveList other){
         // If we've got some points, check that our end lines up with other's start.
         if (points.size() > 0){
-            DroneWaypoint firstOtherPoint = other.points.remove(0);
+            DroneTaskPoint firstOtherPoint = other.points.remove(0);
             if (!firstOtherPoint.point.equals(getLastLocation())){
                 throw new IllegalArgumentException("First must match last! Last: " + getLastLocation() + " first: " + firstOtherPoint.point);
             }
@@ -46,7 +46,7 @@ public class MoveList {
     public MapPoint getLastLocation(){
         return points.get(points.size() - 1).point;
     }
-    public DroneWaypoint getLastWaypoint(){
+    public DroneTaskPoint getLastWaypoint(){
         return points.get(points.size() - 1);
     }
 
@@ -72,8 +72,8 @@ public class MoveList {
         MapPoint exactCurrentLocation = exactStartLocation;
         ArrayList<IODroneAction> actions = new ArrayList<>();
         for (int firstIndex = 0; firstIndex < points.size() - 1; firstIndex++) {
-            DroneWaypoint fromPoint = points.get(firstIndex);
-            DroneWaypoint toPoint = points.get(firstIndex + 1);
+            DroneTaskPoint fromPoint = points.get(firstIndex);
+            DroneTaskPoint toPoint = points.get(firstIndex + 1);
             int iterations = 0;
             while (!exactCurrentLocation.closeTo(toPoint.point)){
                 double angleExact = exactCurrentLocation.angleTo(toPoint.point);
@@ -82,16 +82,9 @@ public class MoveList {
                 MapPoint nextPoint = exactCurrentLocation.nextPosition(droneAngle, SHORT_MOVE_LENGTH);
                 actions.add(IODroneAction.moveActionOrder(orderNo, droneAngle, exactCurrentLocation, nextPoint));
                 iterations ++;
-                if (iterations > 10000){
-                    int e = 2;
-                    VisualTests.setupVisualTest();
-                    VisualTests.drawPoint(exactCurrentLocation, Color.GREEN); // Green ontop of pink.
-                    VisualTests.drawPoint(toPoint.point, Color.RED);
-                    VisualTests.drawPoint(nextPoint, Color.PINK);
-                    while(true){
-
-                    }
-//                    throw new RuntimeException("Can't find small route."); // TODO.
+                if (iterations > 50_000){
+                    System.err.println("Failed to break long line into small drone moves.");
+                    break;
                 }
                 exactCurrentLocation = nextPoint;
             }

@@ -26,7 +26,6 @@ public class DroneRouteResults {
     }
 
     public void addMove(String orderNo, MoveList moves){
-        // TODO: Check that return to shop isn't in this list with this order.
         ArrayList<IODroneAction> actions = moves.genDroneActions(orderNo, exactCurrentLocation);
         int movesUsed = actions.size();
         remainingShortMoves -= movesUsed;
@@ -65,4 +64,3 @@ public class DroneRouteResults {
         return totalMoney;
     }
 }
-// TODO: Don't use DroneWaypoint classname, since waypoint is something else.

@@ -4,11 +4,11 @@ import world.MapPoint;
 
 import java.util.Objects;
 
-public class DroneWaypoint {
+public class DroneTaskPoint {
     public MapPoint point;
     public boolean mustHover;
 
-    public DroneWaypoint(MapPoint point, boolean mustHover) {
+    public DroneTaskPoint(MapPoint point, boolean mustHover) {
         this.point = point;
         this.mustHover = mustHover;
     }
@@ -17,7 +17,7 @@ public class DroneWaypoint {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DroneWaypoint that = (DroneWaypoint) o;
+        DroneTaskPoint that = (DroneTaskPoint) o;
         return mustHover == that.mustHover && Objects.equals(point, that.point);
     }
 

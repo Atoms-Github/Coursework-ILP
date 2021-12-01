@@ -7,8 +7,6 @@ import routing.DroneRouter;
 import inputOutput.IOMenus;
 import debug.VisualTests;
 import world.MapPoint;
-import world.drone.DroneWaypoint;
-import world.drone.MoveList;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -41,7 +39,7 @@ public class DroneArea {
             if (feature.geometry() instanceof Polygon){
                 Polygon polygon = (Polygon) feature.geometry();
                 Area thisNoFlyZone = new Area();
-                assert polygon.coordinates().size() == 1; // TODO: Maybe put into loop.
+                assert polygon.coordinates().size() == 1;
                 Path2D path = new Path2D.Double();
                 path.moveTo(polygon.coordinates().get(0).get(0).longitude(), polygon.coordinates().get(0).get(0).latitude());
                 for (Point p : polygon.coordinates().get(0)){
@@ -70,19 +68,19 @@ public class DroneArea {
     public MoveList pathfind_recursive(MapPoint start, MapPoint end, int depth){
         if (canFlyBetween(start, end)){
             var moveList = new MoveList(new ArrayList<>());
-            moveList.points.add(new DroneWaypoint(start, false));
-            moveList.points.add(new DroneWaypoint(end, false));
+            moveList.points.add(new DroneTaskPoint(start, false));
+            moveList.points.add(new DroneTaskPoint(end, false));
             return moveList;
         }else{ // Can't go straight. Need to use waypoints.
             // If we're not at max depth, try to go deeper.
-            if (depth < 3) {
+            if (depth < 2) {
                 MoveList shortestGoodMove = null;
                 double shortestDistance = Double.MAX_VALUE;
                 for (MapPoint waypoint : waypoints) {
                     if (canFlyBetween(start, waypoint)) {
                         MoveList maybeRoute = pathfind_recursive(waypoint, end, depth + 1);
                         if (maybeRoute != null) {
-                            maybeRoute.points.add(0, new DroneWaypoint(start, false));
+                            maybeRoute.points.add(0, new DroneTaskPoint(start, false));
                             double myDistance = maybeRoute.totalMoveLength();
                             if (myDistance < shortestDistance){
                                 shortestDistance = myDistance;
@@ -118,9 +116,7 @@ public class DroneArea {
         Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-width / 2.0, -CLEARANCE, width, CLEARANCE * 2.0);
         AffineTransform at = new AffineTransform();
         at.translate(center.x, center.y);
-        at.rotate(Math.atan2(diff.y, diff.x));
-
-        // TODO: Use angle to.
+        at.rotate(Math.toRadians(start.angleTo(end)));
 
         Rectangle2D.Double startRect = new Rectangle2D.Double(start.x, start.y,  DroneRouter.SHORT_MOVE_LENGTH, DroneRouter.SHORT_MOVE_LENGTH);
         Rectangle2D.Double endRect = new Rectangle2D.Double(end.x, end.y,  DroneRouter.SHORT_MOVE_LENGTH, DroneRouter.SHORT_MOVE_LENGTH);

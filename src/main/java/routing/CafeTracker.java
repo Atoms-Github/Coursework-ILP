@@ -51,4 +51,3 @@ public class CafeTracker {
     }
 }
 
-// TODO: Could add garbo @NotNulls everywhere.

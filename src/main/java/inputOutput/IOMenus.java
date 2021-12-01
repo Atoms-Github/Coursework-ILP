@@ -33,7 +33,7 @@ public class IOMenus {
         this.cafes = new Gson().<ArrayList<IOCafe>>fromJson(jsonString, listType);
     }
 
-    // TODO: Tidy?
+
     public ArrayList<Cafe> getProcessedCafes(WebsiteHandle website){
         ArrayList<Cafe> cafes = new ArrayList<>();
         for (IOCafe cafe: this.cafes){
