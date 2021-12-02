@@ -4,6 +4,9 @@ import world.NamedMapPoint;
 
 import java.util.HashMap;
 
+/**
+ * Represents a cafe in the drone's world.
+ */
 public class Cafe {
     public final HashMap<String, Integer> menu;
     public final NamedMapPoint location;
