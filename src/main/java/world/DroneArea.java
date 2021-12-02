@@ -72,7 +72,7 @@ public class DroneArea {
             return moveList;
         }else{ // Can't go straight. Need to use waypoints.
             // If we're not at max depth, try to go deeper.
-            if (depth < 2) {
+            if (depth < 2 /*Use constant defined somewhere?*/) {
                 MoveList shortestGoodMove = null;
                 double shortestDistance = Double.MAX_VALUE;
                 for (MapPoint waypoint : waypoints) {

@@ -94,4 +94,14 @@ public class Tests {
         }
         assertFalse(result);
     }
+    @Test
+    public void testBadWobble() {
+        MapPoint start = new MapPoint(0.0,0.0);
+        MapPoint five = start.nextPosition(5, 1.0);
+        MapPoint ten = start.nextPosition(10, 1.0);
+        MapPoint diff = new MapPoint(five.x - ten.x, five.y - ten.y);
+        System.out.println(diff.distanceTo(start));
+        System.out.println(("Perfect: " + five));
+        System.out.println(("Bad: " + ten));
+    }
 }
