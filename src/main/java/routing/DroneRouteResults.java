@@ -8,6 +8,7 @@ import world.MapPoint;
 import orders.Order;
 import inputOutput.DatabaseHandle;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class DroneRouteResults {
         addMove(order.orderNo, moves);
     }
 
-    public void writeToOutput(String filename, DatabaseHandle database) throws SQLException {
+    public void writeToOutput(String filename, DatabaseHandle database) throws SQLException, IOException {
         System.out.println("Writing to database. Total value: " + getTotalPrice());
         OutputWriter writer = new OutputWriter(filename, database);
         writer.write(droneActions, getOutputOrders());

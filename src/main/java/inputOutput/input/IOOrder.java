@@ -5,6 +5,7 @@ import orders.Cafe;
 import orders.Order;
 import orders.OrderItem;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class IOOrder {
         this.deliveryTarget = deliveryTarget;
         this.orderItems = orderItems;
     }
-    public Order process(WebsiteHandle handle, List<Cafe> cafes){
+    public Order process(WebsiteHandle handle, List<Cafe> cafes) throws IOException, InterruptedException {
         ArrayList<OrderItem> orderItems = new ArrayList<>();
         for (String orderItemName : this.orderItems){
             for (Cafe cafe : cafes){

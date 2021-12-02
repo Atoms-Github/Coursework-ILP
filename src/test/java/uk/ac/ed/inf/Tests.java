@@ -9,6 +9,7 @@ import inputOutput.DatabaseHandle;
 import inputOutput.WebsiteHandle;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ public class Tests {
 
 
     @Test
-    public void testFlyBetween() throws SQLException {
+    public void testFlyBetween() throws SQLException, IOException, InterruptedException {
         WebsiteHandle website = new WebsiteHandle("localhost", "9898");
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
 
@@ -75,7 +76,7 @@ public class Tests {
         }
     }
     @Test
-    public void testFlyBetweenVisual() throws SQLException {
+    public void testFlyBetweenVisual() throws SQLException, IOException, InterruptedException {
         WebsiteHandle website = new WebsiteHandle("localhost", "9898");
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
 

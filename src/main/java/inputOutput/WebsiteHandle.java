@@ -31,15 +31,15 @@ public class WebsiteHandle {
         this.port = port;
     }
 
-    public FeatureCollection fetchNoFlyZones(){
+    public FeatureCollection fetchNoFlyZones() throws IOException, InterruptedException {
         String noFlyString = fetchWebsiteFile("buildings/no-fly-zones.geojson");
         return FeatureCollection.fromJson(noFlyString);
     }
-    public FeatureCollection fetchLandmarks(){
+    public FeatureCollection fetchLandmarks() throws IOException, InterruptedException {
         String noFlyString = fetchWebsiteFile("buildings/landmarks.geojson");
         return FeatureCollection.fromJson(noFlyString);
     }
-    public NamedMapPoint fetchWhatThreeWordsBox(String wtwString){
+    public NamedMapPoint fetchWhatThreeWordsBox(String wtwString) throws IOException, InterruptedException {
         String[] split = wtwString.split("\\.");
         if (split.length != 3){
             throw new IllegalArgumentException("Invalid what three words address " + wtwString);
@@ -52,10 +52,10 @@ public class WebsiteHandle {
 
         return new NamedMapPoint(parsedWTW.coordinates.lng, parsedWTW.coordinates.lat, parsedWTW.words);
     }
-    public IOMenus fetchParsedMenus(){
+    public IOMenus fetchParsedMenus() throws IOException, InterruptedException{
         return IOMenus.parseFromString(fetchWebsiteFile("menus/menus.json"));
     }
-    private String fetchWebsiteFile(String filename){
+    private String fetchWebsiteFile(String filename) throws IOException, InterruptedException{
         // Request for fetching menus.json. This defaults to a 'GET' request.
         HttpRequest request = HttpRequest.newBuilder().uri(getWebsiteURI(filename)).build();
         // Send the request.

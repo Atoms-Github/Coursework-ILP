@@ -6,6 +6,7 @@ import inputOutput.output.IODroneAction;
 import orders.Cafe;
 import orders.Order;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
@@ -24,7 +25,7 @@ public class DatabaseHandle {
         this.machineName = machineName;
         this.port = port;
     }
-    public ArrayList<Order> getProcessedOrders(WebsiteHandle website, List<Cafe> cafes, String dateString) throws SQLException {
+    public ArrayList<Order> getProcessedOrders(WebsiteHandle website, List<Cafe> cafes, String dateString) throws SQLException, IOException, InterruptedException {
         ArrayList<Order> processedOrders = new ArrayList<>();
         var orders = getOrders(dateString);
         for (IOOrder order : orders){

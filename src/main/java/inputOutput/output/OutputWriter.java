@@ -22,7 +22,7 @@ public class OutputWriter {
         this.filename = filename;
         this.database = database;
     }
-    private void writeGeoJson(ArrayList<IODroneAction> droneActions){
+    private void writeGeoJson(ArrayList<IODroneAction> droneActions) throws IOException {
         ArrayList<Point> points = new ArrayList<>();
         if (droneActions.size() > 0){
             points.add(droneActions.get(0).from.toGeoPoint());
@@ -47,13 +47,9 @@ public class OutputWriter {
         LineString lines = LineString.fromLngLats(points);
         FeatureCollection featureCollection = FeatureCollection.fromFeature(Feature.fromGeometry(lines));
         String json = featureCollection.toJson();
-        try {
-            Files.write( Paths.get(filename), json.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Files.write( Paths.get(filename), json.getBytes());
     }
-    public void write(ArrayList<IODroneAction> droneActions, List<IOCompletedOrder> orders) throws SQLException {
+    public void write(ArrayList<IODroneAction> droneActions, List<IOCompletedOrder> orders) throws SQLException, IOException {
         System.out.println("Writing " + droneActions.size() + " drone actions to geojson and database.");
         System.out.println("Writing " + orders.size() + " completed orders to database.");
         writeGeoJson(droneActions);

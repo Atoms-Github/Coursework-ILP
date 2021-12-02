@@ -9,12 +9,13 @@ import inputOutput.input.IOMenus;
 import inputOutput.DatabaseHandle;
 import inputOutput.WebsiteHandle;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class App
 {
-    public static void main( String[] args ) throws SQLException {
+    public static void main( String[] args ) throws SQLException, IOException, InterruptedException {
         String dateStringFilename = args[0] + "-" + args[1] + "-" + args[2];
         String dateStringDatabase = args[2] + "-" + args[1] + "-" + args[0];
 

@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import inputOutput.WebsiteHandle;
 import orders.Cafe;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class IOMenus {
         return menus;
     }
 
-    public ArrayList<Cafe> processCafes(WebsiteHandle website){
+    public ArrayList<Cafe> processCafes(WebsiteHandle website) throws IOException, InterruptedException {
         ArrayList<Cafe> cafes = new ArrayList<>();
         for (IOCafe cafe: this.cafes){
             cafes.add(cafe.process(website));
