@@ -7,6 +7,9 @@ import java.lang.reflect.Type;
 
 public class IOThreeWordsPoint {
     public JsonPoint coordinates;
+    /**
+     * WhatThreeWords representation of this point.
+     */
     public String words;
     public static class JsonPoint{
         public float lng;
@@ -14,6 +17,9 @@ public class IOThreeWordsPoint {
     }
 
 
+    /**
+     * Parses a point from json.
+     */
     public static IOThreeWordsPoint parseFromString(String jsonString){
         Type listType = new TypeToken<IOThreeWordsPoint>() {}.getType();
         return new Gson().fromJson(jsonString, listType);
