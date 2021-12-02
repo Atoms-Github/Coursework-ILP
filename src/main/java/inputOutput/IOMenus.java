@@ -24,17 +24,15 @@ public class IOMenus {
          */
         public Integer pence;
     }
-    /**
-     * Parses a menu.
-     * @param jsonString The menu, in json representation (starting with a json list []).
-     */
-    public IOMenus(String jsonString){
+
+    public static IOMenus parseFromString(String jsonString){
+        IOMenus menus = new IOMenus();
         Type listType = new TypeToken<ArrayList<IOCafe>>() {}.getType();
-        this.cafes = new Gson().<ArrayList<IOCafe>>fromJson(jsonString, listType);
+        menus.cafes = new Gson().<ArrayList<IOCafe>>fromJson(jsonString, listType);
+        return menus;
     }
 
-
-    public ArrayList<Cafe> getProcessedCafes(WebsiteHandle website){
+    public ArrayList<Cafe> processCafes(WebsiteHandle website){
         ArrayList<Cafe> cafes = new ArrayList<>();
         for (IOCafe cafe: this.cafes){
             cafes.add(cafe.process(website));

@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Order {
+    /**
+     * The price in pence of a delivery.
+     */
+    public static final int DELIVERY_COST = 50;
+
     public final String orderNo;
     public final NamedMapPoint deliveryTarget;
     public final ArrayList<OrderItem> orderItems;
@@ -35,7 +40,7 @@ public class Order {
         while (orderShops.size() > 0){
             MapPoint closestShop = start.getClosestPoint(orderShops);
             MoveList pathToClosest = area.pathfind(totalRoute.getLastLocation(), closestShop);
-            pathToClosest.points.get(pathToClosest.points.size() - 1).mustHover = true;
+            pathToClosest.getLastWaypoint().mustHover = true;
             totalRoute.append(pathToClosest);
             orderShops.remove(closestShop);
         }
@@ -46,7 +51,7 @@ public class Order {
         return totalRoute;
     }
     public int getTotalPrice(){
-        int total = 50; // 50p delivery charge.
+        int total = DELIVERY_COST;
         for (OrderItem item : orderItems){
             total += item.price;
         }

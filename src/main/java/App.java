@@ -23,7 +23,7 @@ public class App
         DatabaseHandle database = new DatabaseHandle("localhost", args[4]);
 
         IOMenus menus = website.fetchParsedMenus();
-        ArrayList<Cafe> cafes = menus.getProcessedCafes(website);
+        ArrayList<Cafe> cafes = menus.processCafes(website);
         ArrayList<Order> orders = database.getProcessedOrders(website, cafes, dateStringDatabase);
 
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());

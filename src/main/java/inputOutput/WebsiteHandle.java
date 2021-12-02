@@ -15,10 +15,6 @@ public class WebsiteHandle {
     private final String port;
 
     /**
-     * The price in pence of a delivery.
-     */
-    public static final int DELIVERY_COST = 50;
-    /**
      * HTTP OK response code.
      */
     public static final int RESPONSE_CODE_OK = 200;
@@ -55,7 +51,7 @@ public class WebsiteHandle {
         return new NamedMapPoint(parsedWTW.coordinates.lng, parsedWTW.coordinates.lat, parsedWTW.words);
     }
     public IOMenus fetchParsedMenus(){
-        return new IOMenus(fetchWebsiteFile("menus/menus.json"));
+        return IOMenus.parseFromString(fetchWebsiteFile("menus/menus.json"));
     }
     private String fetchWebsiteFile(String filename){
         // Request for fetching menus.json. This defaults to a 'GET' request.

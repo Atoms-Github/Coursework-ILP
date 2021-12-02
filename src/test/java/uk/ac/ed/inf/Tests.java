@@ -31,7 +31,7 @@ public class Tests {
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
 
         IOMenus menus = website.fetchParsedMenus();
-        ArrayList<Cafe> cafes = menus.getProcessedCafes(website);
+        ArrayList<Cafe> cafes = menus.processCafes(website);
         ArrayList<Order> orders = database.getProcessedOrders(website, cafes, "27-12-2023");
 
 
@@ -80,7 +80,7 @@ public class Tests {
         DatabaseHandle database = new DatabaseHandle("localhost", "9876");
 
         IOMenus menus = website.fetchParsedMenus();
-        ArrayList<Cafe> cafes = menus.getProcessedCafes(website);
+        ArrayList<Cafe> cafes = menus.processCafes(website);
         ArrayList<Order> orders = database.getProcessedOrders(website, cafes, "27-12-2023");
 
 

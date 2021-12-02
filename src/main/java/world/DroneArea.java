@@ -8,7 +8,6 @@ import drone.MoveList;
 import routing.DroneRouter;
 import inputOutput.IOMenus;
 import debug.VisualTests;
-import world.MapPoint;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -83,7 +82,7 @@ public class DroneArea {
                         MoveList maybeRoute = pathfind_recursive(waypoint, end, depth + 1);
                         if (maybeRoute != null) {
                             maybeRoute.points.add(0, new DroneTaskPoint(start, false));
-                            double myDistance = maybeRoute.totalMoveLength();
+                            double myDistance = maybeRoute.getTotalMoveLength();
                             if (myDistance < shortestDistance){
                                 shortestDistance = myDistance;
                                 shortestGoodMove = maybeRoute;

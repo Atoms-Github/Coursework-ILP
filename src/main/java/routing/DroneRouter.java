@@ -61,14 +61,14 @@ public class DroneRouter {
                 // If no more shops with orders left, this is the last order, thus the best.
                 return potentialOrder;
             }
-            routeToCompleteOrder.addRoutedDestination(closestActiveShopRemaining, area);
-            double routeLength = routeToCompleteOrder.totalMoveLength();
+            routeToCompleteOrder.addPathfoundDestination(closestActiveShopRemaining, area);
+            double routeLength = routeToCompleteOrder.getTotalMoveLength();
             int routePrice = potentialOrder.getTotalPrice();
             double pricePerLength = (double) routePrice / routeLength;
 
             // Now we've calculated price per length, we want to work out if we can make it back to appleton if we do this order.
-            routeToCompleteOrder.addRoutedDestination(MapPoint.APPLETON_TOWER, area);
-            int totalShortMovesEstimate = routeToCompleteOrder.shortMoveSafeEstimate();
+            routeToCompleteOrder.addPathfoundDestination(MapPoint.APPLETON_TOWER, area);
+            int totalShortMovesEstimate = routeToCompleteOrder.getShortMoveSafeEstimate();
             // Round up. See report for unlucky zig zag modifier.
             int totalShortMovesIfUnlucky = (int)((double)totalShortMovesEstimate * UNLUCKY_ZIG_ZAG_MULTIPLIER) + 1;
 
@@ -91,12 +91,12 @@ public class DroneRouter {
             double distToClosestShop = Double.MAX_VALUE;
             for (MapPoint point : potentialOrder.getShopLocations()){
                 MoveList pathToPoint = area.pathfind(start, point);
-                distToClosestShop = Math.min(distToClosestShop, pathToPoint.totalMoveLength());
+                distToClosestShop = Math.min(distToClosestShop, pathToPoint.getTotalMoveLength());
             }
             MoveList routeToCompleteOrder = potentialOrder.getDroneMovesForOrder(start, area);
 
-            routeToCompleteOrder.addRoutedDestination(MapPoint.APPLETON_TOWER, area);
-            int totalShortMovesEstimate = routeToCompleteOrder.shortMoveSafeEstimate();
+            routeToCompleteOrder.addPathfoundDestination(MapPoint.APPLETON_TOWER, area);
+            int totalShortMovesEstimate = routeToCompleteOrder.getShortMoveSafeEstimate();
 
             // Don't do this order if we're not going to make it back to appleton afterwards.
             if (totalShortMovesEstimate > maxMoves){

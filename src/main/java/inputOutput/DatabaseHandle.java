@@ -31,7 +31,6 @@ public class DatabaseHandle {
     }
 
     public ArrayList<IOOrder> getOrders(String dateString) throws SQLException {
-
         PreparedStatement detailsPrepared = getConnection().prepareStatement("SELECT * FROM orderdetails WHERE orderno = ?");
         ArrayList<IOOrder> foundOrders = new ArrayList<>();
         ResultSet ordersResultsSet = getConnection().createStatement().executeQuery("SELECT * FROM orders WHERE deliverydate = '" + dateString + "'");

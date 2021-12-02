@@ -53,6 +53,8 @@ public class OutputWriter {
         }
     }
     public void write(ArrayList<IODroneAction> droneActions, List<IOCompletedOrder> orders) throws SQLException {
+        System.out.println("Writing " + droneActions.size() + " drone actions to geojson and database.");
+        System.out.println("Writing " + orders.size() + " completed orders to database.");
         writeGeoJson(droneActions);
         database.writeTodatabase(droneActions, orders);
     }

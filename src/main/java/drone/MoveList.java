@@ -18,9 +18,6 @@ public class MoveList {
     public MoveList(List<DroneTaskPoint> points) {
         this.points = points;
     }
-    public MoveList() {
-        this.points = new ArrayList<>();
-    }
 
     public void append(MoveList other){
         // If we've got some points, check that our end lines up with other's start.
@@ -37,7 +34,7 @@ public class MoveList {
         // Merge all. (First point of other.points has already been removed).
         points.addAll(other.points);
     }
-    public void addRoutedDestination(MapPoint target, DroneArea area){
+    public void addPathfoundDestination(MapPoint target, DroneArea area){
         assert points.size() > 0;
         MoveList newRoute = area.pathfind(getLastLocation(), target);
         append(newRoute);
@@ -49,7 +46,7 @@ public class MoveList {
         return points.get(points.size() - 1);
     }
 
-    public double totalMoveLength(){
+    public double getTotalMoveLength(){
         if (points.size() == 0){
             return 0.0;
         }
@@ -59,9 +56,9 @@ public class MoveList {
         }
         return totalLength;
     }
-    public int shortMoveSafeEstimate(){
+    public int getShortMoveSafeEstimate(){
         // Round up. See report for unlucky zig zag modifier.
-        return (int) (totalMoveLength() * DroneRouter.UNLUCKY_ZIG_ZAG_MULTIPLIER / SHORT_MOVE_LENGTH) + 1 /* Round up */
+        return (int) (getTotalMoveLength() * DroneRouter.UNLUCKY_ZIG_ZAG_MULTIPLIER / SHORT_MOVE_LENGTH) + 1 /* Round up */
                 + points.size() /* Assuming max 1 hover per waypoint */
                 + points.size() /* Assuming 1 excess move wasted to get in closer to point */;
     }
