@@ -14,19 +14,16 @@ import java.util.List;
  * A parsed representation of all the items on the website.
  */
 public class IOMenus {
+    /**
+     * Cafes present on this menu. This is the list the customers would see.
+     */
     public List<IOCafe> cafes;
 
-    public static class MenuItem{
-        /**
-         * The full long item name.
-         */
-        public String item;
-        /**
-         * The cost of the item.
-         */
-        public Integer pence;
-    }
-
+    /**
+     * Parses a new instance from json formatted string.
+     * @param jsonString The menu, in json form.
+     * @return The newly parsed IOMenus instance.
+     */
     public static IOMenus parseFromString(String jsonString){
         IOMenus menus = new IOMenus();
         Type listType = new TypeToken<ArrayList<IOCafe>>() {}.getType();
@@ -34,11 +31,18 @@ public class IOMenus {
         return menus;
     }
 
+    /**
+     * Processes the cafe's in this IOMenus into a more useful form.
+     * @param website Website to resolve the WhatThreeWords locations.
+     * @return List of processed cafes.
+     * @throws IOException If problem contacting website.
+     * @throws InterruptedException If problem contacting website.
+     */
     public ArrayList<Cafe> processCafes(WebsiteHandle website) throws IOException, InterruptedException {
-        ArrayList<Cafe> cafes = new ArrayList<>();
+        ArrayList<Cafe> processedCafes = new ArrayList<>();
         for (IOCafe cafe: this.cafes){
-            cafes.add(cafe.process(website));
+            processedCafes.add(cafe.process(website));
         }
-        return cafes;
+        return processedCafes;
     }
 }

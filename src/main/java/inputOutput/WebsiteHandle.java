@@ -55,17 +55,19 @@ public class WebsiteHandle {
     public IOMenus fetchParsedMenus() throws IOException, InterruptedException{
         return IOMenus.parseFromString(fetchWebsiteFile("menus/menus.json"));
     }
+
+    /**
+     * @param filename
+     * @return
+     * @throws IOException For an error getting file from web server.
+     * @throws InterruptedException For an error getting file from web server.
+     */
     private String fetchWebsiteFile(String filename) throws IOException, InterruptedException{
         // Request for fetching menus.json. This defaults to a 'GET' request.
         HttpRequest request = HttpRequest.newBuilder().uri(getWebsiteURI(filename)).build();
         // Send the request.
         HttpResponse<String> response;
-        try {
-            response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            // This is most likely an issue with the website, so not recoverable.
-            throw new RuntimeException(e);
-        }
+        response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != RESPONSE_CODE_OK) {
             throw new RuntimeException("Error getting string from website. Response status code: " + response.statusCode());
         }
