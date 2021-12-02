@@ -1,5 +1,6 @@
 package uk.ac.ed.inf;
 
+import inputOutput.output.IODroneAction;
 import routing.DroneRouter;
 import world.MapPoint;
 
@@ -42,7 +43,7 @@ public class VisualDebug {
     }
     static Color[] colours = new Color[]{Color.BLUE, Color.GREEN, Color.MAGENTA, Color.ORANGE};
     public static Color hashStringToColor(String string){
-        if (string.equals("noOrders")){
+        if (string.equals(IODroneAction.NO_ORDER_STRING)){
             return Color.BLACK;
         }
         int index = Math.abs(string.hashCode()) % colours.length;

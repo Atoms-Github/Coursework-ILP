@@ -141,7 +141,7 @@ public class MoveList {
                 int droneAngle = (int) (10 * (Math.round(angleExact / 10)));
                 // Calculate next position after move in this angle.
                 MapPoint nextPoint = exactCurrentLocation.nextPosition(droneAngle, SHORT_MOVE_LENGTH);
-                actions.add(IODroneAction.moveActionOrder(orderNo, droneAngle, exactCurrentLocation, nextPoint));
+                actions.add(IODroneAction.moveAction(orderNo, droneAngle, exactCurrentLocation, nextPoint));
                 exactCurrentLocation = nextPoint;
                 iterations ++;
                 // If still can't after a huge number of tries, just give up. Its better to output something than crash, even if the something has a jump in it.

@@ -1,5 +1,6 @@
 package routing;
 
+import inputOutput.output.IODroneAction;
 import world.DroneArea;
 import drone.MoveList;
 import world.MapPoint;
@@ -40,7 +41,7 @@ public class DroneRouter {
             }else{
                 // There is no more good orders to do. Just go back to appleton.
                 MoveList routeBackToAppleton = area.pathfind(results.currentLocation, MapPoint.APPLETON_TOWER);
-                results.addMove("noOrders", routeBackToAppleton);
+                results.addMove(IODroneAction.NO_ORDER_STRING, routeBackToAppleton);
                 return results;
             }
         }
