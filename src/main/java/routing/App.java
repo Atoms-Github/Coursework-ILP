@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class App
+    // TODO: Javagarbo this.
 {
     public static void main( String[] args ) throws SQLException, IOException, InterruptedException {
         String dateStringFilename = args[0] + "-" + args[1] + "-" + args[2];
