@@ -1,4 +1,4 @@
-package debug;
+package uk.ac.ed.inf;
 
 import routing.DroneRouter;
 import world.MapPoint;
