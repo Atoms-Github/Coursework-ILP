@@ -1,17 +1,15 @@
 package drone;
 
 import debug.VisualDebug;
-import inputOutput.IODroneAction;
+import inputOutput.output.IODroneAction;
 import routing.DroneRouter;
 import world.DroneArea;
 import world.MapPoint;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import static routing.DroneRouter.SHORT_MOVE_LENGTH;
-import static world.DroneArea.CLEARANCE;
 
 public class MoveList {
     // Yes, having this also include the start point makes us create and destroy a fair number
@@ -54,7 +52,7 @@ public class MoveList {
         return points.get(points.size() - 1);
     }
 
-    public double getTotalMoveLength(){
+    public double getTotalLength(){
         if (points.size() == 0){
             return 0.0;
         }
@@ -66,7 +64,7 @@ public class MoveList {
     }
     public int getShortMoveSafeEstimate(){
         // Round up. See report for unlucky zig zag modifier.
-        return (int) (getTotalMoveLength() * DroneRouter.UNLUCKY_ZIG_ZAG_MULTIPLIER / SHORT_MOVE_LENGTH) + 1 /* Round up */
+        return (int) (getTotalLength() * DroneRouter.UNLUCKY_ZIG_ZAG_MULTIPLIER / SHORT_MOVE_LENGTH) + 1 /* Round up */
                 + points.size() /* Assuming max 1 hover per waypoint */
                 + points.size() /* Assuming 1 excess move wasted to get in closer to point */;
     }
@@ -79,10 +77,10 @@ public class MoveList {
             DroneTaskPoint fromPoint = points.get(firstIndex);
             DroneTaskPoint toPoint = points.get(firstIndex + 1);
             if (fromPoint.mustHover){
-                VisualDebug.drawPoint(fromPoint.point,  Color.PINK, true);
+                VisualDebug.drawPoint(fromPoint.point,  VisualDebug.hashStringToColor(orderNo), true);
             }
             if (toPoint.mustHover){
-                VisualDebug.drawPoint(toPoint.point,  Color.PINK, true);
+                VisualDebug.drawPoint(toPoint.point,  VisualDebug.hashStringToColor(orderNo), true);
             }
 
 //            VisualDebug.drawLine(fromPoint.point, toPoint.point, Color.orange, CLEARANCE * 2.0);

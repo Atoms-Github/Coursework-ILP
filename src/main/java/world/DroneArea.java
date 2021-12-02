@@ -6,7 +6,7 @@ import com.mapbox.geojson.Polygon;
 import drone.DroneTaskPoint;
 import drone.MoveList;
 import routing.DroneRouter;
-import inputOutput.IOMenus;
+import inputOutput.input.IOMenus;
 import debug.VisualDebug;
 
 import java.awt.*;
@@ -15,14 +15,12 @@ import java.util.ArrayList;
 
 public class DroneArea {
     public ArrayList<Area> noFlyZones;
-    public IOMenus parsedMenus;
     public ArrayList<MapPoint> waypoints;
 
     public static final double CLEARANCE = DroneRouter.SHORT_MOVE_LENGTH; // This can't be anything smaller, as then we may be misaligned for next move.
 
 
-    public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks, IOMenus parsedMenus) {
-        this.parsedMenus = parsedMenus;
+    public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks) {
         this.waypoints = new ArrayList<>();
         this.noFlyZones = new ArrayList<>();
 
@@ -82,7 +80,7 @@ public class DroneArea {
                         MoveList maybeRoute = pathfind_recursive(waypoint, end, depth + 1);
                         if (maybeRoute != null) {
                             maybeRoute.points.add(0, new DroneTaskPoint(start, false));
-                            double myDistance = maybeRoute.getTotalMoveLength();
+                            double myDistance = maybeRoute.getTotalLength();
                             if (myDistance < shortestDistance){
                                 shortestDistance = myDistance;
                                 shortestGoodMove = maybeRoute;

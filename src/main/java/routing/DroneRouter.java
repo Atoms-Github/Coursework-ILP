@@ -5,7 +5,7 @@ import drone.MoveList;
 import world.MapPoint;
 import orders.Cafe;
 import orders.Order;
-import inputOutput.IOMenus;
+import inputOutput.input.IOMenus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,18 +14,16 @@ public class DroneRouter {
     public static final double SHORT_MOVE_LENGTH = 0.00015;
     public static final double UNLUCKY_ZIG_ZAG_MULTIPLIER = 1.15; // See report for where this comes from.
     private final DroneArea area;
-    public final IOMenus menus;
     public final ArrayList<Cafe> cafes; // I know calling this final doesn't make the interior final, but I'll use the idea that it does.
 
-    public DroneRouter(DroneArea area, IOMenus menus, ArrayList<Cafe> cafes) {
+    public DroneRouter(DroneArea area, ArrayList<Cafe> cafes) {
         this.area = area;
-        this.menus = menus;
         this.cafes = cafes;
     }
 
     public DroneRouteResults calculateDroneMoves(MapPoint start, List<Order> ordersList, PathingTechnique technique){
         ArrayList<Order> ordersToGo = new ArrayList<>(ordersList);
-        CafeTracker tracker = new CafeTracker(menus, cafes, ordersToGo);
+        CafeTracker tracker = new CafeTracker(cafes, ordersToGo);
 
         DroneRouteResults results = new DroneRouteResults(1500, start);
         while(true){
@@ -59,7 +57,7 @@ public class DroneRouter {
             if (routeToCompleteOrder == null){
                 continue; // Can't route this order's path.
             }
-            MapPoint closestActiveShopRemaining = shops.getClosestShopWithItemsLeft(routeToCompleteOrder.getLastLocation());
+            MapPoint closestActiveShopRemaining = shops.getClosestShopWithItemsLeft(routeToCompleteOrder.getLastLocation(), cafes);
             if (closestActiveShopRemaining == null){
                 // If no more shops with orders left, this is the last order, thus the best.
                 return potentialOrder;
@@ -68,7 +66,7 @@ public class DroneRouter {
             if (!makeItToShop){
                 continue; // Can't make it to any more shops. This order is bad.
             }
-            double routeLength = routeToCompleteOrder.getTotalMoveLength();
+            double routeLength = routeToCompleteOrder.getTotalLength();
             int routePrice = potentialOrder.getTotalPrice();
             double pricePerLength = (double) routePrice / routeLength;
 
@@ -103,7 +101,7 @@ public class DroneRouter {
                 if (pathToPoint == null){
                     continue orderLoop; // This order can't be pathed to.
                 }
-                distToClosestShop = Math.min(distToClosestShop, pathToPoint.getTotalMoveLength());
+                distToClosestShop = Math.min(distToClosestShop, pathToPoint.getTotalLength());
             }
             MoveList routeToCompleteOrder = potentialOrder.getDroneMovesForOrder(start, area);
             if (routeToCompleteOrder == null){

@@ -1,6 +1,8 @@
 package inputOutput;
 
 import com.mapbox.geojson.FeatureCollection;
+import inputOutput.input.IOMenus;
+import inputOutput.input.IOThreeWordsPoint;
 import world.NamedMapPoint;
 
 import java.io.IOException;

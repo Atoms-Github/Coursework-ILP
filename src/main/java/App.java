@@ -5,7 +5,7 @@ import world.DroneArea;
 import world.MapPoint;
 import orders.Cafe;
 import orders.Order;
-import inputOutput.IOMenus;
+import inputOutput.input.IOMenus;
 import inputOutput.DatabaseHandle;
 import inputOutput.WebsiteHandle;
 
@@ -26,12 +26,14 @@ public class App
         ArrayList<Cafe> cafes = menus.processCafes(website);
         ArrayList<Order> orders = database.getProcessedOrders(website, cafes, dateStringDatabase);
 
-        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());
-        DroneRouter router = new DroneRouter(area, menus, cafes);
-//        DroneRouteResults resultsPricePerMove = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, orders, PathingTechnique.MAX_PRICE_PER_MOVE);
-        DroneRouteResults resultsMaxOrders = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, orders, PathingTechnique.MAX_ORDER_COUNT);
+        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks());
+        DroneRouter router = new DroneRouter(area, cafes);
+        DroneRouteResults resultsPricePerMove = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, orders, PathingTechnique.MAX_PRICE_PER_MOVE);
+//        DroneRouteResults resultsMaxOrders = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, orders, PathingTechnique.MAX_ORDER_COUNT);
 
-//   TODO     DroneRouteResults bestResults;
+//        DroneRouteResults bestResults;
+//        System.out.println("Price_per_move value = " + resultsPricePerMove.getTotalPrice());
+//        System.out.println("Maximizing_orders value = " + resultsMaxOrders.getTotalPrice());
 //        if (resultsPricePerMove.getTotalPrice() > resultsMaxOrders.getTotalPrice()){
 //            bestResults = resultsPricePerMove;
 //            System.out.println("Best results by price_per_move.");
@@ -39,9 +41,13 @@ public class App
 //            bestResults = resultsMaxOrders;
 //            System.out.println("Best results by maximizing_orders.");
 //        }
-        /* TODO */ resultsMaxOrders.writeToOutput("drone-" + dateStringFilename + ".geojson", database);
+        resultsPricePerMove.writeToOutput("drone-" + dateStringFilename + ".geojson", database);
 
         System.out.println("Completed in " + (System.currentTimeMillis() - startTimeMilis) + "ms.");
+    }
+    // TODO: Split into 3 large parts, as in report.
+    private static void runOperations(String dateStringFilename, String dateStringDatabase, String portWebsite, String portDatabase){
+
     }
 }
 

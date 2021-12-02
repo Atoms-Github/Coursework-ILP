@@ -1,4 +1,4 @@
-package inputOutput;
+package inputOutput.output;
 
 public class IOCompletedOrder {
     public String orderNo;

@@ -1,7 +1,7 @@
 package routing;
 
 import orders.Cafe;
-import inputOutput.IOMenus;
+import inputOutput.input.IOMenus;
 import world.MapPoint;
 import orders.Order;
 import orders.OrderItem;
@@ -10,13 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CafeTracker {
-    public IOMenus menus;
-    public List<Cafe> cafes;
     public HashMap<Cafe, Integer> itemsLeftPerCafe; // Storing this here instead of in cafes, so ProcessedCafes can be immutable.
 
-    public CafeTracker(IOMenus menus, List<Cafe> cafes, List<Order> orders) {
-        this.menus = menus;
-        this.cafes = cafes;
+    public CafeTracker(List<Cafe> cafes, List<Order> orders) {
         this.itemsLeftPerCafe = new HashMap<>();
         for (Cafe cafe : cafes){
             this.itemsLeftPerCafe.put(cafe, 0);
@@ -35,7 +31,7 @@ public class CafeTracker {
     }
 
     // Have data about what shops have items left.
-    public MapPoint getClosestShopWithItemsLeft(MapPoint location){
+    public MapPoint getClosestShopWithItemsLeft(MapPoint location, List<Cafe> cafes){
         MapPoint closest = null;
         double closestDistance = Double.MAX_VALUE;
         for (Cafe cafe : cafes){

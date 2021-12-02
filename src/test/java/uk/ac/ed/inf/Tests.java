@@ -4,7 +4,7 @@ import world.DroneArea;
 import world.MapPoint;
 import orders.Cafe;
 import orders.Order;
-import inputOutput.IOMenus;
+import inputOutput.input.IOMenus;
 import inputOutput.DatabaseHandle;
 import inputOutput.WebsiteHandle;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class Tests {
         ArrayList<Order> orders = database.getProcessedOrders(website, cafes, "27-12-2023");
 
 
-        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());
+        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks());
 
 
         assertTrue(area.canFlyBetween(APPLETON_MAP_POINT, BOTTOM_MIDDLE_G_SQUARE));
@@ -84,7 +84,7 @@ public class Tests {
         ArrayList<Order> orders = database.getProcessedOrders(website, cafes, "27-12-2023");
 
 
-        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());
+        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks());
         boolean result = area.canFlyBetween(TOP_RIGHT_WAYPOINT, BOTTOM_MIDDLE_G_SQUARE);
         while(true){
             if (1==2){

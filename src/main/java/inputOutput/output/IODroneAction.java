@@ -1,4 +1,4 @@
-package inputOutput;
+package inputOutput.output;
 
 import world.MapPoint;
 

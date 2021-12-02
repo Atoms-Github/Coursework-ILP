@@ -40,7 +40,15 @@ public class VisualDebug {
         double width = 0.00005;
         drawArea(new Area(new Rectangle2D.Double(realPoint.x - width / 2, realPoint.y - width / 2, width, width)), color);
     }
+    static Color[] colours = new Color[]{Color.BLUE, Color.GREEN, Color.MAGENTA, Color.ORANGE};
     public static Color hashStringToColor(String string){
+        if (string.equals("noOrders")){
+            return Color.BLACK;
+        }
+        int index = Math.abs(string.hashCode()) % colours.length;
+        if (1==1){
+            return colours[index];
+        }
         float value = (float) Math.abs(string.hashCode()) / (float) Integer.MAX_VALUE;
         return new Color(value, 1-value, 1.0f);
     }
