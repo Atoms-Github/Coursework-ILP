@@ -11,10 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DroneRouter {
+    /**
+     * How far the drone can go in 1 move.
+     */
     public static final double SHORT_MOVE_LENGTH = 0.00015;
-    public static final double UNLUCKY_WOBBLE_MULTIPLIER = 1.1; // See report for where this comes from.
+    /**
+     * How much slower it is to move in 10 degree lines, instead of any line. Worst case. See report more for details.
+     */
+    public static final double UNLUCKY_WOBBLE_MULTIPLIER = 1.1;
+
     private final DroneArea area;
-    public final ArrayList<Cafe> cafes; // I know calling this final doesn't make the interior final, but I'll use the idea that it does.
+    private final ArrayList<Cafe> cafes;
 
     public DroneRouter(DroneArea area, ArrayList<Cafe> cafes) {
         this.area = area;

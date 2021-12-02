@@ -12,10 +12,14 @@ import java.awt.geom.*;
 import java.util.ArrayList;
 
 public class DroneArea {
-    public ArrayList<Area> noFlyZones;
-    public ArrayList<MapPoint> waypoints;
+    private final ArrayList<Area> noFlyZones;
+    private final ArrayList<MapPoint> waypoints;
 
-    public static final double CLEARANCE = DroneRouter.SHORT_MOVE_LENGTH; // This can't be anything smaller, as then we may be misaligned for next move.
+    // This can't be anything smaller, as then we may be misaligned for next move.
+    /**
+     * Width of 'fat line'. See report.
+     */
+    public static final double LINE_WIDTH = DroneRouter.SHORT_MOVE_LENGTH * 2.0;
 
 
     public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks) {
@@ -105,8 +109,8 @@ public class DroneArea {
         }
         MapPoint center = new MapPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 
-        double width = start.distanceTo(end) + CLEARANCE * 2.0; // Clearance on both ends.
-        Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-width / 2.0, -CLEARANCE, width, CLEARANCE * 2.0);
+        double width = start.distanceTo(end) + LINE_WIDTH; // Clearance on both ends.
+        Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-width / 2.0, -LINE_WIDTH / 2.0, width, LINE_WIDTH);
         AffineTransform at = new AffineTransform();
         at.translate(center.x, center.y);
         at.rotate(Math.toRadians(start.angleTo(end)));
