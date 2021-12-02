@@ -36,14 +36,14 @@ public class Order {
     public MoveList getDroneMovesForOrder(MapPoint start, DroneArea area){
         ArrayList<MapPoint> orderShops = getShopLocations();
         MoveList totalRoute = new MoveList(new ArrayList<>());
-        totalRoute.points.add(new DroneTaskPoint(start, false));
+        totalRoute.pushEnd(new DroneTaskPoint(start, false));
         while (orderShops.size() > 0){
             MapPoint closestShop = start.getClosestPoint(orderShops);
             MoveList pathToClosest = area.pathfind(totalRoute.getLastLocation(), closestShop);
             if (pathToClosest == null){
                 return null; // Can't route to this shop.
             }
-            pathToClosest.getLastWaypoint().mustHover = true;
+            pathToClosest.getLastWaypoint().setMustHover(true);
             totalRoute.append(pathToClosest);
             orderShops.remove(closestShop);
         }
@@ -52,7 +52,7 @@ public class Order {
         if (pathToEnd == null){
             return null; // Can't find way to get to end.
         }
-        pathToEnd.getLastWaypoint().mustHover = true;
+        pathToEnd.getLastWaypoint().setMustHover(true);
         totalRoute.append(pathToEnd);
 
         return totalRoute;

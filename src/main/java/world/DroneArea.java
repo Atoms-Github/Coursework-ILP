@@ -6,7 +6,6 @@ import com.mapbox.geojson.Polygon;
 import drone.DroneTaskPoint;
 import drone.MoveList;
 import routing.DroneRouter;
-import debug.VisualDebug;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -47,7 +46,6 @@ public class DroneArea {
                 waypoints.addAll(getPathsBoundingBox(path, DroneRouter.SHORT_MOVE_LENGTH * 1.1)); // Since need 1x on each edge, this'll safely allow past.
 
                 thisNoFlyZone.add(new Area(path));
-                VisualDebug.drawArea(new Area(path), Color.LIGHT_GRAY);
                 this.noFlyZones.add(thisNoFlyZone);
             }
         }
@@ -66,8 +64,8 @@ public class DroneArea {
     public MoveList pathfind_recursive(MapPoint start, MapPoint end, int depth){
         if (canFlyBetween(start, end)){
             var moveList = new MoveList(new ArrayList<>());
-            moveList.points.add(new DroneTaskPoint(start, false));
-            moveList.points.add(new DroneTaskPoint(end, false));
+            moveList.pushEnd(new DroneTaskPoint(start, false));
+            moveList.pushEnd(new DroneTaskPoint(end, false));
             return moveList;
         }else{ // Can't go straight. Need to use waypoints.
             // If we're not at max depth, try to go deeper.
@@ -78,7 +76,7 @@ public class DroneArea {
                     if (canFlyBetween(start, waypoint)) {
                         MoveList maybeRoute = pathfind_recursive(waypoint, end, depth + 1);
                         if (maybeRoute != null) {
-                            maybeRoute.points.add(0, new DroneTaskPoint(start, false));
+                            maybeRoute.pushStart(new DroneTaskPoint(start, false));
                             double myDistance = maybeRoute.getTotalLength();
                             if (myDistance < shortestDistance){
                                 shortestDistance = myDistance;
@@ -107,7 +105,6 @@ public class DroneArea {
         }
         MapPoint center = new MapPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 
-        VisualDebug.setupVisualTest();
         double width = start.distanceTo(end) + CLEARANCE * 2.0; // Clearance on both ends.
         Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-width / 2.0, -CLEARANCE, width, CLEARANCE * 2.0);
         AffineTransform at = new AffineTransform();

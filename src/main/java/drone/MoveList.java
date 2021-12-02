@@ -1,6 +1,5 @@
 package drone;
 
-import debug.VisualDebug;
 import inputOutput.output.IODroneAction;
 import routing.DroneRouter;
 import world.DroneArea;
