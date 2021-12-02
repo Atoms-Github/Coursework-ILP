@@ -1,4 +1,4 @@
-package world.drone;
+package drone;
 
 import world.MapPoint;
 

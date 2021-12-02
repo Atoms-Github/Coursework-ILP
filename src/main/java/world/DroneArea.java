@@ -1,8 +1,10 @@
-package world.drone;
+package world;
 
 import com.mapbox.geojson.*;
 import com.mapbox.geojson.Point;
 import com.mapbox.geojson.Polygon;
+import drone.DroneTaskPoint;
+import drone.MoveList;
 import routing.DroneRouter;
 import inputOutput.IOMenus;
 import debug.VisualTests;
@@ -112,7 +114,7 @@ public class DroneArea {
         MapPoint center = new MapPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 
 //        VisualTests.setupVisualTest();
-        double width = start.distanceTo(end) + CLEARANCE * 2.0;
+        double width = start.distanceTo(end) + CLEARANCE * 2.0; // Clearance on both ends.
         Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-width / 2.0, -CLEARANCE, width, CLEARANCE * 2.0);
         AffineTransform at = new AffineTransform();
         at.translate(center.x, center.y);

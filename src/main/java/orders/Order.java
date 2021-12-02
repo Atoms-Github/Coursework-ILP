@@ -1,9 +1,9 @@
 package orders;
 
 import world.*;
-import world.drone.DroneArea;
-import world.drone.DroneTaskPoint;
-import world.drone.MoveList;
+import world.DroneArea;
+import drone.DroneTaskPoint;
+import drone.MoveList;
 
 import java.util.ArrayList;
 import java.util.HashSet;

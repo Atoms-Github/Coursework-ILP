@@ -1,11 +1,10 @@
-package world.drone;
+package drone;
 
 import inputOutput.IODroneAction;
-import debug.VisualTests;
 import routing.DroneRouter;
+import world.DroneArea;
 import world.MapPoint;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 

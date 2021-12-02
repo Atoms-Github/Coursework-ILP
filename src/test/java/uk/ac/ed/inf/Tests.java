@@ -1,6 +1,6 @@
 package uk.ac.ed.inf;
 
-import world.drone.DroneArea;
+import world.DroneArea;
 import world.MapPoint;
 import orders.Cafe;
 import orders.Order;

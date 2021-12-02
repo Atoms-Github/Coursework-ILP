@@ -1,7 +1,7 @@
 import routing.DroneRouteResults;
 import routing.DroneRouter;
 import routing.PathingTechnique;
-import world.drone.DroneArea;
+import world.DroneArea;
 import world.MapPoint;
 import orders.Cafe;
 import orders.Order;
@@ -53,14 +53,10 @@ public class App
 
 
 
-// TODO: Do DB order thing and only request for 1 day. We don't care about multiple days. Don't load them all.
-
-// TODO: Test the max orders thing, by running from some earlier dates. Max should win then.
 
 
-// TODO: Make sure moves forward 1 extra to get closer where it can, instead of settling for 1 off, since that may, tho unlikely, cause issue - check going close to no fly zone.
 
 
-// TODO: Test Test, especially close to no-fly-zones, and hovering. Also test 'current order' field of DB. Should no include back to shop flight.
 
-// TODO: Debug print, with colour per order?
+
+
