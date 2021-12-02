@@ -14,9 +14,15 @@ public class DatabaseHandle {
     private final String machineName;
     private final String port;
 
+
+    /**
+     * Lazily initialize the connection, to avoid unnecessary work.
+     */
     private Connection connection = null;
+
     private Connection getConnection() throws SQLException {
         if (connection == null){
+            // Try to connect to database.
             connection = DriverManager.getConnection("jdbc:derby://" + machineName + ":" + port + "/derbyDB");
         }
         return connection;
@@ -25,29 +31,42 @@ public class DatabaseHandle {
         this.machineName = machineName;
         this.port = port;
     }
+
+    /**
+     * Queries the database for orders.
+     * @param website Website to resolve WTW locations on.
+     * @param cafes All cafes that sell everything in the orders that'll be returned.
+     * @param dateString The date to get orders for. Formatted 'YYYY-MM-DD'.
+     * @return List of useful Order instances.
+     * @throws SQLException Problem with database.
+     * @throws IOException Problem with website.
+     * @throws InterruptedException Problem with website.
+     */
     public ArrayList<Order> getProcessedOrders(WebsiteHandle website, List<Cafe> cafes, String dateString) throws SQLException, IOException, InterruptedException {
         ArrayList<Order> processedOrders = new ArrayList<>();
-        var orders = getOrders(dateString);
+        var orders = getIOOrders(dateString);
         for (IOOrder order : orders){
             processedOrders.add(order.process(website, cafes));
         }
         return processedOrders;
     }
 
-    public ArrayList<IOOrder> getOrders(String dateString) throws SQLException {
+    private ArrayList<IOOrder> getIOOrders(String dateString) throws SQLException {
         PreparedStatement detailsPrepared = getConnection().prepareStatement("SELECT * FROM orderdetails WHERE orderno = ?");
-        ArrayList<IOOrder> foundOrders = new ArrayList<>();
+        ArrayList<IOOrder> queriedOrders = new ArrayList<>();
+        // Query for all orders on the specified day.
         ResultSet ordersResultsSet = getConnection().createStatement().executeQuery("SELECT * FROM orders WHERE deliverydate = '" + dateString + "'");
         while (ordersResultsSet.next()){
             String orderNumber = ordersResultsSet.getString("OrderNo");
 
+            // Query database again, to find all items in this particular order.
             ArrayList<String> orderItems = new ArrayList<>();
             detailsPrepared.setString(1, orderNumber);
             ResultSet detailsResults = detailsPrepared.executeQuery();
             while (detailsResults.next()){
                 orderItems.add(detailsResults.getString("Item"));
             }
-
+            
             IOOrder newOrder = new IOOrder(
                     orderNumber,
                     ordersResultsSet.getDate("DeliveryDate"),
@@ -55,12 +74,16 @@ public class DatabaseHandle {
                     ordersResultsSet.getString("DeliverTo"),
                     orderItems
             );
-            foundOrders.add(newOrder);
+            queriedOrders.add(newOrder);
         }
 
 
-        return foundOrders;
+        return queriedOrders;
     }
+
+    /**
+     * Deletes a table in the database.
+     */
     private void dropTable(String tableName) throws SQLException{
         DatabaseMetaData databaseMetadata = connection.getMetaData();
         ResultSet resultSet = databaseMetadata.getTables(null, null, tableName, null);
@@ -87,9 +110,9 @@ public class DatabaseHandle {
                         "toLongitude double," +
                         "toLatitude double)");
     }
-    public void writeTodatabase(List<IODroneAction> droneActions, List<IOCompletedOrder> completedOrders) throws SQLException {
-        setupOutputTables();
-
+    private void fillOutputTables(List<IODroneAction> droneActions, List<IOCompletedOrder> completedOrders) throws SQLException {
+        // Use prepared statements for efficiency.
+        // These classes are already in perfect structure, so we can just read straight from them.
         PreparedStatement psActions = connection.prepareStatement("insert into flightpath values " +
                 "(?, ?, ?, ?, ?, ?)");
         for (IODroneAction action : droneActions){
@@ -109,9 +132,17 @@ public class DatabaseHandle {
             psDeliveries.setInt(3, order.costPence);
             psDeliveries.execute();
         }
-
     }
-
+    /**
+     * Inserts program output data into the database.
+     * @param droneActions The actions the drone performed.
+     * @param completedOrders The orders the drone fulfilled.
+     * @throws SQLException If problem with database.
+     */
+    public void writeTodatabase(List<IODroneAction> droneActions, List<IOCompletedOrder> completedOrders) throws SQLException {
+        setupOutputTables();
+        fillOutputTables(droneActions, completedOrders);
+    }
 }
 
 

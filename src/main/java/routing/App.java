@@ -25,8 +25,7 @@ public class App
         WebsiteHandle website = new WebsiteHandle("localhost", args[3]);
         DatabaseHandle database = new DatabaseHandle("localhost", args[4]);
 
-        IOMenus menus = website.fetchParsedMenus();
-        ArrayList<Cafe> cafes = menus.processCafes(website);
+        ArrayList<Cafe> cafes = website.getCafes();
         ArrayList<Order> orders = database.getProcessedOrders(website, cafes, dateStringDatabase);
 
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks());
