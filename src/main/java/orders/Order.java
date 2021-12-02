@@ -52,6 +52,7 @@ public class Order {
         if (pathToEnd == null){
             return null; // Can't find way to get to end.
         }
+        pathToEnd.getLastWaypoint().mustHover = true;
         totalRoute.append(pathToEnd);
 
         return totalRoute;

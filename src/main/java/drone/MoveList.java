@@ -1,14 +1,17 @@
 package drone;
 
+import debug.VisualDebug;
 import inputOutput.IODroneAction;
 import routing.DroneRouter;
 import world.DroneArea;
 import world.MapPoint;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import static routing.DroneRouter.SHORT_MOVE_LENGTH;
+import static world.DroneArea.CLEARANCE;
 
 public class MoveList {
     // Yes, having this also include the start point makes us create and destroy a fair number
@@ -75,12 +78,22 @@ public class MoveList {
         for (int firstIndex = 0; firstIndex < points.size() - 1; firstIndex++) {
             DroneTaskPoint fromPoint = points.get(firstIndex);
             DroneTaskPoint toPoint = points.get(firstIndex + 1);
+            if (fromPoint.mustHover){
+                VisualDebug.drawPoint(fromPoint.point,  Color.PINK, true);
+            }
+            if (toPoint.mustHover){
+                VisualDebug.drawPoint(toPoint.point,  Color.PINK, true);
+            }
+
+//            VisualDebug.drawLine(fromPoint.point, toPoint.point, Color.orange, CLEARANCE * 2.0);
             int iterations = 0;
             while (!exactCurrentLocation.closeTo(toPoint.point)){
                 double angleExact = exactCurrentLocation.angleTo(toPoint.point);
-                double angleRounded = (double) (10 * (Math.round(angleExact / 10))); // Round to nearest 10.
+                int roundToNearest = 10;
+                double angleRounded = (double) (roundToNearest * (Math.round(angleExact / roundToNearest)));
                 int droneAngle = (int) angleRounded;
                 MapPoint nextPoint = exactCurrentLocation.nextPosition(droneAngle, SHORT_MOVE_LENGTH);
+                VisualDebug.drawLine(exactCurrentLocation, nextPoint, VisualDebug.hashStringToColor(orderNo), SHORT_MOVE_LENGTH / 10.0);
                 actions.add(IODroneAction.moveActionOrder(orderNo, droneAngle, exactCurrentLocation, nextPoint));
                 iterations ++;
                 if (iterations > 50_000){

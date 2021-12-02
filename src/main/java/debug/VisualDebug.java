@@ -1,6 +1,6 @@
 package debug;
 
-import inputOutput.WebsiteHandle;
+import routing.DroneRouter;
 import world.MapPoint;
 
 import java.awt.*;
@@ -14,26 +14,56 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class VisualTests {
-    private static VisualTests visual;
+public class VisualDebug {
+    private static VisualDebug visual;
     public static final ArrayList<ColouredArea> shapes = new ArrayList<>();
     public static void setupVisualTest(){
         if (visual == null){
-            visual = new VisualTests();
+            visual = new VisualDebug();
         }
     }
     public static void drawArea(Area area){
         drawArea(area, Color.BLACK);
     }
     public static void drawPoint(MapPoint point, Color color){
-        double width = 0.00011;
-        drawArea(new Area(new Rectangle2D.Double(point.x - width / 2, point.y - width / 2, width, width)), color);
+        drawPoint(point, color, false);
+    }
+    public static void drawPoint(MapPoint point, Color color, boolean random){
+        MapPoint realPoint;
+        if (random){
+            double wobbleDist = DroneRouter.SHORT_MOVE_LENGTH / 3.0;
+            realPoint = new MapPoint(point.x + Math.random() * wobbleDist,
+                    point.y + Math.random() * wobbleDist);
+        }else{
+            realPoint = point;
+        }
+        double width = 0.00005;
+        drawArea(new Area(new Rectangle2D.Double(realPoint.x - width / 2, realPoint.y - width / 2, width, width)), color);
+    }
+    public static Color hashStringToColor(String string){
+        float value = (float) Math.abs(string.hashCode()) / (float) Integer.MAX_VALUE;
+        return new Color(value, 1-value, 1.0f);
     }
     public static void drawArea(Area area, Color color){
         shapes.add(new ColouredArea(area, color));
     }
+    public static void drawLine(MapPoint start, MapPoint end, Color color, double thickness){
+        MapPoint center = new MapPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 
-    public VisualTests() {
+        double width = start.distanceTo(end); // Clearance on both ends.
+        Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-width / 2.0, -thickness / 2.0, width, thickness);
+        AffineTransform at = new AffineTransform();
+        at.translate(center.x, center.y);
+        at.rotate(Math.toRadians(start.angleTo(end)));
+
+        Shape flyLine = at.createTransformedShape(flyLineRect);
+        Area flyLineArea = new Area(flyLine);
+
+        drawArea(flyLineArea, color);
+    }
+
+
+    public VisualDebug() {
 
 
         EventQueue.invokeLater(new Runnable() {
@@ -91,7 +121,7 @@ public class VisualTests {
                 g2d.setColor(Color.BLACK);
                 AffineTransform atMy = new AffineTransform();
                 atMy.translate(getWidth() / 2.0, getHeight() / 2.0);
-                double scale = 100000.0;
+                double scale = 300000.0;
                 atMy.scale(scale, -scale);
 
                 atMy.translate(3.1882,-55.9447);

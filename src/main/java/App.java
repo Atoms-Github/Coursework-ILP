@@ -28,10 +28,10 @@ public class App
 
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks(), website.fetchParsedMenus());
         DroneRouter router = new DroneRouter(area, menus, cafes);
-        DroneRouteResults resultsPricePerMove = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, orders, PathingTechnique.MAX_PRICE_PER_MOVE);
-// TODO:        DroneRouteResults resultsMaxOrders = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, orders, PathingTechnique.MAX_ORDER_COUNT);
-//
-//        DroneRouteResults bestResults;
+//        DroneRouteResults resultsPricePerMove = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, orders, PathingTechnique.MAX_PRICE_PER_MOVE);
+        DroneRouteResults resultsMaxOrders = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, orders, PathingTechnique.MAX_ORDER_COUNT);
+
+//   TODO     DroneRouteResults bestResults;
 //        if (resultsPricePerMove.getTotalPrice() > resultsMaxOrders.getTotalPrice()){
 //            bestResults = resultsPricePerMove;
 //            System.out.println("Best results by price_per_move.");
@@ -39,7 +39,7 @@ public class App
 //            bestResults = resultsMaxOrders;
 //            System.out.println("Best results by maximizing_orders.");
 //        }
-        /*TODO*/resultsPricePerMove.writeToOutput("drone-" + dateStringFilename + ".geojson", database);
+        /* TODO */ resultsMaxOrders.writeToOutput("drone-" + dateStringFilename + ".geojson", database);
 
         System.out.println("Completed in " + (System.currentTimeMillis() - startTimeMilis) + "ms.");
     }

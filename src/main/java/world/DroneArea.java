@@ -7,7 +7,7 @@ import drone.DroneTaskPoint;
 import drone.MoveList;
 import routing.DroneRouter;
 import inputOutput.IOMenus;
-import debug.VisualTests;
+import debug.VisualDebug;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -18,8 +18,7 @@ public class DroneArea {
     public IOMenus parsedMenus;
     public ArrayList<MapPoint> waypoints;
 
-//    private static final double clearance = 0.00001;
-    private static final double CLEARANCE = DroneRouter.SHORT_MOVE_LENGTH * 1.0; // This can't be anything smaller, as then we may be misaligned for next move.
+    public static final double CLEARANCE = DroneRouter.SHORT_MOVE_LENGTH; // This can't be anything smaller, as then we may be misaligned for next move.
 
 
     public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks, IOMenus parsedMenus) {
@@ -51,7 +50,7 @@ public class DroneArea {
                 waypoints.addAll(getPathsBoundingBox(path, DroneRouter.SHORT_MOVE_LENGTH * 1.1)); // Since need 1x on each edge, this'll safely allow past.
 
                 thisNoFlyZone.add(new Area(path));
-                VisualTests.drawArea(new Area(path), Color.LIGHT_GRAY);
+                VisualDebug.drawArea(new Area(path), Color.LIGHT_GRAY);
                 this.noFlyZones.add(thisNoFlyZone);
             }
         }
@@ -111,7 +110,7 @@ public class DroneArea {
         }
         MapPoint center = new MapPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 
-        VisualTests.setupVisualTest();
+        VisualDebug.setupVisualTest();
         double width = start.distanceTo(end) + CLEARANCE * 2.0; // Clearance on both ends.
         Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-width / 2.0, -CLEARANCE, width, CLEARANCE * 2.0);
         AffineTransform at = new AffineTransform();
@@ -135,7 +134,7 @@ public class DroneArea {
         }
         Shape flyLine = at.createTransformedShape(flyLineRect);
         Area flyLineArea = new Area(flyLine);
-        VisualTests.drawArea(flyLineArea, Color.BLUE);
+//        VisualTests.drawArea(flyLineArea, Color.DARK_GRAY);
 
         return true;
     }
