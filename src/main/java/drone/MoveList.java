@@ -34,10 +34,15 @@ public class MoveList {
         // Merge all. (First point of other.points has already been removed).
         points.addAll(other.points);
     }
-    public void addPathfoundDestination(MapPoint target, DroneArea area){
+    public boolean addPathfoundDestination(MapPoint target, DroneArea area){
         assert points.size() > 0;
         MoveList newRoute = area.pathfind(getLastLocation(), target);
-        append(newRoute);
+        if (newRoute != null){
+            append(newRoute);
+            return true;
+        }else{
+            return false;
+        }
     }
     public MapPoint getLastLocation(){
         return points.get(points.size() - 1).point;

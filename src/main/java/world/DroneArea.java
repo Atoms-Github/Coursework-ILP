@@ -19,7 +19,7 @@ public class DroneArea {
     public ArrayList<MapPoint> waypoints;
 
 //    private static final double clearance = 0.00001;
-    private static final double CLEARANCE = DroneRouter.SHORT_MOVE_LENGTH; // This can't be anything smaller, as then we may be misaligned for next move.
+    private static final double CLEARANCE = DroneRouter.SHORT_MOVE_LENGTH * 1.0; // This can't be anything smaller, as then we may be misaligned for next move.
 
 
     public DroneArea(FeatureCollection noFlyZones, FeatureCollection landmarks, IOMenus parsedMenus) {
@@ -51,6 +51,7 @@ public class DroneArea {
                 waypoints.addAll(getPathsBoundingBox(path, DroneRouter.SHORT_MOVE_LENGTH * 1.1)); // Since need 1x on each edge, this'll safely allow past.
 
                 thisNoFlyZone.add(new Area(path));
+                VisualTests.drawArea(new Area(path), Color.LIGHT_GRAY);
                 this.noFlyZones.add(thisNoFlyZone);
             }
         }
@@ -94,14 +95,12 @@ public class DroneArea {
                     return shortestGoodMove;
                 }
             }
-            if (depth == 0) {
-                throw new RuntimeException("Can't path from " + start + " to " + end + "!");
-            }
             // We've failed.
             return null;
         }
 
     }
+
     public MoveList pathfind(MapPoint start, MapPoint end){
         return pathfind_recursive(start, end, 0);
     }
@@ -112,7 +111,7 @@ public class DroneArea {
         }
         MapPoint center = new MapPoint((start.x + end.x) / 2, (start.y + end.y) / 2);
 
-//        VisualTests.setupVisualTest();
+        VisualTests.setupVisualTest();
         double width = start.distanceTo(end) + CLEARANCE * 2.0; // Clearance on both ends.
         Rectangle2D.Double flyLineRect = new Rectangle2D.Double(-width / 2.0, -CLEARANCE, width, CLEARANCE * 2.0);
         AffineTransform at = new AffineTransform();
@@ -121,20 +120,23 @@ public class DroneArea {
 
         Rectangle2D.Double startRect = new Rectangle2D.Double(start.x, start.y,  DroneRouter.SHORT_MOVE_LENGTH, DroneRouter.SHORT_MOVE_LENGTH);
         Rectangle2D.Double endRect = new Rectangle2D.Double(end.x, end.y,  DroneRouter.SHORT_MOVE_LENGTH, DroneRouter.SHORT_MOVE_LENGTH);
-        VisualTests.drawArea(new Area(startRect), Color.GREEN);
-        VisualTests.drawArea(new Area(endRect), Color.RED);
+//        VisualTests.drawArea(new Area(startRect), Color.GREEN);
+//        VisualTests.drawArea(new Area(endRect), Color.RED);
 
         for (Area a : noFlyZones){
             Shape flyLine = at.createTransformedShape(flyLineRect);
             Area flyLineArea = new Area(flyLine);
-            VisualTests.drawArea((Area) flyLineArea.clone(), Color.BLUE);
+
             flyLineArea.intersect(a);
             boolean intersects = !flyLineArea.isEmpty();
             if (intersects){
                 return false;
             }
-            VisualTests.drawArea(a);
         }
+        Shape flyLine = at.createTransformedShape(flyLineRect);
+        Area flyLineArea = new Area(flyLine);
+        VisualTests.drawArea(flyLineArea, Color.BLUE);
+
         return true;
     }
 //    private double distanceBetweenLines(MapPoint start1, MapPoint end1, MapPoint start2, MapPoint end2){

@@ -56,18 +56,27 @@ public class DroneRouter {
         Order bestOrder = null;
         for (Order potentialOrder : ordersList){
             MoveList routeToCompleteOrder = potentialOrder.getDroneMovesForOrder(start, area);
+            if (routeToCompleteOrder == null){
+                continue; // Can't route this order's path.
+            }
             MapPoint closestActiveShopRemaining = shops.getClosestShopWithItemsLeft(routeToCompleteOrder.getLastLocation());
             if (closestActiveShopRemaining == null){
                 // If no more shops with orders left, this is the last order, thus the best.
                 return potentialOrder;
             }
-            routeToCompleteOrder.addPathfoundDestination(closestActiveShopRemaining, area);
+            boolean makeItToShop = routeToCompleteOrder.addPathfoundDestination(closestActiveShopRemaining, area);
+            if (!makeItToShop){
+                continue; // Can't make it to any more shops. This order is bad.
+            }
             double routeLength = routeToCompleteOrder.getTotalMoveLength();
             int routePrice = potentialOrder.getTotalPrice();
             double pricePerLength = (double) routePrice / routeLength;
 
             // Now we've calculated price per length, we want to work out if we can make it back to appleton if we do this order.
-            routeToCompleteOrder.addPathfoundDestination(MapPoint.APPLETON_TOWER, area);
+            boolean makeItToAppleton = routeToCompleteOrder.addPathfoundDestination(MapPoint.APPLETON_TOWER, area);
+            if (!makeItToAppleton){
+                continue; // Can't make it home. This order is bad.
+            }
             int totalShortMovesEstimate = routeToCompleteOrder.getShortMoveSafeEstimate();
             // Round up. See report for unlucky zig zag modifier.
             int totalShortMovesIfUnlucky = (int)((double)totalShortMovesEstimate * UNLUCKY_ZIG_ZAG_MULTIPLIER) + 1;
@@ -87,15 +96,24 @@ public class DroneRouter {
     private Order calcBestNextOrderMaxOrders(MapPoint start, List<Order> ordersList, CafeTracker shops, int maxMoves){
         double distanceToClosestOrder = Double.MAX_VALUE;
         Order bestOrder = null;
-        for (Order potentialOrder : ordersList){
+        orderLoop: for (Order potentialOrder : ordersList){
             double distToClosestShop = Double.MAX_VALUE;
             for (MapPoint point : potentialOrder.getShopLocations()){
                 MoveList pathToPoint = area.pathfind(start, point);
+                if (pathToPoint == null){
+                    continue orderLoop; // This order can't be pathed to.
+                }
                 distToClosestShop = Math.min(distToClosestShop, pathToPoint.getTotalMoveLength());
             }
             MoveList routeToCompleteOrder = potentialOrder.getDroneMovesForOrder(start, area);
+            if (routeToCompleteOrder == null){
+                continue; // Can't do this move's order.
+            }
 
-            routeToCompleteOrder.addPathfoundDestination(MapPoint.APPLETON_TOWER, area);
+            boolean makeItHome = routeToCompleteOrder.addPathfoundDestination(MapPoint.APPLETON_TOWER, area);
+            if (!makeItHome){
+                continue; // Can't make it home. This order is bad.
+            }
             int totalShortMovesEstimate = routeToCompleteOrder.getShortMoveSafeEstimate();
 
             // Don't do this order if we're not going to make it back to appleton afterwards.

@@ -1,5 +1,6 @@
 package debug;
 
+import inputOutput.WebsiteHandle;
 import world.MapPoint;
 
 import java.awt.*;
@@ -15,7 +16,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class VisualTests {
     private static VisualTests visual;
-    private final ArrayList<ColouredArea> shapes = new ArrayList<>();
+    public static final ArrayList<ColouredArea> shapes = new ArrayList<>();
     public static void setupVisualTest(){
         if (visual == null){
             visual = new VisualTests();
@@ -29,12 +30,12 @@ public class VisualTests {
         drawArea(new Area(new Rectangle2D.Double(point.x - width / 2, point.y - width / 2, width, width)), color);
     }
     public static void drawArea(Area area, Color color){
-        if (visual != null){
-            visual.shapes.add(new ColouredArea(area, color));
-        }
+        shapes.add(new ColouredArea(area, color));
     }
 
     public VisualTests() {
+
+
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

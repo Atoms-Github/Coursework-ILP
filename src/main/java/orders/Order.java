@@ -40,12 +40,18 @@ public class Order {
         while (orderShops.size() > 0){
             MapPoint closestShop = start.getClosestPoint(orderShops);
             MoveList pathToClosest = area.pathfind(totalRoute.getLastLocation(), closestShop);
+            if (pathToClosest == null){
+                return null; // Can't route to this shop.
+            }
             pathToClosest.getLastWaypoint().mustHover = true;
             totalRoute.append(pathToClosest);
             orderShops.remove(closestShop);
         }
         // Now we need to get from the last shop to the customer.
         MoveList pathToEnd = area.pathfind(totalRoute.getLastLocation(), deliveryTarget.point);
+        if (pathToEnd == null){
+            return null; // Can't find way to get to end.
+        }
         totalRoute.append(pathToEnd);
 
         return totalRoute;
