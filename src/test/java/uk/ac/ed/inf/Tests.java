@@ -1,5 +1,6 @@
 package uk.ac.ed.inf;
 
+import routing.App;
 import world.DroneArea;
 import world.MapPoint;
 import orders.Cafe;
@@ -104,14 +105,15 @@ public class Tests {
 //        System.out.println(("Perfect: " + five));
 //        System.out.println(("Bad: " + ten));
 //    }
-//    @Test
-//    public void genFiles() {
-//        MapPoint start = new MapPoint(0.0,0.0);
-//        MapPoint five = start.nextPosition(5, 1.0);
-//        MapPoint ten = start.nextPosition(10, 1.0);
-//        MapPoint diff = new MapPoint(five.x - ten.x, five.y - ten.y);
-//        System.out.println(diff.distanceTo(start));
-//        System.out.println(("Perfect: " + five));
-//        System.out.println(("Bad: " + ten));
-//    }
+    @Test
+    public void output12Files() throws SQLException, IOException, InterruptedException {
+        for (int i = 1; i < 13; i++) {
+            String e = "" + i;
+            if (e.length() < 2){
+                e = "0" + e;
+            }
+            App.main(new String[]{e, e, "2022","9898","9876"});
+        }
+    }
+
 }

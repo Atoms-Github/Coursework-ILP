@@ -1,3 +1,5 @@
+package routing;
+
 import routing.DroneRouteResults;
 import routing.DroneRouter;
 import routing.PathingTechnique;
@@ -30,19 +32,19 @@ public class App
         DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks());
         DroneRouter router = new DroneRouter(area, cafes);
         DroneRouteResults resultsPricePerMove = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, orders, PathingTechnique.MAX_PRICE_PER_MOVE);
-//        DroneRouteResults resultsMaxOrders = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, orders, PathingTechnique.MAX_ORDER_COUNT);
+        DroneRouteResults resultsMaxOrders = router.calculateDroneMoves(MapPoint.APPLETON_TOWER, orders, PathingTechnique.MAX_ORDER_COUNT);
 
-//        DroneRouteResults bestResults;
-//        System.out.println("Price_per_move value = " + resultsPricePerMove.getTotalPrice());
-//        System.out.println("Maximizing_orders value = " + resultsMaxOrders.getTotalPrice());
-//        if (resultsPricePerMove.getTotalPrice() > resultsMaxOrders.getTotalPrice()){
-//            bestResults = resultsPricePerMove;
-//            System.out.println("Best results by price_per_move.");
-//        }else{
-//            bestResults = resultsMaxOrders;
-//            System.out.println("Best results by maximizing_orders.");
-//        }
-        resultsPricePerMove.writeToOutput("drone-" + dateStringFilename + ".geojson", database);
+        DroneRouteResults bestResults;
+        System.out.println("Price_per_move value = " + resultsPricePerMove.getTotalPrice());
+        System.out.println("Maximizing_orders value = " + resultsMaxOrders.getTotalPrice());
+        if (resultsPricePerMove.getTotalPrice() > resultsMaxOrders.getTotalPrice()){
+            bestResults = resultsPricePerMove;
+            System.out.println("Best results by price_per_move.");
+        }else{
+            bestResults = resultsMaxOrders;
+            System.out.println("Best results by maximizing_orders.");
+        }
+        bestResults.writeToOutput("drone-" + dateStringFilename + ".geojson", database);
 
         System.out.println("Completed in " + (System.currentTimeMillis() - startTimeMilis) + "ms.");
     }
