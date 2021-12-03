@@ -95,15 +95,15 @@ public class Tests {
 //        System.out.println(("Perfect: " + five));
 //        System.out.println(("Bad: " + ten));
 //    }
-    @Test
-    public void output12Files() throws SQLException, IOException, InterruptedException {
-        for (int i = 1; i < 13; i++) {
-            String e = "" + i;
-            if (e.length() < 2){
-                e = "0" + e;
-            }
-            App.main(new String[]{e, e, "2022","9898","9876"});
-        }
-    }
+//    @Test
+//    public void output12Files() throws SQLException, IOException, InterruptedException {
+//        for (int i = 1; i < 13; i++) {
+//            String e = "" + i;
+//            if (e.length() < 2){
+//                e = "0" + e;
+//            }
+//            App.main(new String[]{e, e, "2022","9898","9876"});
+//        }
+//    }
 
 }
