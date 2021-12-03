@@ -4,7 +4,7 @@ import inputOutput.output.IODroneAction;
 import world.DroneArea;
 import drone.MoveList;
 import world.MapPoint;
-import orders.Cafe;
+import orders.Shop;
 import orders.Order;
 
 import java.util.ArrayList;
@@ -29,13 +29,13 @@ public class DroneRouter {
      */
     private final DroneArea area;
     /**
-     * All the cafes on the map.
+     * All the shops on the map.
      */
-    private final ArrayList<Cafe> cafes;
+    private final ArrayList<Shop> shops;
 
-    public DroneRouter(DroneArea area, ArrayList<Cafe> cafes) {
+    public DroneRouter(DroneArea area, ArrayList<Shop> shops) {
         this.area = area;
-        this.cafes = cafes;
+        this.shops = shops;
     }
 
     /**
@@ -48,7 +48,7 @@ public class DroneRouter {
     public DroneRouteResults calculateDroneMoves(MapPoint droneLaunchPoint, List<Order> ordersList, PathingTechnique technique){
         // Clone the orders list, so we can delete the orders we've completed from it.
         ArrayList<Order> ordersToGo = new ArrayList<>(ordersList);
-        CafeTracker tracker = new CafeTracker(cafes, ordersToGo);
+        ShopTracker tracker = new ShopTracker(shops, ordersToGo);
 
         DroneRouteResults results = new DroneRouteResults(DRONE_MAX_MOVES, droneLaunchPoint);
         // Loop until we've found our best route.
@@ -76,7 +76,7 @@ public class DroneRouter {
         }
     }
 
-    private Order calcBestNextOrderPricePerMove(MapPoint start, List<Order> ordersList, CafeTracker shops, int maxMoves){
+    private Order calcBestNextOrderPricePerMove(MapPoint start, List<Order> ordersList, ShopTracker shops, int maxMoves){
         double bestPriceToLength = Double.MIN_VALUE;
         Order bestOrder = null;
         // Try all orders, to see what's the best one's price per move.
@@ -85,7 +85,7 @@ public class DroneRouter {
             if (routeToCompleteOrder == null){
                 continue; // Can't route to this order. Don't take this order.
             }
-            MapPoint closestActiveShopRemaining = shops.getClosestShopWithItemsLeft(routeToCompleteOrder.getLastLocation(), cafes);
+            MapPoint closestActiveShopRemaining = shops.getClosestShopWithItemsLeft(routeToCompleteOrder.getLastLocation(), this.shops);
             if (closestActiveShopRemaining == null){
                 // If no more shops with orders left, this is the last order, thus the best.
                 return potentialOrder;

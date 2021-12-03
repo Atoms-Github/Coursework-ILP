@@ -3,7 +3,7 @@ package inputOutput.input;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import inputOutput.WebsiteHandle;
-import orders.Cafe;
+import orders.Shop;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -15,9 +15,9 @@ import java.util.List;
  */
 public class IOMenus {
     /**
-     * Cafes present on this menu. This is the list the customers would see.
+     * Shops present on this menu. This is the list the customers would see.
      */
-    public List<IOCafe> cafes;
+    public List<IOShop> shops;
 
     /**
      * Parses a new instance from json formatted string.
@@ -26,23 +26,23 @@ public class IOMenus {
      */
     public static IOMenus parseFromString(String jsonString){
         IOMenus menus = new IOMenus();
-        Type listType = new TypeToken<ArrayList<IOCafe>>() {}.getType();
-        menus.cafes = new Gson().<ArrayList<IOCafe>>fromJson(jsonString, listType);
+        Type listType = new TypeToken<ArrayList<IOShop>>() {}.getType();
+        menus.shops = new Gson().<ArrayList<IOShop>>fromJson(jsonString, listType);
         return menus;
     }
 
     /**
-     * Processes the cafe's in this IOMenus into a more useful form.
+     * Processes the shop's in this IOMenus into a more useful form.
      * @param website Website to resolve the WhatThreeWords locations.
-     * @return List of processed cafes.
+     * @return List of processed shops.
      * @throws IOException If problem contacting website.
      * @throws InterruptedException If problem contacting website.
      */
-    public ArrayList<Cafe> processCafes(WebsiteHandle website) throws IOException, InterruptedException {
-        ArrayList<Cafe> processedCafes = new ArrayList<>();
-        for (IOCafe cafe: this.cafes){
-            processedCafes.add(cafe.process(website));
+    public ArrayList<Shop> processShops(WebsiteHandle website) throws IOException, InterruptedException {
+        ArrayList<Shop> processedShops = new ArrayList<>();
+        for (IOShop shop: this.shops){
+            processedShops.add(shop.process(website));
         }
-        return processedCafes;
+        return processedShops;
     }
 }

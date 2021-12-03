@@ -1,7 +1,7 @@
 package inputOutput.input;
 
 import inputOutput.WebsiteHandle;
-import orders.Cafe;
+import orders.Shop;
 import orders.Order;
 import orders.OrderItem;
 
@@ -43,18 +43,18 @@ public class IOOrder {
     /**
      * Converts this IOOrder into the more useful Order instance.
      * @param handle Website handle to resolve WhatThreeWords addresses.
-     * @param cafes Cafes that the order items present in this order are from.
+     * @param shops Shops that the order items present in this order are from.
      * @return The processed order.
      * @throws IOException If problem contacting website.
      * @throws InterruptedException If problem contacting website.
      */
-    public Order process(WebsiteHandle handle, List<Cafe> cafes) throws IOException, InterruptedException {
+    public Order process(WebsiteHandle handle, List<Shop> shops) throws IOException, InterruptedException {
         ArrayList<OrderItem> orderItems = new ArrayList<>();
         for (String orderItemName : this.orderItems){
-            // Check all cafes to see who sells this order item.
-            for (Cafe cafe : cafes){
-                if (cafe.menu.containsKey(orderItemName)){
-                    orderItems.add(new OrderItem(orderItemName, cafe, cafe.menu.get(orderItemName)));
+            // Check all shops to see who sells this order item.
+            for (Shop shop : shops){
+                if (shop.menu.containsKey(orderItemName)){
+                    orderItems.add(new OrderItem(orderItemName, shop, shop.menu.get(orderItemName)));
                     break;
                 }
             }

@@ -1,13 +1,9 @@
 package routing;
 
-import routing.DroneRouteResults;
-import routing.DroneRouter;
-import routing.PathingTechnique;
 import world.DroneArea;
 import world.MapPoint;
-import orders.Cafe;
+import orders.Shop;
 import orders.Order;
-import inputOutput.input.IOMenus;
 import inputOutput.DatabaseHandle;
 import inputOutput.WebsiteHandle;
 
@@ -31,10 +27,10 @@ public class App
         // ------------ ------------ ------------ ------------
         WebsiteHandle website = new WebsiteHandle("localhost", websitePort);
         DatabaseHandle database = new DatabaseHandle("localhost", databasePort);
-        ArrayList<Cafe> cafes = website.getCafes();
-        ArrayList<Order> orders = database.getProcessedOrders(website, cafes, dateStringDatabase);
+        ArrayList<Shop> shops = website.getShops();
+        ArrayList<Order> orders = database.getProcessedOrders(website, shops, dateStringDatabase);
         DroneArea area = new DroneArea(website.fetchNoFlyZones());
-        DroneRouter router = new DroneRouter(area, cafes);
+        DroneRouter router = new DroneRouter(area, shops);
 
         // ------------ ------------ ------------ ------------
         // PART 2: RUNNING THE ALGORITHM:

@@ -3,7 +3,7 @@ package inputOutput;
 import com.mapbox.geojson.FeatureCollection;
 import inputOutput.input.IOMenus;
 import inputOutput.input.IOThreeWordsPoint;
-import orders.Cafe;
+import orders.Shop;
 import world.NamedMapPoint;
 
 import java.io.IOException;
@@ -66,14 +66,14 @@ public class WebsiteHandle {
     }
 
     /**
-     * Downloads list of cafes from web server.
-     * @return List of cafes.
+     * Downloads list of shops from web server.
+     * @return List of shops.
      * @throws IOException If problem with web server.
      * @throws InterruptedException If problem with web server.
      */
-    public ArrayList<Cafe> getCafes() throws IOException, InterruptedException{
+    public ArrayList<Shop> getShops() throws IOException, InterruptedException{
         IOMenus menus = IOMenus.parseFromString(fetchWebsiteFile("menus/menus.json"));
-        return menus.processCafes(this);
+        return menus.processShops(this);
     }
 
     private String fetchWebsiteFile(String filename) throws IOException, InterruptedException{

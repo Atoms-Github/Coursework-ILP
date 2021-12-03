@@ -1,23 +1,13 @@
 package uk.ac.ed.inf;
 
 import routing.App;
-import world.DroneArea;
-import world.MapPoint;
-import orders.Cafe;
-import orders.Order;
-import inputOutput.input.IOMenus;
-import inputOutput.DatabaseHandle;
-import inputOutput.WebsiteHandle;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 public class Tests {
-//    private static final MapPoint TOP_LEFT_CAFE = new MapPoint(-3.1913, 	55.9456);
+//    private static final MapPoint TOP_LEFT_SHOP = new MapPoint(-3.1913, 	55.9456);
 //    private static final MapPoint MIDDLE_OF_NO_FLY_ZONES = new MapPoint(-3.1896, 55.9448);
 //    private static final MapPoint BOTTOM_MIDDLE_G_SQUARE = new MapPoint(	-3.1885, 		55.9440);
 //    private static final MapPoint BOTTOM_LEFT_WAYPOINT = new MapPoint(-3.1916, 		55.9437);
@@ -33,26 +23,26 @@ public class Tests {
 //        DatabaseHandle database = new DatabaseHandle("localhost", "9876");
 //
 //        IOMenus menus = website.fetchParsedMenus();
-//        ArrayList<Cafe> cafes = menus.processCafes(website);
-//        ArrayList<Order> orders = database.getProcessedOrders(website, cafes, "27-12-2023");
+//        ArrayList<Shop> shops = menus.processShops(website);
+//        ArrayList<Order> orders = database.getProcessedOrders(website, shops, "27-12-2023");
 //
 //
 //        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks());
 //
 //
 //        assertTrue(area.canFlyBetween(APPLETON_MAP_POINT, BOTTOM_MIDDLE_G_SQUARE));
-//        assertFalse(area.canFlyBetween(APPLETON_MAP_POINT, TOP_LEFT_CAFE));
-//        assertFalse(area.canFlyBetween(BOTTOM_MIDDLE_G_SQUARE, TOP_LEFT_CAFE));
-//        assertFalse(area.canFlyBetween(MIDDLE_OF_NO_FLY_ZONES, TOP_LEFT_CAFE));
+//        assertFalse(area.canFlyBetween(APPLETON_MAP_POINT, TOP_LEFT_SHOP));
+//        assertFalse(area.canFlyBetween(BOTTOM_MIDDLE_G_SQUARE, TOP_LEFT_SHOP));
+//        assertFalse(area.canFlyBetween(MIDDLE_OF_NO_FLY_ZONES, TOP_LEFT_SHOP));
 //        assertFalse(area.canFlyBetween(MIDDLE_OF_NO_FLY_ZONES, APPLETON_MAP_POINT));
 //        assertFalse(area.canFlyBetween(MIDDLE_OF_NO_FLY_ZONES, BOTTOM_MIDDLE_G_SQUARE));
 //
-//        assertTrue(area.canFlyBetween(TOP_RIGHT_WAYPOINT, TOP_LEFT_CAFE));
+//        assertTrue(area.canFlyBetween(TOP_RIGHT_WAYPOINT, TOP_LEFT_SHOP));
 //        assertTrue(area.canFlyBetween(TOP_RIGHT_WAYPOINT, APPLETON_MAP_POINT));
 //        assertFalse(area.canFlyBetween(TOP_RIGHT_WAYPOINT, BOTTOM_LEFT_WAYPOINT));
 //        assertFalse(area.canFlyBetween(TOP_RIGHT_WAYPOINT, BOTTOM_MIDDLE_G_SQUARE));
 //
-//        assertTrue(area.canFlyBetween(BOTTOM_LEFT_WAYPOINT, TOP_LEFT_CAFE));
+//        assertTrue(area.canFlyBetween(BOTTOM_LEFT_WAYPOINT, TOP_LEFT_SHOP));
 //        assertTrue(area.canFlyBetween(BOTTOM_LEFT_WAYPOINT, APPLETON_MAP_POINT));
 //        assertFalse(area.canFlyBetween(BOTTOM_LEFT_WAYPOINT, TOP_RIGHT_WAYPOINT));
 //        assertTrue(area.canFlyBetween(BOTTOM_LEFT_WAYPOINT, BOTTOM_MIDDLE_G_SQUARE));
@@ -82,8 +72,8 @@ public class Tests {
 //        DatabaseHandle database = new DatabaseHandle("localhost", "9876");
 //
 //        IOMenus menus = website.fetchParsedMenus();
-//        ArrayList<Cafe> cafes = menus.processCafes(website);
-//        ArrayList<Order> orders = database.getProcessedOrders(website, cafes, "27-12-2023");
+//        ArrayList<Shop> shops = menus.processShops(website);
+//        ArrayList<Order> orders = database.getProcessedOrders(website, shops, "27-12-2023");
 //
 //
 //        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks());

@@ -3,7 +3,7 @@ package inputOutput;
 import inputOutput.input.IOOrder;
 import inputOutput.output.IOCompletedOrder;
 import inputOutput.output.IODroneAction;
-import orders.Cafe;
+import orders.Shop;
 import orders.Order;
 
 import java.io.IOException;
@@ -35,18 +35,18 @@ public class DatabaseHandle {
     /**
      * Queries the database for orders.
      * @param website Website to resolve WTW locations on.
-     * @param cafes All cafes that sell everything in the orders that'll be returned.
+     * @param shops All shops that sell everything in the orders that'll be returned.
      * @param dateString The date to get orders for. Formatted 'YYYY-MM-DD'.
      * @return List of useful Order instances.
      * @throws SQLException Problem with database.
      * @throws IOException Problem with website.
      * @throws InterruptedException Problem with website.
      */
-    public ArrayList<Order> getProcessedOrders(WebsiteHandle website, List<Cafe> cafes, String dateString) throws SQLException, IOException, InterruptedException {
+    public ArrayList<Order> getProcessedOrders(WebsiteHandle website, List<Shop> shops, String dateString) throws SQLException, IOException, InterruptedException {
         ArrayList<Order> processedOrders = new ArrayList<>();
         var orders = getIOOrders(dateString);
         for (IOOrder order : orders){
-            processedOrders.add(order.process(website, cafes));
+            processedOrders.add(order.process(website, shops));
         }
         return processedOrders;
     }
