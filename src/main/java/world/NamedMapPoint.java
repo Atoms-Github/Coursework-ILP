@@ -8,5 +8,4 @@ public class NamedMapPoint {
         this.point = new MapPoint(x, y);
         this.whatThreeWordsLoc = whatThreeWordsLoc;
     }
-    // TODO: Ammend this with a 'process' method.
 }
