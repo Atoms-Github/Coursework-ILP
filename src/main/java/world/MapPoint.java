@@ -8,16 +8,17 @@ import java.util.List;
 import java.util.Objects;
 
 public class MapPoint {
-    public static final double CLOSE_TOLERANCE = 0.00015;
+    private static final double CLOSE_TOLERANCE = 0.00015;
+    // X and Y can be final, as new instances of MapPoint are created for new points instead of changing these.
+    // This prevents bugs where we accidentally change a value that the calling code wasn't expecting.
     /**
      * X represents the point's longitude.
      */
-    public double x;
-
+    public final double x;
     /**
      * Y represents the point's Latitude.
      */
-    public double y;
+    public final double y;
 
 
 
@@ -39,7 +40,13 @@ public class MapPoint {
         this.y = y;
     }
 
+    /**
+     * Finds the closest point to 'this' point, in a list of points.
+     * @param points What points to consider.
+     * @return The closest point.
+     */
     public MapPoint getClosestPoint(List<MapPoint> points){
+        // Standard 'findMin' algorithm:
         MapPoint closest = null;
         double bestDistance = Double.MAX_VALUE;
         for (MapPoint point : points){
@@ -52,6 +59,9 @@ public class MapPoint {
         return closest;
     }
 
+    /**
+     * Auto-generated implementation.
+     */
     @Override
     public String toString() {
         return "MapPoint{" +
@@ -59,7 +69,9 @@ public class MapPoint {
                 ", y=" + y +
                 '}';
     }
-
+    /**
+     * Auto-generated implementation.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,23 +79,12 @@ public class MapPoint {
         MapPoint mapPoint = (MapPoint) o;
         return Double.compare(mapPoint.x, x) == 0 && Double.compare(mapPoint.y, y) == 0;
     }
-
+    /**
+     * Auto-generated implementation.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
-    }
-
-    /**
-     * Checks whether this point is within the drone's movement bounds.
-     * @return Whether the point is within the drone's movement bounds.
-     */
-    public boolean isConfined(){
-        // On the boundary is considered to not be confined.
-        return this.x > BOUNDS_BOTTOM_LEFT.x
-                && this.x < BOUNDS_TOP_RIGHT.x
-                && this.y > BOUNDS_BOTTOM_LEFT.y
-                && this.y < BOUNDS_TOP_RIGHT.y;
-
     }
 
     /**
@@ -95,7 +96,7 @@ public class MapPoint {
     public double distanceTo(MapPoint other){
         return Math.sqrt(distanceToSquared(other));
     }
-    public double distanceToSquared(MapPoint other){
+    private double distanceToSquared(MapPoint other){
         // Standard pythagoras formula.
         double diff_lng = this.x - other.x;
         double diff_lat = this.y - other.y;
@@ -109,6 +110,12 @@ public class MapPoint {
     public boolean closeTo(MapPoint other){
         return this.distanceTo(other) < CLOSE_TOLERANCE;
     }
+
+    /**
+     * Calculates the angle from 'this' point to 'other' point.
+     * @param other Point to check angle between.
+     * @return The angle, between 0.0 and 360.0. 0.0 meaning east.
+     */
     public double angleTo(MapPoint other){
         double diffY = other.y - y;
         double diffX = other.x - x;
@@ -141,6 +148,9 @@ public class MapPoint {
         return new MapPoint(this.x + diff_long, this.y + diff_lat);
     }
 
+    /**
+     * @return This point, as a geojson point.
+     */
     public Point toGeoPoint() {
         return Point.fromLngLat(x, y);
     }

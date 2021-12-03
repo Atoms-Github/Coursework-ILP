@@ -33,7 +33,7 @@ public class App
         DatabaseHandle database = new DatabaseHandle("localhost", databasePort);
         ArrayList<Cafe> cafes = website.getCafes();
         ArrayList<Order> orders = database.getProcessedOrders(website, cafes, dateStringDatabase);
-        DroneArea area = new DroneArea(website.fetchNoFlyZones(), website.fetchLandmarks());
+        DroneArea area = new DroneArea(website.fetchNoFlyZones());
         DroneRouter router = new DroneRouter(area, cafes);
 
         // ------------ ------------ ------------ ------------
