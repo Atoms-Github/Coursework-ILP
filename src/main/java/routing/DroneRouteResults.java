@@ -14,41 +14,84 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DroneRouteResults {
-    public int remainingShortMoves;
-    public MapPoint currentLocation; // This is for pathfinding. Not exact movement. I.e. 'Closest destination'.
-    public MapPoint exactCurrentLocation; // This is for converting the path to a list of small moves. Not for pathfinding.
-    public ArrayList<Order> completedOrders = new ArrayList<>();
-    ArrayList<IODroneAction> droneActions = new ArrayList<>();
+    /**
+     * How many moves till out of charge.
+     */
+    private int remainingDroneActions;
+    /**
+     * The waypoint that this is **close** to. Not 'exact location'.
+     */
+    private MapPoint currentCloseWaypoint; // This is for pathfinding. Not exact movement. I.e. 'Closest destination'.
+    private MapPoint exactCurrentLocation; // This is for converting the path to a list of small moves. Not for pathfinding.
+    private final ArrayList<Order> completedOrders = new ArrayList<>();
+    private final ArrayList<IODroneAction> droneActions = new ArrayList<>();
 
-    public DroneRouteResults(int remainingShortMoves, MapPoint currentLocation) {
-        this.remainingShortMoves = remainingShortMoves;
-        this.currentLocation = currentLocation;
-        this.exactCurrentLocation = currentLocation;
+    public DroneRouteResults(int remainingDroneActions, MapPoint currentCloseWaypoint) {
+        this.remainingDroneActions = remainingDroneActions;
+        this.currentCloseWaypoint = currentCloseWaypoint;
+        this.exactCurrentLocation = currentCloseWaypoint;
     }
 
-    public void addMove(String orderNo, MoveList moves){
-        ArrayList<IODroneAction> actions = moves.genDroneActions(orderNo, exactCurrentLocation);
-        int movesUsed = actions.size();
-        remainingShortMoves -= movesUsed;
+    public int getRemainingDroneActions() {
+        return remainingDroneActions;
+    }
 
-        System.out.println("Adding a move with " + remainingShortMoves + " moves left. Moves used " + movesUsed);
-        currentLocation = moves.getLastLocation();
+    /**
+     * @return The waypoint that the drone is currently **close** to.
+     */
+    public MapPoint getCurrentCloseWaypoint() {
+        return currentCloseWaypoint;
+    }
+
+    /**
+     * Adds a move list to this route result's current move list.
+     * @param orderNo The order ID that this move is working towards.
+     * @param moves The moves to add.
+     */
+    public void addMove(String orderNo, MoveList moves){
+        // Work out the individual drone actions required for these moves.
+        ArrayList<IODroneAction> actions = moves.genDroneActions(orderNo, exactCurrentLocation);
+        // Work out exact battery usage.
+        int movesUsed = actions.size();
+        remainingDroneActions -= movesUsed;
+
+        System.out.println("Adding a move with " + remainingDroneActions + " moves left. Moves used " + movesUsed);
+        // Update current closest waypoint.
+        currentCloseWaypoint = moves.getLastLocation();
         if (actions.size() > 0){
+            // Update exact location.
             exactCurrentLocation = actions.get(actions.size() - 1).to;
         }
         droneActions.addAll(actions);
     }
+
+    /**
+     * Marks an order as completed, and adds the moves to this results' move collection.
+     * @param order The order to add.
+     * @param moves The moves that complete the order.
+     */
     public void addOrder(Order order, MoveList moves){
         System.out.println("Routing order " + order.orderNo + " worth " + order.getTotalPrice());
         completedOrders.add(order);
         addMove(order.orderNo, moves);
     }
 
+    /**
+     * Writes the data currently collected in this results to output targets.
+     * @param filename Filename of the geojson output file.
+     * @param database Database to write to.
+     * @throws SQLException Database error.
+     * @throws IOException File system error.
+     */
     public void writeToOutput(String filename, DatabaseHandle database) throws SQLException, IOException {
         System.out.println("Writing to database. Total value: " + getTotalPrice());
         OutputWriter writer = new OutputWriter(filename, database);
         writer.write(droneActions, getOutputOrders());
     }
+
+    /**
+     * Converts my list of Orders to a list of IOCompletedOrders for outputting.
+     */
     private List<IOCompletedOrder> getOutputOrders(){
         List<IOCompletedOrder> orders = new ArrayList<>();
         for (Order order : completedOrders){
@@ -57,6 +100,9 @@ public class DroneRouteResults {
         return orders;
     }
 
+    /**
+     * @return The total price of all the drone orders this result as managed to complete so far.
+     */
     public int getTotalPrice() {
         int totalMoney = 0;
         for (Order order : completedOrders){

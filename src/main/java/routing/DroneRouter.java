@@ -45,7 +45,7 @@ public class DroneRouter {
      * @param technique What technique to use to find the next best order.
      * @return The best route for the drone.
      */
-    public DroneRouteResults calculateDroneMoves(MapPoint droneLaunchPoint, MapPoint end, List<Order> ordersList, PathingTechnique technique){
+    public DroneRouteResults calculateDroneMoves(MapPoint droneLaunchPoint, List<Order> ordersList, PathingTechnique technique){
         // Clone the orders list, so we can delete the orders we've completed from it.
         ArrayList<Order> ordersToGo = new ArrayList<>(ordersList);
         CafeTracker tracker = new CafeTracker(cafes, ordersToGo);
@@ -55,8 +55,8 @@ public class DroneRouter {
         while(true){
             // For each move, we want to calculate which order to take next, using the appropriate technique.
             Order bestOrder = switch (technique) {
-                case MAX_PRICE_PER_MOVE -> calcBestNextOrderPricePerMove(results.currentLocation, ordersToGo, tracker, results.remainingShortMoves);
-                case MAX_ORDER_COUNT -> calcBestNextOrderMaxOrders(results.currentLocation, ordersToGo, results.remainingShortMoves);
+                case MAX_PRICE_PER_MOVE -> calcBestNextOrderPricePerMove(results.getCurrentCloseWaypoint(), ordersToGo, tracker, results.getRemainingDroneActions());
+                case MAX_ORDER_COUNT -> calcBestNextOrderMaxOrders(results.getCurrentCloseWaypoint(), ordersToGo, results.getRemainingDroneActions());
             };
 
             // If there is an order we can take. (E.g. can't if won't make it back to appleton in time).
@@ -65,11 +65,11 @@ public class DroneRouter {
                 ordersToGo.remove(bestOrder);
                 tracker.completeOrder(bestOrder);
                 // Work out what moves are required for this order, and add them to the total.
-                MoveList movesForBestOrder = bestOrder.getDroneMovesForOrder(results.currentLocation, area);
+                MoveList movesForBestOrder = bestOrder.getDroneMovesForOrder(results.getCurrentCloseWaypoint(), area);
                 results.addOrder(bestOrder, movesForBestOrder);
             }else{ // There is no more good orders to do. Just go back to appleton.
                 // Fly back to appleton.
-                MoveList routeBackToAppleton = area.pathfind(results.currentLocation, droneLaunchPoint);
+                MoveList routeBackToAppleton = area.pathfind(results.getCurrentCloseWaypoint(), droneLaunchPoint);
                 results.addMove(IODroneAction.NO_ORDER_STRING, routeBackToAppleton);
                 return results;
             }
