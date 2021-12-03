@@ -41,6 +41,19 @@ public class MapPoint {
     }
 
     /**
+     * @return This point's longitude, i.e. its x value.
+     */
+    public double getLongitude() {
+        return x;
+    }
+    /**
+     * @return This point's latidude, i.e. its y value.
+     */
+    public double getLatitude() {
+        return y;
+    }
+
+    /**
      * Finds the closest point to 'this' point, in a list of points.
      * @param points What points to consider.
      * @return The closest point.

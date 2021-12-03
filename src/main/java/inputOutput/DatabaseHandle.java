@@ -117,11 +117,11 @@ public class DatabaseHandle {
                 "(?, ?, ?, ?, ?, ?)");
         for (IODroneAction action : droneActions){
             psActions.setString(1, action.orderNo);
-            psActions.setDouble(2, action.from.x);
-            psActions.setDouble(3, action.from.y);
+            psActions.setDouble(2, action.from.getLongitude());
+            psActions.setDouble(3, action.from.getLatitude());
             psActions.setInt(4, action.angle);
-            psActions.setDouble(5, action.to.x);
-            psActions.setDouble(6, action.to.y);
+            psActions.setDouble(5, action.to.getLongitude());
+            psActions.setDouble(6, action.to.getLatitude());
             psActions.execute();
 
         }
