@@ -9,7 +9,7 @@ public class OrderItem {
     /**
      * Order item references shop so don't need to re-search all shops each time.
      */
-    public final Shop shop; // TODO: Shops or shops? What're they called?
+    public final Shop shop;
     public final Integer price;
 
     public OrderItem(String name, Shop shop, Integer price) {
