@@ -47,10 +47,10 @@ public class App
         // Chose the result that gives best total price.
         if (resultsPricePerMove.getTotalPrice() > resultsMaxOrders.getTotalPrice()){
             bestResults = resultsPricePerMove;
-            System.out.println("Best results by price_per_move.");
+            System.out.println("Best results by price_per_move on " + dateStringFilename);
         }else{
             bestResults = resultsMaxOrders;
-            System.out.println("Best results by maximizing_orders.");
+            System.out.println("Best results by maximizing_orders on " + dateStringFilename);
         }
         bestResults.writeToOutput("drone-" + dateStringFilename + ".geojson", database);
 
